@@ -1,0 +1,124 @@
+haml 
+==========================
+一个不需要嵌套的模板标记语言
+haml 使用空白符缩进表示
+可以使用 ruby controller 中的object
+
+
+install
+-------------------------
+
+as a plugin for Ruby on Rails,
++. Gamfile 
+  gem "haml-rails"
+
+as a command-line tool,
++. gem install haml
+
+Usage
+-----------------------------
++ rails
+  Qus. rails 的view 可以同时存在 haml 和reb 两种格式吗?
+   Ans. 可以在一个项目中混合reb 和haml 格式的文件
+  把后缀名从 html.erb 转换为 html.haml 即可
+
+
+
+
+语法
+===========================
+* comment
+ -# this is a comment
+
+ 如果要block 的可以使用inden
+   -# jfeosf
+      fjesofjefs
+      ewewewe
+  
+  当要作为html 的注释时在这行的最前面使用/
+   e.g.
+   %xx
+     / Hello wor
+     OOOOO
+    out:
+      <xx>
+         <!-- Hello wor　-->
+         OOOOO
+      </xx>
+   如果需要block 可以inden
+
+* %
+ 开始一个tag
+ e.g. %e
+        %one
+	  %two
+	    %three Hey There
+  out:
+    <one>
+      <two>
+        <three>Hey There </three>
+      </tow>
+    </one>
+
+   2.  %xx= item.title
+      当%xx 后是= 时，会求值Ruby code, 会把结果作为
+      contents
+  out:
+     <xx> <%= item.title %></xx>
+      
+
+  3. adding attributes
+   %xx{class :code, id: message} hh
+   out:
+     <xx class="code" id="message">hh</xx>
+    
+
+<div> 的tags 很常用所有也可以不用定义%div 直接
+  .content hello
+out:
+   <div class='content'> hello </div>
+
+   id 使用#
+   e.g.
+#content hello
+
+#aa.bb.cc
+  out:
+    <div id="aa" class="aa bb"></div>
+
+
+* Escaping
+ use \
+  %xx
+    = @time
+    \= @time
+out:
+ <xx> 
+ 323243923
+ = @time
+ </xx>
+       
+
+
+### 如果在= 后要有text 则可以 do 换行
+e.g.
+%h2
+ = pluralize(@user.errors.count, 'error') do
+ rohibited this user from begin save
+
+
+* /
+如果要单个tag, 则可以在最后加上/
+  %br/
+    out: <br/>
+
+* running Ruby
+   -
+一个连字符　开始的是ruby code 只会被求值并不会插入到输出中
+ e.g.
+   - foo = "ok"
+   - foo << " there"
+   - foo << " my"
+    %xx=foo
+  out:
+    <xx> ok there my </xx>

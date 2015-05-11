@@ -1,0 +1,16 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @todo_list.title
+%p
+  %b Description:
+  = @todo_list.description
+
+  #todo_items_wrapper
+    = render @todo_list.todo_items
+    #form= render "todo_items/form"
+
+= link_to 'Edit', edit_todo_list_path(@todo_list)
+\|
+= link_to 'Back', todo_lists_path

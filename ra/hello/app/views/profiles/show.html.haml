@@ -1,0 +1,14 @@
+%h1 Profile
+
+= div_for @profile do
+  name
+  %p.name= @profile.name
+  birthday
+  %p.birthday= @profile.birthday
+  QQ
+  %p.qq= @profile.qq
+
+
+= link_to 'Edit', edit_user_profile_path
+
+  

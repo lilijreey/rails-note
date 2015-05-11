@@ -1,0 +1,12 @@
+= form_for([@current_user, @profile], url: user_profile_path) do |f|
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :birthday
+    = f.date_select :birthday
+  .field
+    = f.label :qq
+    = f.text_area :qq
+  .actions
+    = f.submit 'Add'

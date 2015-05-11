@@ -1,0 +1,101 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ActiveSupport	/home/one/src/ruby/ra/hello/test/test_helper.rb	/^class ActiveSupport::TestCase$/;"	c	language:Ruby
+AddAdminToUsers	/home/one/src/ruby/ra/hello/db/migrate/20150123034946_add_admin_to_users.rb	/^class AddAdminToUsers < ActiveRecord::Migration$/;"	c	language:Ruby
+AddUserIdToArticles	/home/one/src/ruby/ra/hello/db/migrate/20150117122302_add_user_id_to_articles.rb	/^class AddUserIdToArticles < ActiveRecord::Migration$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/hello/app/controllers/admin/base_controller.rb	/^class Admin::BaseController < ApplicationController$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/hello/app/controllers/admin/users_controller.rb	/^class Admin::UsersController < Admin::BaseController$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/hello/app/helpers/admin/users_helper.rb	/^module Admin::UsersHelper$/;"	m	language:Ruby
+Application	/home/one/src/ruby/ra/hello/config/application.rb	/^  class Application < Rails::Application$/;"	c	language:Ruby	class:Hello
+ApplicationController	/home/one/src/ruby/ra/hello/app/controllers/application_controller.rb	/^class ApplicationController < ActionController::Base$/;"	c	language:Ruby
+ApplicationHelper	/home/one/src/ruby/ra/hello/app/helpers/application_helper.rb	/^module ApplicationHelper$/;"	m	language:Ruby
+Article	/home/one/src/ruby/ra/hello/app/models/article.rb	/^class Article < ActiveRecord::Base$/;"	c	language:Ruby
+ArticleTest	/home/one/src/ruby/ra/hello/test/models/article_test.rb	/^class ArticleTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+ArticlesController	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^class ArticlesController < ApplicationController$/;"	c	language:Ruby
+ArticlesControllerTest	/home/one/src/ruby/ra/hello/test/controllers/articles_controller_test.rb	/^class ArticlesControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+ArticlesHelper	/home/one/src/ruby/ra/hello/app/helpers/articles_helper.rb	/^module ArticlesHelper$/;"	m	language:Ruby
+ArticlesHelperTest	/home/one/src/ruby/ra/hello/test/helpers/articles_helper_test.rb	/^class ArticlesHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+Category	/home/one/src/ruby/ra/hello/app/models/category.rb	/^class Category < ActiveRecord::Base$/;"	c	language:Ruby
+CategoryTest	/home/one/src/ruby/ra/hello/test/models/category_test.rb	/^class CategoryTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+Comment	/home/one/src/ruby/ra/hello/app/models/comment.rb	/^class Comment < ActiveRecord::Base$/;"	c	language:Ruby
+CommentTest	/home/one/src/ruby/ra/hello/test/models/comment_test.rb	/^class CommentTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+CommentsController	/home/one/src/ruby/ra/hello/app/controllers/comments_controller.rb	/^class CommentsController < ApplicationController$/;"	c	language:Ruby
+CommentsControllerTest	/home/one/src/ruby/ra/hello/test/controllers/comments_controller_test.rb	/^class CommentsControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+CommentsHelper	/home/one/src/ruby/ra/hello/app/helpers/comments_helper.rb	/^module CommentsHelper$/;"	m	language:Ruby
+CommentsHelperTest	/home/one/src/ruby/ra/hello/test/helpers/comments_helper_test.rb	/^class CommentsHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+CreateArticles	/home/one/src/ruby/ra/hello/db/migrate/20150117113626_create_articles.rb	/^class CreateArticles < ActiveRecord::Migration$/;"	c	language:Ruby
+CreateArticlesCategories	/home/one/src/ruby/ra/hello/db/migrate/20150118133258_create_articles_categories.rb	/^class CreateArticlesCategories < ActiveRecord::Migration$/;"	c	language:Ruby
+CreateCategories	/home/one/src/ruby/ra/hello/db/migrate/20150118133203_create_categories.rb	/^class CreateCategories < ActiveRecord::Migration$/;"	c	language:Ruby
+CreateComments	/home/one/src/ruby/ra/hello/db/migrate/20150118134959_create_comments.rb	/^class CreateComments < ActiveRecord::Migration$/;"	c	language:Ruby
+CreateProfiles	/home/one/src/ruby/ra/hello/db/migrate/20150117120212_create_profiles.rb	/^class CreateProfiles < ActiveRecord::Migration$/;"	c	language:Ruby
+CreateUsers	/home/one/src/ruby/ra/hello/db/migrate/20150117115922_create_users.rb	/^class CreateUsers < ActiveRecord::Migration$/;"	c	language:Ruby
+Hello	/home/one/src/ruby/ra/hello/config/application.rb	/^module Hello$/;"	m	language:Ruby
+Profile	/home/one/src/ruby/ra/hello/app/models/profile.rb	/^class Profile < ActiveRecord::Base$/;"	c	language:Ruby
+ProfileTest	/home/one/src/ruby/ra/hello/test/models/profile_test.rb	/^class ProfileTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+ProfilesController	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^class ProfilesController < ApplicationController$/;"	c	language:Ruby
+ProfilesHelper	/home/one/src/ruby/ra/hello/app/helpers/profiles_helper.rb	/^module ProfilesHelper$/;"	m	language:Ruby
+SessionsController	/home/one/src/ruby/ra/hello/app/controllers/sessions_controller.rb	/^class SessionsController < ApplicationController$/;"	c	language:Ruby
+SessionsControllerTest	/home/one/src/ruby/ra/hello/test/controllers/sessions_controller_test.rb	/^class SessionsControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+SessionsHelper	/home/one/src/ruby/ra/hello/app/helpers/sessions_helper.rb	/^module SessionsHelper$/;"	m	language:Ruby
+SessionsHelperTest	/home/one/src/ruby/ra/hello/test/helpers/sessions_helper_test.rb	/^class SessionsHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+User	/home/one/src/ruby/ra/hello/app/models/user.rb	/^class User < ActiveRecord::Base$/;"	c	language:Ruby
+User	/home/one/src/ruby/ra/hello/lib/user.rb	/^class User$/;"	c	language:Ruby
+UserTest	/home/one/src/ruby/ra/hello/test/models/user_test.rb	/^class UserTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+UsersController	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^class UsersController < ApplicationController$/;"	c	language:Ruby
+UsersControllerTest	/home/one/src/ruby/ra/hello/test/controllers/users_controller_test.rb	/^class UsersControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+UsersHelper	/home/one/src/ruby/ra/hello/app/helpers/users_helper.rb	/^module UsersHelper$/;"	m	language:Ruby
+UsersHelperTest	/home/one/src/ruby/ra/hello/test/helpers/users_helper_test.rb	/^class UsersHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+article_params	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^    def article_params$/;"	f	language:Ruby	class:ArticlesController
+article_should_be_published	/home/one/src/ruby/ra/hello/app/models/comment.rb	/^  def article_should_be_published$/;"	f	language:Ruby	class:Comment
+authorize	/home/one/src/ruby/ra/hello/app/controllers/application_controller.rb	/^  def authorize$/;"	f	language:Ruby	class:ApplicationController
+authorize_admin!	/home/one/src/ruby/ra/hello/app/controllers/application_controller.rb	/^  def authorize_admin!$/;"	f	language:Ruby	class:ApplicationController
+change	/home/one/src/ruby/ra/hello/db/migrate/20150117113626_create_articles.rb	/^  def change$/;"	f	language:Ruby	class:CreateArticles
+change	/home/one/src/ruby/ra/hello/db/migrate/20150117115922_create_users.rb	/^  def change$/;"	f	language:Ruby	class:CreateUsers
+change	/home/one/src/ruby/ra/hello/db/migrate/20150117120212_create_profiles.rb	/^  def change$/;"	f	language:Ruby	class:CreateProfiles
+change	/home/one/src/ruby/ra/hello/db/migrate/20150117122302_add_user_id_to_articles.rb	/^  def change$/;"	f	language:Ruby	class:AddUserIdToArticles
+change	/home/one/src/ruby/ra/hello/db/migrate/20150118133203_create_categories.rb	/^  def change$/;"	f	language:Ruby	class:CreateCategories
+change	/home/one/src/ruby/ra/hello/db/migrate/20150118133258_create_articles_categories.rb	/^  def change$/;"	f	language:Ruby	class:CreateArticlesCategories
+change	/home/one/src/ruby/ra/hello/db/migrate/20150118134959_create_comments.rb	/^  def change$/;"	f	language:Ruby	class:CreateComments
+change	/home/one/src/ruby/ra/hello/db/migrate/20150123034946_add_admin_to_users.rb	/^  def change$/;"	f	language:Ruby	class:AddAdminToUsers
+create	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def create$/;"	f	language:Ruby	class:ArticlesController
+create	/home/one/src/ruby/ra/hello/app/controllers/comments_controller.rb	/^  def create$/;"	f	language:Ruby	class:CommentsController
+create	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def create$/;"	f	language:Ruby	class:ProfilesController
+create	/home/one/src/ruby/ra/hello/app/controllers/sessions_controller.rb	/^  def create$/;"	f	language:Ruby	class:SessionsController
+create	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^  def create$/;"	f	language:Ruby	class:UsersController
+current_user	/home/one/src/ruby/ra/hello/app/controllers/application_controller.rb	/^  def current_user$/;"	f	language:Ruby	class:ApplicationController
+destroy	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:ArticlesController
+destroy	/home/one/src/ruby/ra/hello/app/controllers/comments_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:CommentsController
+destroy	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:ProfilesController
+destroy	/home/one/src/ruby/ra/hello/app/controllers/sessions_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:SessionsController
+destroy	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:UsersController
+down	/home/one/src/ruby/ra/hello/db/migrate/20150118133258_create_articles_categories.rb	/^  def self.down$/;"	F	language:Ruby	class:CreateArticlesCategories
+edit	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def edit$/;"	f	language:Ruby	class:ArticlesController
+edit	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def edit$/;"	f	language:Ruby	class:ProfilesController
+index	/home/one/src/ruby/ra/hello/app/controllers/admin/base_controller.rb	/^  def index$/;"	f	language:Ruby	class:Admin
+index	/home/one/src/ruby/ra/hello/app/controllers/admin/users_controller.rb	/^  def index$/;"	f	language:Ruby	class:Admin
+index	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def index$/;"	f	language:Ruby	class:ArticlesController
+index	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^  def index$/;"	f	language:Ruby	class:UsersController
+is_admin?	/home/one/src/ruby/ra/hello/app/models/user.rb	/^  def is_admin?$/;"	f	language:Ruby	class:User
+logged_in?	/home/one/src/ruby/ra/hello/app/controllers/application_controller.rb	/^  def logged_in?$/;"	f	language:Ruby	class:ApplicationController.authorize_admin!
+new	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def new$/;"	f	language:Ruby	class:ArticlesController
+new	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def new$/;"	f	language:Ruby	class:ProfilesController
+new	/home/one/src/ruby/ra/hello/app/controllers/sessions_controller.rb	/^  def new$/;"	f	language:Ruby	class:SessionsController
+new	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^  def new$/;"	f	language:Ruby	class:UsersController
+owned_by?	/home/one/src/ruby/ra/hello/app/models/article.rb	/^  def owned_by?(user)$/;"	f	language:Ruby	class:Article
+owned_by?	/home/one/src/ruby/ra/hello/app/models/profile.rb	/^  def owned_by?(user)$/;"	f	language:Ruby	class:Profile
+params_comment	/home/one/src/ruby/ra/hello/app/controllers/comments_controller.rb	/^  def params_comment$/;"	f	language:Ruby	class:CommentsController
+params_profile	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def params_profile$/;"	f	language:Ruby	class:ProfilesController
+params_user	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def params_user$/;"	f	language:Ruby	class:ProfilesController
+published?	/home/one/src/ruby/ra/hello/app/models/article.rb	/^  def published?$/;"	f	language:Ruby	class:Article
+save	/home/one/src/ruby/ra/hello/lib/user.rb	/^  def self.save?$/;"	F	language:Ruby	class:User
+set_article	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^    def set_article$/;"	f	language:Ruby	class:ArticlesController
+show	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def show$/;"	f	language:Ruby	class:ArticlesController
+show	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def show$/;"	f	language:Ruby	class:ProfilesController
+submit_or_cancel	/home/one/src/ruby/ra/hello/app/helpers/application_helper.rb	/^  def submit_or_cancel(form, name='Cancel')$/;"	f	language:Ruby	class:ApplicationHelper
+update	/home/one/src/ruby/ra/hello/app/controllers/articles_controller.rb	/^  def update$/;"	f	language:Ruby	class:ArticlesController
+update	/home/one/src/ruby/ra/hello/app/controllers/profiles_controller.rb	/^  def update$/;"	f	language:Ruby	class:ProfilesController
+user_params	/home/one/src/ruby/ra/hello/app/controllers/users_controller.rb	/^  def user_params$/;"	f	language:Ruby	class:UsersController

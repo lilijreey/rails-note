@@ -1,0 +1,10 @@
+%h1 Listing articles
+
+#articles
+  = render @articles
+
+.page_list
+  = will_paginate @articles
+%br
+
+= link_to 'New Article', new_article_path

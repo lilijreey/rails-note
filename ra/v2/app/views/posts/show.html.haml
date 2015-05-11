@@ -1,0 +1,7 @@
+.jumbotron
+  %h1.title
+    = @post.title
+  %p.date
+    = "Submited #{time_ago_in_words(@post.created_at)}"
+  %p.body
+    = @post.body

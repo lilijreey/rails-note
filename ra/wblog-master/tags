@@ -1,0 +1,264 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+$.fn.atwho	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    $.fn.atwho = function(method) {$/;"	r	language:js
+$.fn.caret	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    return $.fn.caret = function(method) {$/;"	r	language:js
+$.fn.fileUpload	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	$.fn.fileUpload = function(settings) {$/;"	r	language:js
++	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        html += "<span id='caret'>|<\/span>";$/;"	r	language:js
+Admin	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/comments_controller.rb	/^class Admin::CommentsController < ApplicationController$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/dashboard_controller.rb	/^class Admin::DashboardController < ApplicationController$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^class Admin::PostsController < ApplicationController$/;"	c	language:Ruby
+Admin	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/sessions_controller.rb	/^class Admin::SessionsController < ApplicationController$/;"	c	language:Ruby
+Api	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    Api = {$/;"	r	language:js
+App	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function App(inputor) {$/;"	r	language:js
+App.prototype.controller	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.controller = function(key) {$/;"	r	language:js
+App.prototype.dispatch	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.dispatch = function() {$/;"	r	language:js
+App.prototype.listen	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.listen = function() {$/;"	r	language:js
+App.prototype.on_keydown	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.on_keydown = function(e) {$/;"	r	language:js
+App.prototype.on_keyup	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.on_keyup = function(e) {$/;"	r	language:js
+App.prototype.reg	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.reg = function(flag, setting) {$/;"	r	language:js
+App.prototype.set_context_for	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      App.prototype.set_context_for = function(key) {$/;"	r	language:js
+Application	/home/one/src/ruby/ra/wblog-master/config/application.rb	/^  class Application < Rails::Application$/;"	c	language:Ruby	class:WBlog
+ApplicationController	/home/one/src/ruby/ra/wblog-master/app/controllers/application_controller.rb	/^class ApplicationController < ActionController::Base$/;"	c	language:Ruby
+ApplicationHelper	/home/one/src/ruby/ra/wblog-master/app/helpers/application_helper.rb	/^module ApplicationHelper$/;"	m	language:Ruby
+ArchivesController	/home/one/src/ruby/ra/wblog-master/app/controllers/archives_controller.rb	/^class ArchivesController < ApplicationController$/;"	c	language:Ruby
+BlogsController	/home/one/src/ruby/ra/wblog-master/app/controllers/blogs_controller.rb	/^class BlogsController < ApplicationController$/;"	c	language:Ruby
+Caret	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function Caret($inputor) {$/;"	r	language:js
+Caret.prototype.getIEOffset	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.getIEOffset = function(pos) {$/;"	r	language:js
+Caret.prototype.getIEPosition	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.getIEPosition = function(pos) {$/;"	r	language:js
+Caret.prototype.getOffset	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.getOffset = function(pos) {$/;"	r	language:js
+Caret.prototype.getPos	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.getPos = function() {$/;"	r	language:js
+Caret.prototype.getPosition	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.getPosition = function(pos) {$/;"	r	language:js
+Caret.prototype.setPos	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Caret.prototype.setPos = function(pos) {$/;"	r	language:js
+CodeHTML	/home/one/src/ruby/ra/wblog-master/lib/markdown.rb	/^class CodeHTML < Redcarpet::Render::HTML$/;"	c	language:Ruby
+Comment	/home/one/src/ruby/ra/wblog-master/app/models/comment.rb	/^class Comment$/;"	c	language:Ruby
+CommentMailer	/home/one/src/ruby/ra/wblog-master/app/mailers/comment_mailer.rb	/^class CommentMailer < ActionMailer::Base$/;"	c	language:Ruby
+CommentMailerPreview	/home/one/src/ruby/ra/wblog-master/spec/mailers/previews/comment_mailer_preview.rb	/^class CommentMailerPreview < ActionMailer::Preview$/;"	c	language:Ruby
+CommentsController	/home/one/src/ruby/ra/wblog-master/app/controllers/comments_controller.rb	/^class CommentsController < ApplicationController$/;"	c	language:Ruby
+Controller	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function Controller(app, key) {$/;"	r	language:js
+Controller.prototype.call_default	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.call_default = function() {$/;"	r	language:js
+Controller.prototype.callbacks	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.callbacks = function(func_name) {$/;"	r	language:js
+Controller.prototype.catch_query	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.catch_query = function() {$/;"	r	language:js
+Controller.prototype.get_opt	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.get_opt = function(key, default_value) {$/;"	r	language:js
+Controller.prototype.init	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.init = function(setting) {$/;"	r	language:js
+Controller.prototype.insert	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.insert = function(str) {$/;"	r	language:js
+Controller.prototype.look_up	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.look_up = function() {$/;"	r	language:js
+Controller.prototype.rect	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.rect = function() {$/;"	r	language:js
+Controller.prototype.render_view	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.render_view = function(data) {$/;"	r	language:js
+Controller.prototype.trigger	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Controller.prototype.trigger = function(name, data) {$/;"	r	language:js
+DEFAULT_CALLBACKS	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    DEFAULT_CALLBACKS = {$/;"	r	language:js
+DEFAULT_TPL	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    DEFAULT_TPL = "<li data-value='${name}'>${name}<\/li>";$/;"	r	language:js
+HomeController	/home/one/src/ruby/ra/wblog-master/app/controllers/home_controller.rb	/^class HomeController < ApplicationController$/;"	c	language:Ruby
+KEY_CODE	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    KEY_CODE = {$/;"	r	language:js
+Label	/home/one/src/ruby/ra/wblog-master/app/models/label.rb	/^class Label$/;"	c	language:Ruby
+Like	/home/one/src/ruby/ra/wblog-master/app/models/like.rb	/^class Like$/;"	c	language:Ruby
+LikesController	/home/one/src/ruby/ra/wblog-master/app/controllers/likes_controller.rb	/^class LikesController < ApplicationController$/;"	c	language:Ruby
+Mirror	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function Mirror($inputor) {$/;"	r	language:js
+Mirror.prototype.create	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Mirror.prototype.create = function(html) {$/;"	r	language:js
+Mirror.prototype.css_attr	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Mirror.prototype.css_attr = ["overflowY", "height", "width", "paddingTop", "paddingLeft", "paddingRight", "paddingBottom", "marginTop", "marginLeft", "marginRight", "marginBottom", "fontFamily", "borderStyle", "borderWidth", "wordWrap", "fontSize", "lineHeight", "overflowX", "text-align"];$/;"	r	language:js
+Mirror.prototype.mirrorCss	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Mirror.prototype.mirrorCss = function() {$/;"	r	language:js
+Mirror.prototype.rect	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Mirror.prototype.rect = function() {$/;"	r	language:js
+Model	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function Model(context) {$/;"	r	language:js
+Model.prototype._load	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype._load = function(data) {$/;"	r	language:js
+Model.prototype.fetch	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.fetch = function() {$/;"	r	language:js
+Model.prototype.load	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.load = function(data) {$/;"	r	language:js
+Model.prototype.query	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.query = function(query, callback) {$/;"	r	language:js
+Model.prototype.reload	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.reload = function(data) {$/;"	r	language:js
+Model.prototype.save	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.save = function(data) {$/;"	r	language:js
+Model.prototype.saved	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      Model.prototype.saved = function() {$/;"	r	language:js
+NewCommentWorker	/home/one/src/ruby/ra/wblog-master/app/workers/new_comment_worker.rb	/^class NewCommentWorker$/;"	c	language:Ruby
+NewPostWorker	/home/one/src/ruby/ra/wblog-master/app/workers/new_post_worker.rb	/^class NewPostWorker$/;"	c	language:Ruby
+NewReplyPostWorker	/home/one/src/ruby/ra/wblog-master/app/workers/new_reply_post_worker.rb	/^class NewReplyPostWorker$/;"	c	language:Ruby
+Photo	/home/one/src/ruby/ra/wblog-master/app/models/photo.rb	/^class Photo$/;"	c	language:Ruby
+PhotoUploader	/home/one/src/ruby/ra/wblog-master/app/uploaders/photo_uploader.rb	/^class PhotoUploader < CarrierWave::Uploader::Base$/;"	c	language:Ruby
+PhotosController	/home/one/src/ruby/ra/wblog-master/app/controllers/photos_controller.rb	/^class PhotosController < ApplicationController$/;"	c	language:Ruby
+Post	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^class Post$/;"	c	language:Ruby
+PostMailer	/home/one/src/ruby/ra/wblog-master/app/mailers/post_mailer.rb	/^class PostMailer < ActionMailer::Base$/;"	c	language:Ruby
+PostMailerPreview	/home/one/src/ruby/ra/wblog-master/spec/mailers/previews/post_mailer_preview.rb	/^class PostMailerPreview < ActionMailer::Preview$/;"	c	language:Ruby
+QrcodesController	/home/one/src/ruby/ra/wblog-master/app/controllers/qrcodes_controller.rb	/^class QrcodesController < ApplicationController$/;"	c	language:Ruby
+Spy	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var Spy = function(targetElementOrId, $element, offset) {$/;"	r	language:js
+Spy.prototype.flushTargetCache	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  Spy.prototype.flushTargetCache = function() {$/;"	r	language:js
+Spy.prototype.getTargetElement	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  Spy.prototype.getTargetElement = function() {$/;"	r	language:js
+Spy.prototype.getTargetPosition	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  Spy.prototype.getTargetPosition = function() {$/;"	r	language:js
+Subscribe	/home/one/src/ruby/ra/wblog-master/app/models/subscribe.rb	/^class Subscribe$/;"	c	language:Ruby
+SubscribesController	/home/one/src/ruby/ra/wblog-master/app/controllers/subscribes_controller.rb	/^class SubscribesController < ApplicationController$/;"	c	language:Ruby
+View	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      function View(context) {$/;"	r	language:js
+View.prototype.bind_event	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.bind_event = function() {$/;"	r	language:js
+View.prototype.choose	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.choose = function() {$/;"	r	language:js
+View.prototype.hide	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.hide = function(time) {$/;"	r	language:js
+View.prototype.next	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.next = function() {$/;"	r	language:js
+View.prototype.prev	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.prev = function() {$/;"	r	language:js
+View.prototype.render	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.render = function(list) {$/;"	r	language:js
+View.prototype.reposition	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.reposition = function() {$/;"	r	language:js
+View.prototype.show	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.show = function() {$/;"	r	language:js
+View.prototype.visible	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      View.prototype.visible = function() {$/;"	r	language:js
+WBlog	/home/one/src/ruby/ra/wblog-master/config/application.rb	/^module WBlog$/;"	m	language:Ruby
+__slice	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^  var __slice = [].slice;$/;"	r	language:js
+_callback	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        _callback = function(data) {$/;"	r	language:js
+_results	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        _results = [];$/;"	r	language:js
+_storage	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      _storage = {};$/;"	r	language:js
+addSpy	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var addSpy = function(spy) {$/;"	r	language:js
+admin_username	/home/one/src/ruby/ra/wblog-master/app/controllers/application_controller.rb	/^  def admin_username$/;"	f	language:Ruby	class:ApplicationController
+animationStep	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    var animationStep = function(timestamp) {$/;"	r	language:js
+authericate_user!	/home/one/src/ruby/ra/wblog-master/app/controllers/application_controller.rb	/^  def authericate_user!$/;"	f	language:Ruby	class:ApplicationController
+bd	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			var bd = 'xhrupload-' + parseInt(Math.random()*(2 << 16));$/;"	r	language:js
+before_insert	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      before_insert: function(value, $li) {$/;"	r	language:js
+before_save	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      before_save: function(data) {$/;"	r	language:js
+build_json	/home/one/src/ruby/ra/wblog-master/app/controllers/comments_controller.rb	/^  def build_json(comment)$/;"	f	language:Ruby	class:CommentsController
+build_summary	/home/one/src/ruby/ra/wblog-master/app/controllers/archives_controller.rb	/^  def build_summary(post)$/;"	f	language:Ruby	class:ArchivesController
+callback	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^          callback = function() {$/;"	r	language:js
+cancel	/home/one/src/ruby/ra/wblog-master/app/controllers/subscribes_controller.rb	/^  def cancel$/;"	f	language:Ruby	class:SubscribesController
+cancelOnEvents	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    var cancelOnEvents = 'scroll mousedown mousewheel touchmove keydown';$/;"	r	language:js
+cancelScrollAnimation	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    var cancelScrollAnimation = function($event) {$/;"	r	language:js
+comment_params	/home/one/src/ruby/ra/wblog-master/app/controllers/comments_controller.rb	/^  def comment_params$/;"	f	language:Ruby	class:CommentsController
+compile	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    compile: function compile(tElement, tAttrs, transclude) {$/;"	r	language:js
+config	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var config = {$/;"	r	language:js
+containers	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var containers = {};$/;"	r	language:js
+content_html	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def content_html$/;"	f	language:Ruby	class:Post
+context	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    var context = {$/;"	r	language:js
+contexts	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var contexts = {};$/;"	r	language:js
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def create$/;"	f	language:Ruby	class:Admin
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/sessions_controller.rb	/^  def create$/;"	f	language:Ruby	class:Admin
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/comments_controller.rb	/^  def create$/;"	f	language:Ruby	class:CommentsController
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/likes_controller.rb	/^  def create$/;"	f	language:Ruby	class:LikesController
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/photos_controller.rb	/^  def create$/;"	f	language:Ruby	class:PhotosController
+create	/home/one/src/ruby/ra/wblog-master/app/controllers/subscribes_controller.rb	/^  def create$/;"	f	language:Ruby	class:SubscribesController
+createContext	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var createContext = function($scope) {$/;"	r	language:js
+createScrollHandler	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var createScrollHandler = function(context) {$/;"	r	language:js
+css	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        css = {$/;"	r	language:js
+d	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			var d = {$/;"	r	language:js
+dataURLtoBase64	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var dataURLtoBase64 = function (dataurl) {$/;"	r	language:js
+destroy	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/comments_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:Admin
+destroy	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:Admin
+destroy	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/sessions_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:Admin
+destroy	/home/one/src/ruby/ra/wblog-master/app/controllers/likes_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:LikesController
+destroyContext	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var destroyContext = function($scope) {$/;"	r	language:js
+does	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	\/\/ Don't do logging if window.log function does not exist.$/;"	r	language:js
+duScrollDefaultEasing	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^var duScrollDefaultEasing = function (x) {$/;"	r	language:js
+edit	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def edit$/;"	f	language:Ruby	class:Admin
+edit	/home/one/src/ruby/ra/wblog-master/app/controllers/blogs_controller.rb	/^  def edit$/;"	f	language:Ruby	class:BlogsController
+extension_white_list	/home/one/src/ruby/ra/wblog-master/app/uploaders/photo_uploader.rb	/^  def extension_white_list$/;"	f	language:Ruby	class:PhotoUploader
+fallback	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var fallback = function(callback, element) {$/;"	r	language:js
+fallback	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var fallback = function(promise) {$/;"	r	language:js
+fileError	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^		fileError: function (info, textStatus, textDescription) {$/;"	r	language:js
+filter	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      filter: function(query, data, search_key) {$/;"	r	language:js
+flag	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^          flag = '(?:^|\\\\s)' + flag;$/;"	r	language:js
+for	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  \/\/Default easing function for scroll animation$/;"	r	language:js
+format	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        format = function(value) {$/;"	r	language:js
+format_date	/home/one/src/ruby/ra/wblog-master/app/controllers/application_controller.rb	/^  def format_date(time)$/;"	f	language:Ruby	class:ApplicationController
+format_time	/home/one/src/ruby/ra/wblog-master/app/controllers/application_controller.rb	/^  def format_time(time)$/;"	f	language:Ruby	class:ApplicationController
+formdata	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			var formdata = '--' + bd + '\\n' \/\/ RFC 1867 Format, simulate form file upload$/;"	r	language:js
+getContainer	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var getContainer = function(scope) {$/;"	r	language:js
+getContainerId	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var getContainerId = function(scope) {$/;"	r	language:js
+getContextForScope	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var getContextForScope = function(scope) {$/;"	r	language:js
+getContextForSpy	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var getContextForSpy = function(spy) {$/;"	r	language:js
+handleFile	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var handleFile = function (settings, file) {$/;"	r	language:js
+handleForm	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var handleForm = function (settings, type, data, info) {$/;"	r	language:js
+handleImage	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var handleImage = function (settings, dataurl, info) {$/;"	r	language:js
+handler	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    var handler = function() {$/;"	r	language:js
+highlighter	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      highlighter: function(li, query) {$/;"	r	language:js
+html	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        html = "<span>" + format(start_range) + "<\/span>";$/;"	r	language:js
+img.onerror	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^		img.onerror = function () {$/;"	r	language:js
+img.onload	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^		img.onload = function () {$/;"	r	language:js
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/comments_controller.rb	/^  def index$/;"	f	language:Ruby	class:Admin
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/dashboard_controller.rb	/^  def index$/;"	f	language:Ruby	class:Admin
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def index$/;"	f	language:Ruby	class:Admin
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/archives_controller.rb	/^  def index$/;"	f	language:Ruby	class:ArchivesController
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/blogs_controller.rb	/^  def index$/;"	f	language:Ruby	class:BlogsController
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/comments_controller.rb	/^  def index$/;"	f	language:Ruby	class:CommentsController
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/home_controller.rb	/^  def index$/;"	f	language:Ruby	class:HomeController
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/likes_controller.rb	/^  def index$/;"	f	language:Ruby	class:LikesController
+index	/home/one/src/ruby/ra/wblog-master/app/controllers/subscribes_controller.rb	/^  def index$/;"	f	language:Ruby	class:SubscribesController
+info	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^		var info = {$/;"	r	language:js
+info.type	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			if (!info.type) info.type = 'application\/octet-stream';$/;"	r	language:js
+init	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      init: function(options) {$/;"	r	language:js
+initialize	/home/one/src/ruby/ra/wblog-master/lib/markdown.rb	/^  def initialize(extensions = {})$/;"	f	language:Ruby	class:CodeHTML
+initialize_or_create_labels	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def initialize_or_create_labels(labels)$/;"	f	language:Ruby	class:Admin
+isDocument	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var isDocument = function(el) {$/;"	r	language:js
+isElement	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var isElement = function(el) {$/;"	r	language:js
+isElementInDocument	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var isElementInDocument = function(element) {$/;"	r	language:js
+is_liked	/home/one/src/ruby/ra/wblog-master/app/controllers/likes_controller.rb	/^  def is_liked$/;"	f	language:Ruby	class:LikesController
+labels_content	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def labels_content( need_blank=false )$/;"	f	language:Ruby	class:Post
+liked_count	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def liked_count$/;"	f	language:Ruby	class:Post
+link	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    link : function($scope, $element, $attr) {$/;"	r	language:js
+link	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    link: function ($scope, $element, $attr) {$/;"	r	language:js
+load	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      load: function(key, data) {$/;"	r	language:js
+map	/home/one/src/ruby/ra/wblog-master/app/controllers/archives_controller.rb	/^  def map$/;"	f	language:Ruby	class:ArchivesController
+matcher	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      matcher: function(flag, subtext, should_start_with_space) {$/;"	r	language:js
+md_url	/home/one/src/ruby/ra/wblog-master/app/controllers/photos_controller.rb	/^  def md_url(url)$/;"	f	language:Ruby	class:PhotosController
+meta_content	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def meta_content$/;"	f	language:Ruby	class:Post
+methods	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    methods = {$/;"	r	language:js
+mobile	/home/one/src/ruby/ra/wblog-master/app/controllers/home_controller.rb	/^  def mobile$/;"	f	language:Ruby	class:HomeController
+new	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def new$/;"	f	language:Ruby	class:Admin
+new	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/sessions_controller.rb	/^  def new$/;"	f	language:Ruby	class:Admin
+new	/home/one/src/ruby/ra/wblog-master/app/mailers/comment_mailer.rb	/^  def new(comment_id, to)$/;"	f	language:Ruby	class:CommentMailer
+new	/home/one/src/ruby/ra/wblog-master/app/mailers/post_mailer.rb	/^  def new(post_id, to)$/;"	f	language:Ruby	class:PostMailer
+new	/home/one/src/ruby/ra/wblog-master/spec/mailers/previews/comment_mailer_preview.rb	/^  def new$/;"	f	language:Ruby	class:CommentMailerPreview
+new	/home/one/src/ruby/ra/wblog-master/spec/mailers/previews/post_mailer_preview.rb	/^  def new$/;"	f	language:Ruby	class:PostMailerPreview
+ninfo	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			var ninfo = {$/;"	r	language:js
+offset	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        offset = {$/;"	r	language:js
+offset	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      offset: function(pos) {$/;"	r	language:js
+overloadScrollPos	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var overloadScrollPos = function(superFn, overloadFn) {$/;"	r	language:js
+overloaders	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var overloaders = {$/;"	r	language:js
+perform	/home/one/src/ruby/ra/wblog-master/app/workers/new_comment_worker.rb	/^  def perform(comment_id, to)$/;"	f	language:Ruby	class:NewCommentWorker
+perform	/home/one/src/ruby/ra/wblog-master/app/workers/new_post_worker.rb	/^  def perform(post_id)$/;"	f	language:Ruby	class:NewPostWorker
+perform	/home/one/src/ruby/ra/wblog-master/app/workers/new_reply_post_worker.rb	/^  def perform(comment_id)$/;"	f	language:Ruby	class:NewReplyPostWorker
+pluginName	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^    pluginName = 'caret';$/;"	r	language:js
+pos	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      pos: function(pos) {$/;"	r	language:js
+position	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      position: function(pos) {$/;"	r	language:js
+posts_data	/home/one/src/ruby/ra/wblog-master/spec/controllers/archives_controller_spec.rb	/^  def posts_data(response)$/;"	f	language:Ruby
+preLink	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^        pre: function preLink($scope, iElement, iAttrs, controller) {$/;"	r	language:js
+preview	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def preview$/;"	f	language:Ruby	class:Admin
+proto.scrollLeftAnimated	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollLeftAnimated = function(left, duration, easing) {$/;"	r	language:js
+proto.scrollTo	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollTo = function(left, top, duration, easing) {$/;"	r	language:js
+proto.scrollToAnimated	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollToAnimated = function(left, top, duration, easing) {$/;"	r	language:js
+proto.scrollToElement	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollToElement = function(target, offset, duration, easing) {$/;"	r	language:js
+proto.scrollToElementAnimated	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollToElementAnimated = function(target, offset, duration, easing) {$/;"	r	language:js
+proto.scrollTopAnimated	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  proto.scrollTopAnimated = function(top, duration, easing) {$/;"	r	language:js
+query	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^          query = {$/;"	r	language:js
+reader.onerror	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			reader.onerror = function (ev) {$/;"	r	language:js
+reader.onloadend	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^					reader.onloadend = function (ev) {$/;"	r	language:js
+reader.onloadend	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^				reader.onloadend = function (ev) {$/;"	r	language:js
+rect	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        rect = {$/;"	r	language:js
+removeContainer	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var removeContainer = function(scope) {$/;"	r	language:js
+removeSpy	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var removeSpy = function(spy) {$/;"	r	language:js
+render_html	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def self.render_html(content)$/;"	F	language:Ruby	class:Post
+reply	/home/one/src/ruby/ra/wblog-master/app/mailers/comment_mailer.rb	/^  def reply(comment_id, to)$/;"	f	language:Ruby	class:CommentMailer
+reply	/home/one/src/ruby/ra/wblog-master/spec/mailers/previews/comment_mailer_preview.rb	/^  def reply$/;"	f	language:Ruby	class:CommentMailerPreview
+reply_emails	/home/one/src/ruby/ra/wblog-master/app/models/comment.rb	/^  def reply_emails$/;"	f	language:Ruby	class:Comment
+rss	/home/one/src/ruby/ra/wblog-master/app/controllers/blogs_controller.rb	/^  def rss$/;"	f	language:Ruby	class:BlogsController
+run	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      run: function() {$/;"	r	language:js
+scrollLeft	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    scrollLeft: function(value, duration, easing) {$/;"	r	language:js
+scrollTop	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^    scrollTop: function(value, duration, easing) {$/;"	r	language:js
+setContainer	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var setContainer = function(scope, element) {$/;"	r	language:js
+settings.beforeSend	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^				settings.beforeSend = function (xhr, s) {$/;"	r	language:js
+settings.beforeSend	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			settings.beforeSend = function (xhr, s) {$/;"	r	language:js
+settings.contentType	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			settings.contentType = 'multipart\/form-data; boundary=' + bd;$/;"	r	language:js
+settings.data	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^			settings.data = '--' + bd + '\\n' \/\/ RFC 1867 Format, simulate form file upload$/;"	r	language:js
+settings.imageType	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^				else settings.imageType = 'png';$/;"	r	language:js
+settings.imageType	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^				if (info.type === 'image\/jpeg') settings.imageType = 'jpeg';$/;"	r	language:js
+show	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def show$/;"	f	language:Ruby	class:Admin
+show	/home/one/src/ruby/ra/wblog-master/app/controllers/blogs_controller.rb	/^  def show$/;"	f	language:Ruby	class:BlogsController
+show	/home/one/src/ruby/ra/wblog-master/app/controllers/qrcodes_controller.rb	/^  def show$/;"	f	language:Ruby	class:QrcodesController
+sorter	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      sorter: function(query, items, search_key) {$/;"	r	language:js
+spies	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^      spies: []$/;"	r	language:js
+store_dir	/home/one/src/ruby/ra/wblog-master/app/uploaders/photo_uploader.rb	/^  def store_dir$/;"	f	language:Ruby	class:PhotoUploader
+str	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        str = '' + str;$/;"	r	language:js
+sub_content	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def sub_content$/;"	f	language:Ruby	class:Post
+subscribe_list	/home/one/src/ruby/ra/wblog-master/app/models/subscribe.rb	/^  def self.subscribe_list$/;"	F	language:Ruby	class:Subscribe
+text	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        text = "" + start_str + str + " " + (source.slice(this.query['end_pos'] || 0));$/;"	r	language:js
+this.controllers	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^        this.controllers = {};$/;"	r	language:js
+toBeActive	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^            toBeActive = {$/;"	r	language:js
+tpl_eval	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      tpl_eval: function(tpl, map) {$/;"	r	language:js
+unsubscribe	/home/one/src/ruby/ra/wblog-master/app/models/subscribe.rb	/^  def self.unsubscribe?(email)$/;"	F	language:Ruby	class:Subscribe
+unwrap	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var unwrap = function(el) {$/;"	r	language:js
+update	/home/one/src/ruby/ra/wblog-master/app/controllers/admin/posts_controller.rb	/^  def update$/;"	f	language:Ruby	class:Admin
+uuid	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/jquery.atwho.js	/^      uuid = function() {$/;"	r	language:js
+vendors	/home/one/src/ruby/ra/wblog-master/app/assets/javascripts/angular-scroll.js	/^  var vendors = ['webkit', 'moz', 'o', 'ms'];$/;"	r	language:js
+verbose_system	/home/one/src/ruby/ra/wblog-master/lib/tasks/travis.rake	/^  def verbose_system(*args)$/;"	f	language:Ruby
+visited	/home/one/src/ruby/ra/wblog-master/app/models/post.rb	/^  def visited$/;"	f	language:Ruby	class:Post
+when	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^ *           callback function when there is any error preventing file upload to start,$/;"	r	language:js
+xhrupload	/home/one/src/ruby/ra/wblog-master/vendor/assets/javascripts/jquery.html5-fileupload.js	/^	var xhrupload = function (settings) {$/;"	r	language:js

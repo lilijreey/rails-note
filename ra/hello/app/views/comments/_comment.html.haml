@@ -1,0 +1,8 @@
+= div_for comment do
+  %h3
+    = comment.name
+    \|
+    = comment.email
+    - if article.owned_by?(current_user)
+      = link_to 'Destroy', [@article, comment], :method => :delete, :data => { :confirm => 'Are you sure?' }
+  = comment.body

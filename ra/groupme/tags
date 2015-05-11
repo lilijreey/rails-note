@@ -1,0 +1,52 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ActiveSupport	/home/one/src/ruby/ra/groupme/test/test_helper.rb	/^class ActiveSupport::TestCase$/;"	c	language:Ruby
+AddUserIdToGroup	/home/one/src/ruby/ra/groupme/db/migrate/20141231103649_add_user_id_to_group.rb	/^class AddUserIdToGroup < ActiveRecord::Migration$/;"	c	language:Ruby
+Application	/home/one/src/ruby/ra/groupme/config/application.rb	/^  class Application < Rails::Application$/;"	c	language:Ruby	class:Groupme
+ApplicationController	/home/one/src/ruby/ra/groupme/app/controllers/application_controller.rb	/^class ApplicationController < ActionController::Base$/;"	c	language:Ruby
+ApplicationHelper	/home/one/src/ruby/ra/groupme/app/helpers/application_helper.rb	/^module ApplicationHelper$/;"	m	language:Ruby
+CreateGroups	/home/one/src/ruby/ra/groupme/db/migrate/20141231054821_create_groups.rb	/^class CreateGroups < ActiveRecord::Migration$/;"	c	language:Ruby
+CreatePosts	/home/one/src/ruby/ra/groupme/db/migrate/20141231064650_create_posts.rb	/^class CreatePosts < ActiveRecord::Migration$/;"	c	language:Ruby
+DeviseCreateUsers	/home/one/src/ruby/ra/groupme/db/migrate/20141231100131_devise_create_users.rb	/^class DeviseCreateUsers < ActiveRecord::Migration$/;"	c	language:Ruby
+Group	/home/one/src/ruby/ra/groupme/app/models/group.rb	/^class Group < ActiveRecord::Base$/;"	c	language:Ruby
+GroupTest	/home/one/src/ruby/ra/groupme/test/models/group_test.rb	/^class GroupTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+Groupme	/home/one/src/ruby/ra/groupme/config/application.rb	/^module Groupme$/;"	m	language:Ruby
+GroupsController	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^class GroupsController < ApplicationController$/;"	c	language:Ruby
+GroupsControllerTest	/home/one/src/ruby/ra/groupme/test/controllers/groups_controller_test.rb	/^class GroupsControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+GroupsHelper	/home/one/src/ruby/ra/groupme/app/helpers/groups_helper.rb	/^module GroupsHelper$/;"	m	language:Ruby
+GroupsHelperTest	/home/one/src/ruby/ra/groupme/test/helpers/groups_helper_test.rb	/^class GroupsHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+Post	/home/one/src/ruby/ra/groupme/app/models/post.rb	/^class Post < ActiveRecord::Base$/;"	c	language:Ruby
+PostTest	/home/one/src/ruby/ra/groupme/test/models/post_test.rb	/^class PostTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+PostsController	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^class PostsController < ApplicationController$/;"	c	language:Ruby
+PostsControllerTest	/home/one/src/ruby/ra/groupme/test/controllers/posts_controller_test.rb	/^class PostsControllerTest < ActionController::TestCase$/;"	c	language:Ruby
+PostsHelper	/home/one/src/ruby/ra/groupme/app/helpers/posts_helper.rb	/^module PostsHelper$/;"	m	language:Ruby
+PostsHelperTest	/home/one/src/ruby/ra/groupme/test/helpers/posts_helper_test.rb	/^class PostsHelperTest < ActionView::TestCase$/;"	c	language:Ruby
+User	/home/one/src/ruby/ra/groupme/app/models/user.rb	/^class User < ActiveRecord::Base$/;"	c	language:Ruby
+UserTest	/home/one/src/ruby/ra/groupme/test/models/user_test.rb	/^class UserTest < ActiveSupport::TestCase$/;"	c	language:Ruby
+change	/home/one/src/ruby/ra/groupme/db/migrate/20141231054821_create_groups.rb	/^  def change$/;"	f	language:Ruby	class:CreateGroups
+change	/home/one/src/ruby/ra/groupme/db/migrate/20141231064650_create_posts.rb	/^  def change$/;"	f	language:Ruby	class:CreatePosts
+change	/home/one/src/ruby/ra/groupme/db/migrate/20141231100131_devise_create_users.rb	/^  def change$/;"	f	language:Ruby	class:DeviseCreateUsers
+change	/home/one/src/ruby/ra/groupme/db/migrate/20141231103649_add_user_id_to_group.rb	/^  def change$/;"	f	language:Ruby	class:AddUserIdToGroup
+configure_permitted_parameters	/home/one/src/ruby/ra/groupme/app/controllers/application_controller.rb	/^  def configure_permitted_parameters$/;"	f	language:Ruby	class:ApplicationController
+create	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def create$/;"	f	language:Ruby	class:GroupsController
+create	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def create$/;"	f	language:Ruby	class:PostsController
+destroy	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:GroupsController
+destroy	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def destroy$/;"	f	language:Ruby	class:PostsController
+edit	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def edit$/;"	f	language:Ruby	class:GroupsController
+edit	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def edit$/;"	f	language:Ruby	class:PostsController
+editable_by?	/home/one/src/ruby/ra/groupme/app/models/group.rb	/^  def editable_by?(user)$/;"	f	language:Ruby	class:Group
+find_group	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def find_group$/;"	f	language:Ruby	class:GroupsController
+find_group	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def find_group$/;"	f	language:Ruby	class:PostsController
+get_params	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def get_params$/;"	f	language:Ruby	class:GroupsController
+get_post	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def get_post$/;"	f	language:Ruby	class:PostsController
+index	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def index$/;"	f	language:Ruby	class:GroupsController
+login_required	/home/one/src/ruby/ra/groupme/app/controllers/application_controller.rb	/^  def login_required$/;"	f	language:Ruby	class:ApplicationController
+new	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def new$/;"	f	language:Ruby	class:GroupsController
+new	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def new$/;"	f	language:Ruby	class:PostsController
+show	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def show$/;"	f	language:Ruby	class:GroupsController
+update	/home/one/src/ruby/ra/groupme/app/controllers/groups_controller.rb	/^  def update$/;"	f	language:Ruby	class:GroupsController
+update	/home/one/src/ruby/ra/groupme/app/controllers/posts_controller.rb	/^  def update$/;"	f	language:Ruby	class:PostsController

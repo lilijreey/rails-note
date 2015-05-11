@@ -1,0 +1,7 @@
+.span12 
+  = form_for [@group, @post] do |f|
+    = f.label :content, 'Content' , class:'input-xxlarge'
+    = f.text_field :content
+
+    .form-actions
+      = f.submit 'Submit', :disable_with => 'Submiting...', :class => 'btn btn-primary'

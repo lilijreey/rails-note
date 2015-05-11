@@ -1,0 +1,8 @@
+= render @article
+
+%h3 Comments
+-if not @article.comments.empty?
+  #comments
+    = render @article.comments
+
+= render :file => 'comments/new'

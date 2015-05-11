@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>V2</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <div id="main">
+    <header class="navbar navbar-collapse navbar-fixed-top">
+      <div class="container-fluid">
+      <li role="presentation"><%=link_to "New Post", new_post_path %></li> 
+      <li role="presentation"><%=link_to "About", "#"%></li> 
+    </div>
+    </header>
+
+    <% flash.each do |name, msg| %>
+      <%= content_tag(:div, msg, class: "alert") %>
+    <% end %>
+
+    <%= yield %>
+  </div>
+
+</body>
+</html>

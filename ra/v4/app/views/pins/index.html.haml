@@ -1,0 +1,15 @@
+#pins.transitions-enable
+  - @pins.each do |pin|
+    .box.panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          %h3= link_to pin.title, pin_path(pin)
+      .panel-body
+        = link_to (image_tag pin.image.url(:medium)), pin
+      .panel-footer
+        .btn-group.btn-right
+          = link_to like_pin_path(pin), method: :put, class: 'btn btn-default' do
+            %span.glyphicon.glyphicon-heart
+              = pin.votes_for.size
+
+

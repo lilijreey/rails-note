@@ -1,0 +1,16 @@
+%h1 Listing Users
+
+%table
+  %thead
+    %tr
+      %th Email
+      %th 
+
+  %tbody
+    = render @users
+
+  .page_list
+    = will_paginate @users
+%br
+
+= link_to 'New User', new_user_path

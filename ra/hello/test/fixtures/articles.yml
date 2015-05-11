@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: articles
+#
+#  id         :integer          not null, primary key
+#  title      :string(255)
+#  location   :string(255)
+#  excerpt    :string(255)
+#  body       :text
+#  publish_at :datetime
+#  created_at :datetime
+#  updated_at :datetime
+#  user_id    :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  location: MyString
+  excerpt: MyString
+  body: MyText
+  publish_at: 2015-01-17 19:36:26
+
+two:
+  title: MyString
+  location: MyString
+  excerpt: MyString
+  body: MyText
+  publish_at: 2015-01-17 19:36:26

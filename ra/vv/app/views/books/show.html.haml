@@ -1,0 +1,19 @@
+= content_for :sidebar do
+  %section.assigned_designers
+
+
+%p#notice= notice
+
+%p
+  %b Name:
+  = @book.name
+%p
+  %b Desc:
+  = @book.desc
+%p
+  %b Author:
+  = @book.author
+
+= link_to 'Edit', edit_book_path(@book)
+\|
+= link_to 'Back', books_path

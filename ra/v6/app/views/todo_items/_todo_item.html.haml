@@ -1,0 +1,9 @@
+%p
+  = todo_item.content
+  = link_to "Delete", todo_list_todo_item_path(@todo_list, todo_item.id), method: :delete, data: {confirm:'Are your sure?'}
+.row.clearfix
+  - if todo_item.completed?
+    = "Completed at:#{todo_item.completed_at}"
+  - else
+    = link_to "Mark as Compelet", complete_todo_list_todo_item_path(@todo_list, todo_item.id), method: :patch
+

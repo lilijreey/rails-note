@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vv</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+
+<body>
+  <%= render 'layouts/header' %>
+  <%= image_tag('tagline.png', alt:'Creative file Management Made Easy', id: 'tagline') %>
+
+  <div class='cotainer'>
+    <section id='content'>
+      <%= yield %>
+    </section>
+
+    <section id='sideber'>
+      <%= yield :sideber %>
+      <section id='recent_activity'>
+        <header>
+          <h1 class='ir' id='recent'>Recent Activity</h1>
+        </header>
+      </section>
+    </section>
+  </div>
+
+  <%= render 'layouts/footer' %>
+
+</body>
+</html>

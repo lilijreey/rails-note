@@ -1,0 +1,36 @@
+.span12
+  .group.pull-right
+    -if current_user && @group.editable_by?(current_user)
+      = link_to('Edit', edit_group_path(@group), :class => 'btn btn-mini') 
+
+    = link_to('Add content', new_group_post_path(@group), class: 'btn btn-mini btn-primary') if current_user.is_member_of?(@group)
+
+    -if current_user
+      .group.pull-right
+        -if current_user.is_member_of?(@group)
+          = link_to('Quit Group', quit_group_path(@group), method: :post, class: 'btn btn-mini')
+        -else
+          = link_to('Join Group', join_group_path(@group), method: :post, class: 'btn btn-mini')
+
+
+  %h2= @group.title
+  %p= @group.description
+
+
+  %table.table
+
+  %tbody
+    -@posts.each do |post|
+      %tr
+        %td
+          %span.author
+            %strong Author
+            = post.author.email
+
+          %p= post.content 
+
+          - if current_user && post.editable_by?(current_user) 
+            %td= link_to('Edit', edit_group_post_path(post.group, post), class: 'btn btn-mini')
+            = link_to('Delete', group_post_path(post.group, post), class: 'btn btn-mini', method: :delete, confirm: 'Are your sure?')
+            %br/
+

@@ -1,0 +1,6 @@
+- content_for :main_navigation do
+  %nav{id: 'main_nav', role: 'navigation'}
+    %ul
+      %li= link_to 'Home', root_path, current: current_tab
+      %li= link_to 'Books', books_path, current: current_tab
+

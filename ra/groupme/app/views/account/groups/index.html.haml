@@ -1,0 +1,21 @@
+.span12
+  %h2 My Groups
+
+  %table.table
+    %thead
+      %tr
+        %td #
+        %td Title
+        %td Description
+        %td Post Count
+        %td Last Update
+
+    %tbody
+      - @groups.each do |group|
+        %tr
+          %td #
+          %td= link_to(group.title, group_path(group))
+          %td= group.description
+          %td= group.posts.count
+          %td= group.updated_at
+

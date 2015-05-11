@@ -1,0 +1,13 @@
+%header{:id => 'page_header', role: 'banner'}
+  %nav#utility
+    %p
+      You are logged in as 
+      %strong
+        Sam Spade
+      = link_to '[Your Account]', '#'
+      |
+      = link_to '[Logout]', '#'
+
+  = link_to(image_tag('logo.png', alt: 'Artflow', id: 'logo'), root_url, title: 'Dashboard')
+  = yield :main_navigation
+

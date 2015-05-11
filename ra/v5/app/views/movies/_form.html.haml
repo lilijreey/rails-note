@@ -1,0 +1,35 @@
+= form_for @movie do |f|
+  - if @movie.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@movie.errors.count, "error")} prohibited this movie from being saved:"
+      %ul
+        - @movie.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :description
+    = f.text_area :description
+  .field
+    = f.label :movie_length
+    = f.text_field :movie_length
+  .field
+    = f.label :director
+    = f.text_field :director
+  .field
+    #star{:data => {score: @movie.rating}} Rating:
+  .field
+    = f.label :image
+    = f.file_field :image
+  .actions
+    = f.submit 'Save'
+
+:javascript
+  $('#star').raty({
+  path: '/images/',
+  scoreName: 'movie[rating]',
+  score: function() { return $(this).attr('data-score')}
+  })
+
