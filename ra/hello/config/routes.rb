@@ -15,8 +15,13 @@ Rails.application.routes.draw do
 
   resource :session
   get '/login' => 'sessions#new', :as => 'login'
+
   post '/login' => 'sessions#create'
   get '/logout' => 'sessions#destroy', :as => 'logout'
+
+  get '/aa/(:bb/(:cc))' => 'comments#aabbcc'
+
+  get 'books/*others' => "comments#others"
 
 
 

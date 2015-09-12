@@ -4,8 +4,13 @@
  rails 对ruby 的内置类进行了修改
  e.g. String add blank?
 
+rails -s -b 0.0.0.0
 
 ## Qus.
+ +  404
+	 def render_404
+	 raise ActionController::RoutingError.new('Not Found')
+	 end
  + privilage safe
 
  + logout 
@@ -22,6 +27,48 @@
  
  + Unpermitted 看看是不是controller的parmar 私有方法没有改变
 
+ + CSRF
+  #protect_from_forgery with: :exception
+  protect_from_forgery with: :reset_session
+   delete 时产生的原因
+   模板生成错误
+    - csrf_meta_tags
+     改为
+    = csrf_meta_tags
+
+Tools
+----------------------------
+generate scaffold Produce (单数) 
+     生成的modelClass 为Produce, db table 为produces(复数)
+generate module Produce (单数) 
+
+Bundle
+ 一个自动安装分析rails app所依赖的gems 的工具
+ Rails 本身依赖Bundle， 所以安装Rails的时候就已经自动安装bundle了
+
+Gemfile
+ 可以制定一个环境
+  .e.g group :development do
+          gem xxxx
+       end
+       group :development, :test do
+          gem xxxx
+       end
+   从git仓库，需要有xx.gemspce 文件
+    gem 'carrierwave', github: 'jnicklas/carrierwave'
+    gem 'carrierwave', github: 'jnicklas/carrierwave', ref => '339e'
+    gem 'carrierwave', github: 'jnicklas/carrierwave', tag: 'xxx'
+    gem 'carrierwave', github: 'jnicklas/carrierwave', branch: 'xxx'
+
+   load gem from local file system
+     gem 'xxx', paht: '~/xx/yy'
+
+bundle install --without test
+bundle package
+     package all gems to vendor/cache
+    再次安装就会直接使用vendor/cache中的安装, 用于离线安装
+     bundle install vendor/cache/*
+
 
 ## 权限限制
 使用 before_filter 回调方法实现
@@ -33,8 +80,43 @@
    来包含　不同的helper, helper 默认只能在view 中使用，
    但是include 后就可在controller 中使用
 
-## online
-* 半永久连接
+
+## session
+一个hash 数据结构，Rails内建了session变量
+使用一个32-len string作为id
+档一个session创建后，server端会自动在发往client的cookie中填入这个session的id
+session中只应该存放简单的string或这数字
+session的存储方式
+  配置文件
+   config/initializers/session_store.rb << EOF
+                config.session_store :active_record_store
+		EOF
+1. cookies, 默认有4k limit 现在，并且能被用户看到
+2. 使用active record
+   1. rake db:sessions:create
+   2. config.session_store :active_record_store
+3. 使用memcache
+   2. config.session_store :active_record_store
+
+session hash算法 
+session_options[:digest] = 默认是SHA1, 也可以是OpenSSL支持的其他算法
+
+
+清除session
+    reset_session
+
+## cookies
+#在view 和helper中访问cookies
+  class MyController < ActionController::Base
+     helper_method :cookies
+
+cookies[:list_mode] = "xxxx"
+cookies[:list_mode] = {value:'xxx', :expires => 5.minutes.from_new}
+cookies.delete :key
+
+通过cookies.permanent[:xxx] 来设置的value 自动有20年的有效期
+
+## login
 * 实现机制
   把session 作为一个resource, 上线就是create session
      线下就是destory session
@@ -48,6 +130,45 @@
          如何比较???
 
    Rails 内建了一个session 变量
+   e.g. user
+        user_session
+
+     每个session中都有一个 session[:session_id]
+     在 user model 中添加一个session_id 自动
+      每次用户上线后就
+      session[:user_id] = 
+
+
+* 密码验证
+* 访问控制 实现
+   当用户登录时，创建session
+      sessin里存放当前的 user_id
+      e.g. 
+      session[:seller_id] = @seller.id
+
+      logout 就是删除对应的session
+  def logout
+    session[:seller_id] = nil
+    redirect_to login_new_path, notice: 'Logout successfully'
+  end
+
+    写一个authenticate -> bool 的函数用来做登录认证
+    实现 current_user fn 返回一个User的obj
+
+def current_user
+ return unless session[:user_id]
+ @current_user ||= User.find(session[:user_id])
+end
+
+def logged_in?
+  current_user.is_a? User
+end
+
+def authenticate
+  logged_in? || redirect_to login_path
+end
+
+
      
 
 * 安全措施
@@ -55,26 +176,42 @@
   因为登陆的remember_token 也记录在cookies 中
 
 
+## rails app starup
+1. config/boot.rb sets up Bundler and load path
+2. application.rb loads gems
+3. environment.rb runs all initializers
+
 
 ## Erb
 <%和<%=不太一樣，前者只執行不輸出，
 像用來迭代的each和end這兩行就不需要輸出。而後者<%= 裡的結果會輸出給瀏覽器。
 
 ## Module 在Rails 中一个module 会自动的映射到一个数据库table, table
-  的名字就是module 的class 的名字
+  的名字就是module 的class 的名字复数
 
 ## create new app
 rails new <AppName>
 
 ## config
   config/databse.yml 来配置DB的
+   
+   Time zero
+   config/application.rb config.time_zone= ?
+
+## 18n 国际化
+#  和android 相同，给每个字符串对应不同的local定义值/ config/locales/xx.yml
+#  在其他地方使用I18n.t ('stirngKey') 
+#  在 view 中使用 t('stringKey') 来引用value
 
 ## trun on cache response
  config/environments/development.rb
   config.action_controller.perform_caching = true
 
+## rake log:clear
+#    
+
 ### 生成脚手架
-  rails generate scaffold TableName FieldName:Type FieldName2:Type2
+  rails generate scaffold TableName<单数形式> FieldName:Type FieldName2:Type2
 
   如果已经生成了scaffold 但是有给model 添加了新的字段
   可以再次使用scaffold --skip-migration 来给view 添加新的fields
@@ -111,12 +248,57 @@ Migration 搭配的 Rake 任務
 * 如果执行失败可以是使用　
   rails destroy scaffold <Name> 撤销操作
 
-## model
+## model ActiveRecord
+#使用不同的DB， 兼容性不是很好，所以在测试的时候就使用和生产环境一样的DB
 rails 会自动添加id 字段作为primary-key
 run 'rails g model' 查看选项 
 
+继承后， className 和db tableName 之间对应为单数-> 多数. Book -> books
+可以显示设置
+ class Book < ActiveRecord::Base
+   self.table_name = "xxx"
+   self.primary_key= "_id"
+
+   def name 
+     read_attribute(:name) || 'n/a'
+   end # 没有数据时返回 'n/a'
+
+   def name=(n)
+     write_attribute(:name, n + '.com') 
+   end 
+
+   ## 等价的可以这样写
+   def title
+     self[:title] || 'n/a'
+   end
+
+   def title=(t)
+     self[:title] = t + ' .com' 
+   end
+ end
+
+config
+   可以在application.rb 中设置全局配置
+   primary_key_prefix_type
+   table_name_prefix
+   table_name_suffix
+    
+模型层的属性设置
+  并不使用实例变量， 通过read_attribute, write_attribute 来设置
+e.g.
+
+
 生成model 后,并没有产生db table, 这时可以修改参数, 直到调用 db:migrate 后
  才会生成db table
+
+  有一个可选的hash 
+      t.integer :bar_code, null:false, unique: true
+
+
+
+  unique index add to Model file
+  add_index(:<tableName>, [:bar_code], unique: true) //注意这个函数是DB级别的现在
+                并且需要写在 migrate文件中，而不是Model.rb 文件中定义
 
 
 ## Database db
@@ -172,19 +354,32 @@ API
     如果先让返回按某个字段排序
     default_scope lambda { order('categories.name')}
       相当于编程　all.order('xxxx')
-
 + XX.find_by_FieldName
 + XX.count
++ XX.count_by_sql
 + XX.delete(Id) 也是删除,只不过不需要先find 在调用 destroy
   DELETE FROM Tab WHERE Key=(Id)
    返回删除的个数
++ xx.find_by_sql("select * from xxx") 使用SQL语句查询
++ XX.limit
++ XX.offset 必须和limit一同使用，制定跳过的返回结果的个数
++ XX.exists?
++ XX.uniq
++ XX.arel_table 得到一段查询语句生成的SQL
+   e.g.
+     u = User.arel_table
+     u.where(u[:login].eq("mack")).to_sql
 
 + XX.destroy  先find在destroy
     find(id).destroy
      返回[obj,..] 如果找不到就会产生异常
 
-+ obj.valid?
++ connection
+  ActiveRecord::Base.conection
+
++ obj.valid? 验证有效性，使用model定义的验证函数
 + obj.new_record?
++ obj.persisted?
 + obj.attributes
 + obj.save -> bool()
 + obj.update_attributes(Hash) 编辑和save 一起完成
@@ -217,8 +412,51 @@ has_one XX 会自动导出
  obj.build_XX(Hash)
  obj.create_XX(Hash)
 
+Megirate
   
+不想要id
+create_table :name, id: false do |t|
+end
 
+改变id名字
+create_table :name, id: :xx_id do |t|
+end
+
+t.column(:name, type, options={})
+t.<type>(:name, option={}) 
+   <type>:
+    (string, text, integer, float, decimal, datetime, timestamp, time, date, binary, boolean).
+  options:
+   default
+   limit
+   null: false
+
+t.index(:column, unique: true)
+t.belongs_to
+
+rails给通用的类型定义了type,有对每个特殊db，定义了自己的type
+可以查看 NATIVE_DATABASE_TYPES, 来查找类型映射
+
+每个选项都有, null, default, limit 这三个可选参数
+
+* 自定义主键
+t.integer :id, primary_key:true, null:false, 不顶用
+t.primary_key :id #不能使用, limit:8
+
+mysql 可以这样制定主键的类型
+  在最后重新设置:id 的类型
+    change_column :users, :id, :integer, limit:8
+    这样就去掉了auto_increment
+
+
+t.primary_key :name # ok 但是类型为integer
+ 对于其他类型，需要
+   t.string "otherId", null: false
+   add_index "table", "otherId", unique:true
+
+
+dump to DB TABLE struct SQL to file
+rake db:structure:dump
 
 
 * default all fields can be access
@@ -231,26 +469,41 @@ has_one XX 会自动导出
       save file && rake db:migrate
 
 references :xxx 等效于 integer :xxx_id
+  注意是单数形式
+   如果在脚手架设定 references 则会生成，对应的外键关系
+     e.g.
+      t.references :ware, index: true, foreign_key: true
+
+  add_references/ add_belogs_to 和add_foregin_key 是一样的，最后都调用
+  add_foregin_key
+* add_foregin_key
+    e.g. add_foregin_key :books, :users
+     will add a'user_id' to books
+    e.g. add_foregin_key :books, :users, name: :my_user
+
 
 associations
 --------------------------------
 定义这些会让Ｒａｉｌｓ导出合适的ＡＰＩ，　
 Ｒａｉｌｓ会自动生成合适的ＳＱＬ语言来查询对应的ｔａｂｌｅ
 
-* belongs_to :
+* belongs_to : <tableName>单数形式
 * has_many : 
    加这定义的作用?
      自动生成相关联系操作
      Rails 约定 外键的名字由 table + _id 构成
     e.g. aaa.xxxs get  aaa 的all xxx
-          aaa has_many xxx
-          xxx belongs_to aaa
+          aaa has_many xxx(复数)
+          xxx belongs_to aaa （单数)
+
+   xxx Model 本身需要有aaa_id 这个属性用来标记自己属于的aaa
   可选参数
   :class_name
   :conditions
   :foregin_key
   :order  用了指定以xxxs 中的哪个字段来排序返回 e.g. -> {order('fieldName DESC')}
        也可以在指定一个二次排序field e.g. -> {order('fieldName DESC, xxxName ASC')}
+       中的参数会附加在SQL 语句中，所以可以写任何DB支持的语句
 
   :dependent 
      如果要是删除Ａ是ａ的所有ｂ也要确保删除，就是用
@@ -330,7 +583,9 @@ load seed 'rake db:seed
 
 ## error report
 obj.save 后如果返回false，
-这个obj的 errors.full_messages错误信息组成的数值[string()]
+obj.errors[:各个属性] 可以得到这个属性是否有错误
+obj.errors.any?
+obj.errors.full_messages 有所有错误string组成的[string()]
 
 obj.new_record?
  用了测试obj 以前是否调用过save
@@ -352,18 +607,36 @@ e.g. rails g migrate add_FieldName_to_ModleName FieldName : Type
 ## delete migration file
 rails destroy migration <FileName>
 
-## 验证active fields 的有效性, check when obj.save(), not obj.new()
+## delete column
+## add column 
+#.e.g
+class UsersRemovePassword < ActiveRecord::Migration
+  def change
+      remove_column :users, :password
+      add_column :users, :password_digest, :string
+      #t.column :password_digest, :string
+  end
+end
+
+
+## 验证active fields 的有效性, 
+#  check when obj.save(), not obj.new()
+#  有两种格式，长格式和短格式
+#  validates_absence_of :name 长格式　＝＝　validates :name, absence: {xxx}
+
     validates :title, :description, :image_url, presence: true
+
     + validates(Hash)  check one or  more model fields is not nil
     + presence: true will check echo fieleds is present. and its contents are not empty.
-    + numericality() 用了检查是否是一个数值类型
-        e.g. validates :price, numericality: {greater_than_or_equal_to: 0.1}
+
+    + validates_absence_of 验证一个字段必须是blank?的
  
     + 唯一性
-            uniqueness: true
+       uniqueness: true
         e.g. validates :title, uniqueness: true
 
-    + math模式 URL or Mail
+    + 满足特点格式,math模式 URL or Mail
+        validates_format_of :email, options{}
         e.g.
           validates :image_url, allow_blank: true, format: {
              with: %r{\.(gif|jpg|png)\Z}i, 
@@ -374,6 +647,30 @@ rails destroy migration <FileName>
          e.g.    
 	validates :password, length: {minimum: 6}
            length: {maximum: xxxx}
+        length 的验证可以用于integer类型的属性上，会对该属性to_s 在检length
+
+
+    + 检测一个参数值包含数值
+        e.g. validates :price, numericality: {greater_than_or_equal_to: 0.1}
+        e.g. validates_numericality_of :xx_id, only_integer: true
+	 可选参数
+	:equal_to
+	:greater_than
+	:greater_than_or_equal_to
+	:less_than
+	:less_than_or_equal_to
+	:other_than
+	
+
+     + 在指定的范围内
+       validates_inclusion_of :sex, in: %(male, famale), message: 'bad' #sex 必须是male 或者 famale
+       #  范围在in 中制定
+
+
+     + validates_with OtherClass 交给一个class来验证
+        class OtherClass < ActiveRecord::Validator
+          
+        
         
   has_many :line_items, dependent: :destroy
       has_many, belond_to 
@@ -381,8 +678,8 @@ rails destroy migration <FileName>
   使用has_many 就可以定义，不需要在modle 中显示写出来
      
      +   validates_confirmation_of :password 
-	    会 产生一个password_confirmation 的虚拟属性．在ｎｅｗ的时候必须有，而且内容要和password 相同
-	    　　　但是不在ｔａｂｌｅ中
+	    会 产生一个<FeildName>_confirmation 的虚拟属性．在ｎｅｗ的时候必须有，而且内容要和password 相同
+	     在view中需要填写对应的confirmation field
 	      不一定是password 可以是任何fields e.g. #{fieldName}_configrmation
 
 Rails load 所有的stylesheets at once
@@ -409,11 +706,16 @@ Rails 使用laouts 来控制显示的布局.
 如果局部视图要在多个controller 中公用则需要放在
 app/view/shared/  以_ 开头 ,render 中则去掉_
    e.g. _error_messages <%= render error_message %>
+
+   render :type , options
+   所有的 render 的模板都是在view 根目录下的
    可以向 render 传递变量
     e.g. render 'form', :title = > 'jfoeif'
 
     render(:text => string)  
-    直接渲染出文本
+    直接渲染出文本, rails default content_type: text/html,
+     you can render(:text 'hello', content_type: 'text/plain')
+
     render(:inline => string, [:type => "rhtml"|"rxml"])   
        传入的string渲染成模板（rhtml或者rxml）
     render(:action => action_name)   
@@ -426,12 +728,13 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
 
     render(:template => name)  
      使用模板名render，e.x.: render(:template => "blog/short_list")
+
     render(:partial => name)  
-      以局部模板渲染
+      以局部模板渲染 没有歧义的情况下，是不需要指定 partial
 
     render(:nothing=>true)  
 
-   render @Name 的意思是　调用view 中_Name.html.xxx 的视图
+   render @Name 的意思是　调用view 中名为Name.class 的模板 _Name.html.xxx 的视图
 
       如果 是复数 render @books
         则Rails 会自动for_each books 中的每一个book, 调用 _book.html.xx
@@ -440,13 +743,36 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
 	     render book
 	   end
 
+     render :inline '<%= fef{xxxx} %>'  render
 
+     render nothing
+        use :head :http_code equie as render nothing: true, status 401
+     
+     可选的 options:
+         :content_type
+	 :layout
+	 :status
 
 * redirect_to 
     让浏览器跳转到指定页面
       e.g. redirect_to xxx_path
        redirect_to @xxx 也可以接收一个obj 意思书跳转到这个obj 的show 页面
           等价于 redirect_to(xxx_path(:id=> @xxx))
+
+	可以是一个action 
+
+   redirect_to :back # 掉回到上一页
+   redirect_to obj, alert: "message" 在flash[alter] 中添加message
+   redirect_to obj, notice: "message" 在flash[notice] 中添加message
+
+   Rails4 中可以注册新的flash 类型，这样就可以在redirect_to中使用注册的类型
+	class ApplicationController
+	...
+	add_flash_types :error
+	end
+
+
+
 ## Controller
 #
 #
@@ -464,6 +790,7 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
    +  generate controller 可以接收指定的action
        e.g. controller StaticPages home about help
 
+   +  g scaffload_conteroller when mode already exists
   ## create 
    ## form submit
    # form 在create 函数中使用变量 params 包括了所有的提交的参数
@@ -487,12 +814,14 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
 ## helper
  让在 controller 中定义的方法 view 中调用
 * helper_method [:current_user, :logged_in?]
+  任何一个controller 的helper_method都可以在任何的view中调用
 
 ## respond_to
 根据不同的客户端请求，来相应不同类型的数据
 通过request 中的元信息来发现请求的类型, Accept-Type
 e.g.
  Action ...
+   必须要有变量
  respond_to do |format|
       format.html # do nothing, allow Rails to render index.rhtml
       format.js # do nothing, allow Rails to render index.rjs
@@ -521,12 +850,42 @@ Form set other attr
   
 
 ## rounter
+#作用 把http的请求映射到controller active 上， 自动生产help方法
 * rake routes 显示所有的路由路径
+* 在view 中得到当前的route
 
 * 设定一个root, root 'store#index', as: 'store'
+    as 是定义对应的helper
+
+* resources :products, param: :sku 把默认的:id 改为:sku
 
 * resources :logic_nodes, :only => [:index, :show] 
 　　　　　only 用了控制自动生成的helper
+
+* member
+   为Restful 添加新的action
+   e.g. resources aa do
+          :member do
+           :get => :bar
+          end
+      会生成 /aa/:id/bar
+
+* collection
+   和member类型也是添加一个新action 不过这个action对应与整个资源
+
+   e.g. resources aa do
+           collection do
+             get 'search'
+           get 'login', on :collection # 也是相同
+           end
+      会生成 /aa/search
+
+  resources :ware_categories
+    资源命名，一般约定为复数(Rails 机制上并不需要，随便写什么都行)，
+    对应的controll class 也应时复数形式，
+    映射路径根据 resources 指定的值相同， 不会做任何改变。 映射为的controller
+    为resources 的值也相同，就是形式不同， _ 去掉， 小写变大写
+     e.g. ware_categories -> WareCategories
 
 
   as: 'stroe' 会告诉Rails 创建一个 store_path 得访问方法.
@@ -538,10 +897,42 @@ Form set other attr
 
   定义模式 get ':Controller(/:Action(/:id(.:format)))'
       e.g. get '/test/search/:query' => 'test#action'
+    * 括号的意思是，可选参数
+    * 每个segment 都是一个参数使用:开头使用/ 分割， 在controller中可以使用
+        params[:<SegmentName>] 获得h e.g. params[:id]
         http://test/search/?fjeofj:323?foef:3 
 	    参数会赋值给:query 变量
 	    变量以:开头
+    * format 制定返回的格式, 在写rount的时候不需要写出来，Rails会默认所有的都有
+              .e.g aici.books/show/1.json
+       respond_to 会返回json格式， 如果没有匹配的格式Rails 会返回406
+ 
+      至于匹配哪个格式，是根据format如果有的话，如果没有则根据HTTP
+      协议中的Content-Type
+    respond_to do |f|
+      f.html {render text: 'html'}
+      f.json{render text: 'json'}
+      f.any {render json: xx} any 匹配Rails支持的其他所有format
+    end
 
+     
+      f.html {render html: xx}
+      f.json{render json: xx}
+
+通过match 定义的需要制定 HTTP method， 使用via
+match 'path', to: 'c#a', via: :get
+match 'path', to: 'c#a', via: [:get, :post]
+match 'path', to: 'c#a', via: :all
+
+可以给路由中的变量添加验证
+  get 'ookk/:id' => show, id: /\d+/  #==# 
+  get 'ookk/:id' => show, constraints: {id: /\d+/}
+       constraints: proc{|req| req.params[:id].to_id < 100} # 还可以是block
+
+
+  get 'ookk/:id' => show_error, id: /\d+/
+
+ root 'welcome#index' # root 值接受get 请求
 
 * nested resources
    resources AA do
@@ -566,6 +957,13 @@ Form set other attr
 
      = form_for([@user, @profile], url: user_profile_path) do |f|
 
+  嵌套子资源的表达，必须传递，父资源和本资源
+  e.g. 
+  = form_for [@current_seller, @produce] do |f|
+
+  而且不光是form_for 对于子资源的helper函数也要传入两个obj
+   = link_to 'Edit', edit_seller_produce_path(@current_seller, @produce)
+
   [@aa, @bb] eq  aa_bb_path(:aa=> @aa, :id = > @bb)
 
 * Namespace routing
@@ -578,6 +976,7 @@ Form set other attr
       namespace :admin do
         resources :users
       end
+
     
       admin_users
       edit_admin_user
@@ -585,7 +984,8 @@ Form set other attr
    作用,用于组织一系列逻辑上相关的controller
     生成的rount path_hapler 和嵌套的资源相同
 
-  
+重定向
+  get "/foo" , to: redirect('/moo') 
 
 
 * 非RESTfull 路由形式
@@ -604,6 +1004,10 @@ GET
  link_to("Show", user_path(Id))
  link_to("New", new_user_path)
  link_to("Edit", edit_user_path(Id))
+  
+ link_to 的path 参数可以是一个hash obj, path helper会根据key,
+         来取得hash-obj 对应key的值
+
 
 POST
   form_for @user, :url => users_path, :html => {:method => :post}
@@ -624,7 +1028,7 @@ resource :xxx
 　默认和resources 同名
      e.g. resources :Name, :contoller => "xxxx"
 
-通过　:except => [xx,xx]
+* 限制动词通过　:except => [xx,xx]
       :only => :create
         可以指定action
 
@@ -643,7 +1047,34 @@ resource :xxx
      root 'static_pages#home' -> root to: 'static_pages#home'
 
 * set other name with rount
-  get '/signup', to: 'users#new'
+  get '/signup', to: 'users#new' == 
+  get '/signup' => 'users#new'
+
+* segment key 的约束
+  get ':controller/show/:id' => :show, constraints: {:id => /\d+/}
+  get ':controller/show/:id' => :show_error
+  get ':books/:id' => "xx#yy", constraints: proc {|req| req.params[:id]}
+
+ 可以在segment key中使用通配符 
+  get 'books/*others' => "xx#yy"
+
+* scope rount
+   主要的避免重复
+   get 'auctions/new' => 'auctions#new'
+   get 'auctions/edit/:id' => 'auctions#edit'
+   post 'auctions/pause/:id' => 'auctions#pause'
+
+   scope controller: :auctions do
+   get 'auctions/new' => :new
+   get 'auctions/edit/:id' => :edit
+   post 'auctions/pause/:id' => :pause
+   end
+
+   scope path: '/auctions', controller: :auctions do
+   get 'new' => :new
+   get 'edit/:id' => :edit
+   post 'pause/:id' => :pause
+   end
 
 Flash
 ---------------------------------------------
@@ -652,17 +1083,21 @@ Flash
 
 action
 --------------------------------------
-action 中预定义的的变量和方法
+Action 中预定义的的变量和方法
 * action_name
 * headers
 * params -> hash
 * request
+     request.env["xxx"]
 * session
+* redirect_to
 
 render 渲染
 --------------------------------
 每个action 有默认的render
   如果不要render, 可以指定跳转到另一个页面(使用redirect)
+
+render 的格式，还控制这HTTP response 的content-type 字段
 
 
 cb
@@ -683,9 +1118,19 @@ cb
 ## web  server
 * WEBrick
     性能不足，一般用于开发中, 有些功能欠缺
+    不要使用有些HTTP的协议没有实现，比如html5 video
+
+* thin 
+   使用替代WEBrick 在开发中使用
+   很方便，在Gemfile 中添加 
+   gem 'thin'
+   rails s 会自动使用thin
 
 * unicorn
     ?????
+
+* Puma 
+    大家都推荐的生成环境 rails web server
 
 form_for
  建立表单
@@ -696,15 +1141,26 @@ form_for
 
     <%= f.label :description, "Description" %>
     <%= f.text_area :description %>
-
     <%= f.submit "Create" %>
 <% end %>
+   # 每个field 的html属性直接写在后面即可
+   # e.g.
+  .field
+    = f.label :name
+    = f.text_field :name, placeholder: '请填入产品名'
   :name 等都必须是event 中的属性
 
 simple_format是一個內建的View Helper，
  它的作用是可以將換行字元\n置換成<br />，有基本的HTML換行效果。
   rails g simple_form:install --bootstrap
   然后就可以使用simple_form_for(@xxx, html:{class=<bootstrap-form-class>})
+
+
+form_tag 用于没有对应obj 的form生成
+      = form_tag search_path do
+        = search_field_tag 'search', nil, :placeholder=>'Search'
+        = submit_tag 'Search'
+
    
 
 
@@ -737,6 +1193,10 @@ layout application.html.erb
     link_to(Name,Path[,Hash])
           第三个参数是可选的
      e.g. link_to "SignUp", '#', class: 'signup'
+    如果想指定一个连接的格式可以
+     linke_to "xx", path_hapler(@obj, :json)
+
+    link_to 'Back', :back #回退
 
      Rails 使用路由的名字来指定连接
 
@@ -758,6 +1218,25 @@ layout application.html.erb
 『 <%= csrf_meta_tags %> 』加入csrf安全機制(詳見這裡)
 
 『 <%= yield %> 』各種網站的內容(例如本案例中的Hello World!)插入處，會因為各種網址或動作而有變化
+
+## 内置可访问变量
+#* assigns
+* controller    <%= debug(controller.controller_name) %>
+* cookies a hash variable
+* flash show message only for the duration of the next request
+  常用 flash[:notice]
+       flash[:alert] 用于more serious nature
+       flash.now 用于在当前页显示信息,而不是下一个页面
+
+    div.flash
+      - flash.each do |k, v|
+        p id= "#{k}" = v
+* logger
+* params
+* request 应之用于debug
+* response应之用于debug
+* session
+
 
 ## Ajax
 # send a Ajax req
@@ -796,7 +1275,7 @@ button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
 # Use ActiveModel has_secure_password
 #  1. model加入 has_secure_password, 
 #  2. model 中必须有password_digest 字段
-#  3. 提交时必须有: password & password_confirmation. 这两个字段
+#  3. 提交时必须有: password & password_confirmation. 这两个字段, model中不需要有
 #      new 的时候可以只有password, 
 #      但是如果有password_confirmation 就要和password 的相同，否则save 会失败，返回false
 #      
@@ -864,6 +1343,7 @@ if obj has a bool-fun aa then the test can be use the 'be_aa' fun
 
 ## Gems
 + annotate
+  gem 'annotate', '2.6.5'
   generate modele fields type comment in Module.rb
   annotate -p before
 
@@ -880,12 +1360,12 @@ if obj has a bool-fun aa then the test can be use the 'be_aa' fun
 + haml
     gem 'haml-rails'
 
++ slim
+   gem 'slim-rails'
+
 + 分页
    gem 'will_paginate'
 
-+ 数据库
-   自动生成当前tab 
-  gem 'annotate', '2.6.5'
 
 + Cucumber
   一个流行的驱动开发(BDD)工具
@@ -929,13 +1409,25 @@ gem 'paperclip' 文件上传处理
      要求安装有convert 程序，并且可以调用
      使用在再要存放图像的modele 里面使用
 
+ 使用到了file 程序
+
   EOF >> < config/development.rb
     Paperclip.options[:command_path] = '/usr/bin/' 
   EOF
 
   EOF >> < <Model.rb>
     ##image 是field 的名字 可以定义大小尺寸
+  ## 必须要有 has_attached_file, iamge 是字段的名字
   has_attached_file :image, :styles => {:medium=> "400x600#", :small=> "300x300>"} 
+
+ 一旦加入后，table会多出
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.datetime "data_updated_at"
+  这四个field
+
+
   validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
   EOF
 
@@ -945,6 +1437,15 @@ gem 'paperclip' 文件上传处理
   View
     = image_tag @recipe.image.url(:medium, class: 'recipe_image')
     = image_tag @pin.image.url(:medium)
+     使用obj.xx.url 
+
+
+upload
+  必须设置为multipart/form-data
+ <form enctype="multipart/form-data" >
+   <input type="file">
+   rfc 1896 制定的http上传文件个协议
+   表单的每个field使用一个boundary参数制定的分隔符分割
 
 
 gem 'acts_as_votable', '~> 0.10.0'
@@ -984,7 +1485,14 @@ gem 'masonry-rails', '~> 0.2.1'
 gem 'searchkick' 
    站内搜索
   依赖elasticsearch
+
+
+gem 'active_merchant'
+   在线支付
+
  
+gem 的机制
+---------------------------------------------------
 
 ## show debug info
     = debug(params) if Rails.env.development?
@@ -999,10 +1507,9 @@ gem 'searchkick'
        这样Rails 在create 和 destroy 是就会自动更改xxxs_count 这个字段
 
        在xxx Module 上
-       belongs_to :As, :counter_cache => true
+       belongs_to :A, :counter_cache => true
         如果要指定名字
-       belongs_to :As, :counter_cache => <Name>
-
+       belongs_to :A, :counter_cache => <Name>
 
 ## Redis
 + install 
@@ -1013,4 +1520,68 @@ gem 'searchkick'
   $redis = Redis.new(:host => 'localhost', :port => 6379)
 
 
+## Rack
+#类似与Make
+#
+#rack --tasks 查看所有任务
+#
+#在lib/tasks 中定义
+#
+namespace :my do #可以不要
+  task :name do
+  end
+end
+
+exec
+rake my:name
+
+## ActionController::Live
+#  r4 内建的用于发送大数据的功能
+#   e.g.
+#   
+#  用来实现SEE server-sent-event
+# Streams about 180 MB of generated data to the browser.
+include ActionController::Live
+def stream
+  10_000_000.times do |i|
+  response.stream.write "This is line #{i}\n"
+  end
+ensure
+  response.stream.close
+end
+
+注意事项;
+All actions executed from ActionController::Live enabled controllers are run in a separate thread.
+This means the controller action code being executed must be threadsafe.
+• A concurrent Ruby web server, such as puma 5, is required to take advantage of live streaming.
+• Headers must be added to the response before anything is written to the client.
+• Streams must be closed once finished, otherwise a socket may be left open indefinitely.
+
+## VIM rails快捷键
+R 大头的
+E 开头的用于创建
+
+## MongoDB
+#Rails 使用的驱动为
+#driver mongoDB 官方提供
+#gem 'mongo', '~> 2.0'
+#
+#ROM associations validations 相关功能
+#gem 'mogoid', '~> 5.0.0'
+#
+
+## Myslq
+#mysql 驱动 gem 'mysql2'
+#
+#使用mysql 需要先创建DB
+#
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: xxx
+  pool: 5
+  username: root
+  password: 12345
+  host: localhost
 

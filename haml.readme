@@ -1,9 +1,45 @@
-haml 
-==========================
+haml 渲染太慢了
+使用reb 或者 slim
+
 一个不需要嵌套的模板标记语言
 haml 使用空白符缩进表示
 可以使用 ruby controller 中的object
 
+
+Slim
+----------------------------------
+install gem install slim
+
+
+doctype html
+html
+  head
+    title Slim Examples
+    meta name="keywords" content="template language"
+    meta name="author" content=author
+    link rel="icon" type="image/png" href=file_path("favicon.png")
+    javascript:
+      alert('Slim supports embedded javascript!')
+
+  body
+    h1 Markup examples
+
+== output without HTML secaping
+==>
+==<
+
+Code comment /
+HTML comment /!
+
+close tags
+   img src="fjeif"/
+
+
+
+
+
+haml 
+==========================
 
 install
 -------------------------
@@ -29,6 +65,19 @@ Usage
 ===========================
 * comment
  -# this is a comment
+
+!!! 5
+%html
+  %head
+    %title Pin Board
+
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+
+  %body
+    %nav.navbar.navbar-default
+      .container
 
  如果要block 的可以使用inden
    -# jfeosf
