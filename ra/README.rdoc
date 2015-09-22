@@ -7,10 +7,60 @@
 rails -s -b 0.0.0.0
 
 ## Qus.
+ + 如何开启temple cache
+
  +  404
-	 def render_404
-	 raise ActionController::RoutingError.new('Not Found')
-	 end
+
+  def render_403
+    head :forbidden
+  end
+
+  def render_404
+    #render file: Rails.root.join("public", "404"), layout: false, status: "404"
+    render :file => 'public/404.html', layout: false, status: "404"
+  end
+
+
+ + 一般写在ApplicationContorller 中
+  def no_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+
+  def default_headers
+    headers['X-Frame-Options'] = 'DENY'
+    headers['X-XSS-Protection'] = '1; mode=block'
+    headers['X-UA-Compatible'] = 'IE=edge'
+    headers['X-Content-Type-Options'] = 'nosniff'
+    # Enabling HSTS for non-standard ports would send clients to the wrong port
+    if Gitlab.config.gitlab.https and Gitlab.config.gitlab.port == 443
+      headers['Strict-Transport-Security'] = 'max-age=31536000'
+    end
+  end
+
+ + rescue_for类型与missing_method
+    用于处理制定的异常，回调
+	FooController < ActionController::Base
+	  rescue_from ActiveRecord::RecordNotFound, with: not_found
+
+	  private
+	  def notfound
+	    message = "Foo with ID #{params[:id]} not found."
+	    logger.error message
+	    redirect_to not_found_url, info: message
+	  end
+	end
+    
+     党在 FooController scope 里面生成一个RecordNotFound 异常后，
+     就会调用 not_found
+
+      ## 也可以直接写block
+     rescue_from ActiveRecord::RecordNotFound do |exception|
+	     message = "Foo with ID #{params[:id]} not found."
+	     logger.error message
+	     redirect_to not_found_url, info: message
+     end
  + privilage safe
 
  + logout 
@@ -69,16 +119,15 @@ bundle package
     再次安装就会直接使用vendor/cache中的安装, 用于离线安装
      bundle install vendor/cache/*
 
+rake doc:app # 生成文档
+rake state  # 代码统计
+
 
 ## 权限限制
 使用 before_filter 回调方法实现
 通关添加admin 字段来检测是否有相关权限
 
 ## Ruby 使用module 来打包一系列函数
-在不同的view/controller 中同时使用
-在application_controller.rb 中使用include 
-   来包含　不同的helper, helper 默认只能在view 中使用，
-   但是include 后就可在controller 中使用
 
 
 ## session
@@ -150,6 +199,16 @@ cookies.delete :key
   def logout
     session[:seller_id] = nil
     redirect_to login_new_path, notice: 'Logout successfully'
+
+  end
+
+  def user_authenticate
+    if user_loggedin? 
+      Rails.logger.debug("authentication_ is user_loggedin #{@current_user.id}")
+    else
+	    ## 传递一个当前页面的url给登录页面，作为登录后的跳转页面
+      redirect_to login_users_path(return_url: request.original_url), notice: '请登录系统'
+    end
   end
 
     写一个authenticate -> bool 的函数用来做登录认证
@@ -233,7 +292,7 @@ rails new <AppName>
 
 Migration 搭配的 Rake 任務
 
-    rake db:create 依照目前的 RAILS_ENV 環境建立資料庫
+    rake db:create 依照目前的 RAILS_ENV 環境建立資料庫, 创建db
     rake db:create:all 建立所有環境的資料庫
     rake db:drop 依照目前的 RAILS_ENV 環境刪除資料庫
     rake db:drop:all 刪除所有環境的資料庫
@@ -252,6 +311,9 @@ Migration 搭配的 Rake 任務
 #使用不同的DB， 兼容性不是很好，所以在测试的时候就使用和生产环境一样的DB
 rails 会自动添加id 字段作为primary-key
 run 'rails g model' 查看选项 
+
+N+1 使用includes
+users = User.includes(:address).limit(10)
 
 继承后， className 和db tableName 之间对应为单数-> 多数. Book -> books
 可以显示设置
@@ -318,6 +380,10 @@ e.g.
 # Module API 如何支持分页拉去
 # 
 # Gems
+# 
+# 写自己的gem
+# rails g plugin <Name>
+# 
 #   will_paginate
 #     对所有module 都添加了　.paginate 方法
 #     需要把controller 中的index Action 中的.all 方法换成
@@ -547,6 +613,18 @@ many_to_many
       e.g.
   has_many :replies, :through => :books, :source => :comments
        
+
+delegate: :method1, method2, to :moduleName
+  代理制定的方法
+
+还可以指定是否带有前缀，用于解决冲突
+* prefix
+delegate: :method1, method2, to :moduleName, prefix: true
+ 这样产生的代理方法，必须加上 moduleName_
+
+* allow_nil: boolean()
+   如果是true， 当代理mehtod为nil时，返回nil, 否则raise NoMethodError
+   
       
   
 一个module 可以对应多个views,
@@ -577,6 +655,8 @@ seeds.rb
 ----------------
 这个文件中定义app 总是需要的数据
 load seed 'rake db:seed
+在这个文件里面 填写需要的数据
+
 
 如果有更改 seed 使用 db:setup
 
@@ -716,6 +796,7 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
     直接渲染出文本, rails default content_type: text/html,
      you can render(:text 'hello', content_type: 'text/plain')
 
+
     render(:inline => string, [:type => "rhtml"|"rxml"])   
        传入的string渲染成模板（rhtml或者rxml）
     render(:action => action_name)   
@@ -729,7 +810,7 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
     render(:template => name)  
      使用模板名render，e.x.: render(:template => "blog/short_list")
 
-    render(:partial => name)  
+    render(:partial => name, locals:{xx: xx})  
       以局部模板渲染 没有歧义的情况下，是不需要指定 partial
 
     render(:nothing=>true)  
@@ -764,6 +845,11 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
    redirect_to :back # 掉回到上一页
    redirect_to obj, alert: "message" 在flash[alter] 中添加message
    redirect_to obj, notice: "message" 在flash[notice] 中添加message
+
+
+    n秒自动跳转
+    <meta http-equiv="Refresh" content="2;URL=www.xx.com"/>
+
 
    Rails4 中可以注册新的flash 类型，这样就可以在redirect_to中使用注册的类型
 	class ApplicationController
@@ -815,6 +901,13 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
  让在 controller 中定义的方法 view 中调用
 * helper_method [:current_user, :logged_in?]
   任何一个controller 的helper_method都可以在任何的view中调用
+
+* 在view 中可以调用在helper中定义的任何函数，和这些函数定义的instance-obj
+   controller 不能看见在helper 中定义单函数
+   helper 也看不见controller 中定义的任何对象
+
+   但是include 后就可在controller 中使用
+
 
 ## respond_to
 根据不同的客户端请求，来相应不同类型的数据
@@ -966,6 +1059,12 @@ match 'path', to: 'c#a', via: :all
 
   [@aa, @bb] eq  aa_bb_path(:aa=> @aa, :id = > @bb)
 
++ shallow
+   R4 之后增加的
+  resources :products do
+    resources :comment, shallow: true
+  end
+
 * Namespace routing
   Namespace controller
     rails g controller Namespace/Name
@@ -1023,6 +1122,9 @@ resources :xxx
   复数形式
 resource :xxx
   单数形式没有 index action 所有的URL-helper 也都是单数的
+ 不管是单数还是复数， 生成的controller Class都是复数形式
+ 不过可以 使用controller 指定
+  resource :dashboard, controller: 'dashboard' 指定为点数
 
 指定 controller
 　默认和resources 同名
@@ -1076,10 +1178,17 @@ resource :xxx
    post 'pause/:id' => :pause
    end
 
+ 给helper 添加前缀
+   scope as: user do
+   end
+
 Flash
 ---------------------------------------------
 通常是一个acton　set, 写一个action get
 当以在本action render 时就要使用可以使用 flash.now[:notice] ="feff"
+
+flash 是 session 的应用，通常在 controller 的 action 间传递信息，读取成功后自动清空。
+如果一个 flash 没有在合适得地方读出来，那么它将被保存到读出为止
 
 action
 --------------------------------------
@@ -1089,6 +1198,8 @@ Action 中预定义的的变量和方法
 * params -> hash
 * request
      request.env["xxx"]
+     request.original_url ,当前页面的url
+     request.headers["Content-Type"] 可以获取头部信息
 * session
 * redirect_to
 
@@ -1191,7 +1302,7 @@ layout application.html.erb
         <%= link_to 'Home', stores_path %>
 * link_to 创建一个超链接
     link_to(Name,Path[,Hash])
-          第三个参数是可选的
+          第三个参数是可选的, 用于URL的指定参数
      e.g. link_to "SignUp", '#', class: 'signup'
     如果想指定一个连接的格式可以
      linke_to "xx", path_hapler(@obj, :json)
@@ -1211,6 +1322,7 @@ layout application.html.erb
 
   『 stylesheet_link_tag 』 這段程式碼意思是 Rails 會把 app/assets/stylesheets 資料夾裡的
 .css、.scss檔合併、並壓縮成一個名叫application.css的css檔給網站用
+ 在develop的情况下不会合并， 并且引用的是application.css中的引入文件
 
 『 javascript_include_tag 』這段程式碼意思是 Rails 會把 app/assets/javascripts 資料夾裡的
 .js、.coffee檔合併、並壓縮成一個名叫application.js的js檔給網站用
@@ -1239,6 +1351,11 @@ layout application.html.erb
 
 
 ## Ajax
+所有的send 都可以使用ajax 的方式
+添加 remote: true
+这是发声的HTTP请求 Accept 会变为 
+   */*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript
+server 端受到后会匹配到js 中
 # send a Ajax req
 #   add remote: true
 #   e.g.  <%= button_to 'Add to Cart', line_items_path(product_id: product), 
@@ -1295,70 +1412,55 @@ button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
    ~> 的意思是安装版本号>3.0.0 但小于3.1.0 的版本
   一般建议使用精确版本号，不容易发生错误
 
-
-
-test
----------------------------------------
-test "description" do
-   xxx
-end
-
-* RSpec
-  # subject {page} # 
-  describe "Home page" do
-    # before {visit root_path} ## name route helper can be used
-     it "should have the h1 'Sample App'" do
-     visit root_path
-     page.should have_selector('h1', text: 'Sample App')
-
-     it {shoudl respond_to (:name)} # use obj.respond_to?(Name)
-  end
-  
-if obj has a bool-fun aa then the test can be use the 'be_aa' fun 
-
-
-
-测试指令
-* get :home ## 使用　HTTP get visit home action
-* assert_response :success ## http response is OK
-* assert_select "tag", "contant" ## 检查有没有<tag> 标签，已经标签的内容
-
-
-## Asset pipeline
-作用加快对 静态资源的处理速度
-* 资源文件，
-      app/assets
-      lib/assets
-      vendor/assets
-* 清单文件
-    告诉Rails 如何把资源文件合并成一个文件
-
-   通关CSS 的注释告诉rails
- *= require_tree . # 意思是把　app/assets/stylesheets 目录中的所有css文件引入程序
- *= require_self  #  意思是加载 app/assets/stylesheets/application.css 本身
-
-* 预处理引擎
-
-
-
-## Gems
+Gems
+   
++ 权限管理
+   cancan
 + annotate
   gem 'annotate', '2.6.5'
   generate modele fields type comment in Module.rb
   annotate -p before
 
++ 前端form 字段检查
+    gem 'html5_validators'
+   根据ActiveModel 和form_for 自动为每个field生成前端检查
+
 + bootstrap
+   这个有好几个rails的版本
  gem 'bootstrap-sass'
     EOF >> <  application.css.scss 
         @import "bootstrap-sprockets";
         @import "bootstrap";
 　　EOF 
 
-    * application.js
-      //= require bootstrap-sprockets
+    EOF >> application.js
+      //= require bootstrap-sprockets 注意在jquery后门
+    EOF
 
+    重写bootstrap 参数
+    可以在@import bootstrap 之前，对bootstrap 的变量进行赋值
+     e.g. $xxx = yyyddd
+
+
+ gem 'font-awesome-sass', '~> 4.4.0'
+    EOF >> <  application.css.scss 
+      ## 添加这两行，导入字体
+	@import "font-awesome-sprockets";
+	@import "font-awesome";
+　　EOF 
+
+
+  Rails helper 
+  icon('flag')
+
+  
 + haml
     gem 'haml-rails'
+
++ autoprefixer
+   gem "autoprefixer-rails"
+    用于给css 自动添加兼容前缀
+  
 
 + slim
    gem 'slim-rails'
@@ -1584,4 +1686,33 @@ development:
   username: root
   password: 12345
   host: localhost
+
+
+## 生成环境部署
+首先 ror 是单线程的server， 一次只能处理一个请求。 
+ 这意味着，如果一个请求卡住，后门的请求只等等待
+
+所以在部署的时候，会把ror放在 Apache/Neginx 的后门，只有需要ror处理的时候
+这些web-server 才发给ror.
+* 通过Passenger 代理, ror 可以一次开启多个实例
+
+## exception
+# 使用rescue_from 来在controller scope 中handle制定的异常
+# 
+  def log_exception(exception)
+    application_trace = ActionDispatch::ExceptionWrapper.new(env, exception).application_trace
+    application_trace.map!{ |t| "  #{t}\n" }
+    logger.error "\n#{exception.class.name} (#{exception.message}):\n#{application_trace.join}"
+  end
+
+## RSS / ATOM
+ auto_discovery_link_tag
+ 或者是 link_to "rss", xxx_path(format: "rss")
+  在对应的action中提供rss 格式的数据
+
+## UJS
+#  rails 使用 unobtrusive js 技术
+#  
+  .actions = f.submit nil, :data => {"disable-with" => "请稍等..."}
+
 

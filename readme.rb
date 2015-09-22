@@ -320,6 +320,11 @@ end
 # member
 # List.max
 # List.sort
+# List.map
+#  e.g. [1,4,5,6].map { 1} -> [1,1,1,1,1]
+#  
+#  array << 3 push_back
+#  
 # 
 #EE String
 #支持here doc
@@ -341,6 +346,7 @@ end
 ##EE load require 加载其他文件
 # 每次调用load 都会加载并执行加载的文件
 # require 则只会加载一次
+# 通常返回false, 表示以及被加载了
 
 # EE 
 # BEGIN {
@@ -519,3 +525,9 @@ end
 生成gem
 gem build <Gemname>.gemspec
 gem 文件是一个tar格式文件
+
+## delegate
+#
+### regx
+# 匹配后使用 $1 ... $n 来获得匹配的结果
+# e.g. "12:434 =~ /(\d+):(\d+)/
