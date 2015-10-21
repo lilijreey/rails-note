@@ -424,6 +424,7 @@ API
 + XX.count
 + XX.count_by_sql
 + XX.delete(Id) 也是删除,只不过不需要先find 在调用 destroy
+   不会加载data
   DELETE FROM Tab WHERE Key=(Id)
    返回删除的个数
 + xx.find_by_sql("select * from xxx") 使用SQL语句查询
@@ -436,7 +437,7 @@ API
      u = User.arel_table
      u.where(u[:login].eq("mack")).to_sql
 
-+ XX.destroy  先find在destroy
++ XX.destroy  先find在delete
     find(id).destroy
      返回[obj,..] 如果找不到就会产生异常
 
@@ -478,6 +479,22 @@ has_one XX 会自动导出
  obj.build_XX(Hash)
  obj.create_XX(Hash)
 
+# 多态关联
+#  polymorphic: true
+
+## callback
+  around_save :list_to_json
+  after_initialize :json_to_list
+
+  # 存入json格式到DB, 但是obj持有ruby 原声格式list
+  def list_to_json
+    list  = signed_student
+    self.signed_student = signed_student.to_json
+    yield
+    self.signed_student = list
+  end
+
+
 Megirate
   
 不想要id
@@ -509,6 +526,12 @@ rails给通用的类型定义了type,有对每个特殊db，定义了自己的ty
 t.integer :id, primary_key:true, null:false, 不顶用
 t.primary_key :id #不能使用, limit:8
 
+* 不通过model 直接执行sql 语句
+  s = ActiveRecord::Base.connection.execute("SELECT * from users")
+  s.each(:as => hash) do | row |
+    puts row
+  end
+
 mysql 可以这样制定主键的类型
   在最后重新设置:id 的类型
     change_column :users, :id, :integer, limit:8
@@ -539,6 +562,8 @@ references :xxx 等效于 integer :xxx_id
    如果在脚手架设定 references 则会生成，对应的外键关系
      e.g.
       t.references :ware, index: true, foreign_key: true
+   定义references table, 而不是 table_id , _id rails 会自动添加
+
 
   add_references/ add_belogs_to 和add_foregin_key 是一样的，最后都调用
   add_foregin_key
@@ -562,7 +587,7 @@ associations
           aaa has_many xxx(复数)
           xxx belongs_to aaa （单数)
 
-   xxx Model 本身需要有aaa_id 这个属性用来标记自己属于的aaa
+   * xxx Model 本身需要有aaa_id 这个属性用来标记自己属于的aaa
   可选参数
   :class_name
   :conditions
@@ -603,6 +628,30 @@ many_to_many
     has_and_belongs_to_many gives you a simple lookup table which references your two models.
     注意join table 只是一个db table 不是 ActiveModel
     比has_many :through 简单,但是很多实际的问题并不能解决
+
+     has_and_belongs_to_many :students, join_table: :courses_register_students
+
+     e.g.
+       class CreateArticlesCategories < ActiveRecord::Migration
+         def change
+           create_table :articles_categories, :id => false do |t|
+             t.references :article
+             t.references :category
+           end
+         end
+         def self.down
+           drop_table :articles_categories
+         end
+     end
+
+     如何添加关系(给join_table 中添加数据)
+      <<
+      user = User.find(params[:id])
+      promotion = Promotion.find(params[:promo_id])
+      user.promotions << promotion
+
+      删除
+      user.promotions.delelte(promotion_id)
    
 
 2. has_many :through
@@ -632,6 +681,9 @@ delegate: :method1, method2, to :moduleName, prefix: true
 * before_save
   e.g. before_save {|user| user.email = email.downcase}
 
+## JSON
+# 使用ruby 的JSON.prase 可能会保存
+# 使用 ActiveSupport::JSON.decode(signed_student)
 
 find
 ---------------------------------------
@@ -642,8 +694,10 @@ find
  
 Scope
 --------------------------------------------
-默认scope
+默认scope 在任何查询中都会自动添加
   e.g. default_scope lambda {order('categories.name')}
+    #   User.order('name DESC')
+    
 
 具名scope
  e.g. scope :Name, lambda { xxxx }
@@ -891,7 +945,7 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
 
    在提交以后 
 
-      redirect_to @post ## 直接跳转posts#show view 会告诉client 发送GET请求
+      redirect_to @post ## 直接跳转post_url() 所在的地址 会告诉client 发送GET请求
 
     所有咋
     * 打印render text: params.inspect
@@ -941,6 +995,10 @@ Form set other attr
 
 * check_box_tag(Name, Value, Checked=bool(), options={})
   
+* f.collection_select :college_id, College.all, :id, :name
+                      这里college_id 必须设置了belongs_to college
+		      :id 是设置存储的信息, 也是select 的value
+		      :name 设置显示的信息
 
 ## rounter
 #作用 把http的请求映射到controller active 上， 自动生产help方法
@@ -994,6 +1052,8 @@ Form set other attr
     * 每个segment 都是一个参数使用:开头使用/ 分割， 在controller中可以使用
         params[:<SegmentName>] 获得h e.g. params[:id]
         http://test/search/?fjeofj:323?foef:3 
+        url ? 后的参数也在params 中
+        url 前些参数的时候使用helper_path(:key:value)
 	    参数会赋值给:query 变量
 	    变量以:开头
     * format 制定返回的格式, 在写rount的时候不需要写出来，Rails会默认所有的都有
@@ -1309,6 +1369,9 @@ layout application.html.erb
 
     link_to 'Back', :back #回退
 
+    link_to "<span class='lyphicon glyphicon-plus'></span>".html_safe, sign_lesson_courses_path(@course, l)
+    内嵌标签
+
      Rails 使用路由的名字来指定连接
 
 ## layout
@@ -1329,7 +1392,33 @@ layout application.html.erb
 
 『 <%= csrf_meta_tags %> 』加入csrf安全機制(詳見這裡)
 
-『 <%= yield %> 』各種網站的內容(例如本案例中的Hello World!)插入處，會因為各種網址或動作而有變化
+『 <%= yield %> 』
+  没有任何参数的yield会默认rander当前controller#action 的模板
+
+ 有参数的 yield :xx ##相当于占了个位置, 把后门在content_for :xx
+                    ## 中的内容添加到这里,即时没有:xx 也不会抱错
+ 需要配合 content_for :xx do
+               实际内容
+   来使用;
+这里的:xx 只是标签,并不是模板文件
+  
+
+controller 级别layout tempate
+layout 是会被继承的
+如果在一个controllClass 中使用了
+ layout :xxx
+ 则会覆盖掉以前的layout
+
+如果在views/layout 中定义一个和controller同名的layout文件,
+则会自动使用该文件,
+
+* 如果是希望多态的插入片段
+  可以使用 render "filename"
+   这里的filename 默认是在当前contrller/view/_filename
+
+  如果是在layout 下面需要指明
+  可以使用 render "layouts/filename"
+    render :partial "layouts/filename" 形式的简写
 
 ## 内置可访问变量
 #* assigns
@@ -1408,6 +1497,10 @@ button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
       redirect_to login_path
     end
   end
+
+f.password_field :password
+f.password_field :password_confirmation 
+
 # gem 'bcrypt-ruby', '~> 3.0.0' # provied bcrypt hash func
    ~> 的意思是安装版本号>3.0.0 但小于3.1.0 的版本
   一般建议使用精确版本号，不容易发生错误
@@ -1449,6 +1542,7 @@ Gems
 	@import "font-awesome";
 　　EOF 
 
+   <i class="fa fa-NAME"></i>
 
   Rails helper 
   icon('flag')
@@ -1673,10 +1767,11 @@ E 开头的用于创建
 #
 
 ## Myslq
-#mysql 驱动 gem 'mysql2'
+#mysql 驱动 
+#gem 'mysql2'
 #
 #使用mysql 需要先创建DB
-#
+#config/database.myl >>
 development:
   adapter: mysql2
   encoding: utf8
@@ -1686,6 +1781,13 @@ development:
   username: root
   password: 12345
   host: localhost
+
+rake db:create
+
+## stamp
+# date 格式化
+# gem stamp
+# ruby 原声data和times类型会导出一个 satmp方法
 
 
 ## 生成环境部署

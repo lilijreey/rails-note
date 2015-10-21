@@ -69,18 +69,18 @@ def parse_page(num)
 
     s['position'] = [$1.to_f, $2.to_f, $3.to_f]
     s['logo'] = l.css('.school-logo img').first['src']
-    s['name'] = l.css('.school-info h3 span').first.content
-    s['addr'] = l.css('.school-info div span').first.content
+    s['name'] = l.css('.school-info h3 span').first.content.strip
+    s['addr'] = l.css('.school-info div span').first.content.strip
     info = l.css('.school-info p')
-    s['phone']         = info[0].css('span').first.content
-    s['mail']          = info[1].css('span').first.content
-    s['study_type']    = info[2].css('span').first.content ##学段
-    s['attr']          = info[3].css('span').first.content
-    s['district']      = info[4].css('span').first.content
-    s['attach']        = info[5].css('span').first.content ##隶属
-    s['teacher_count'] = info[6].css('span').first.content
-    s['student_count'] = info[7].css('span').first.content
-    s['email']         = info[8].css('span').first.content
+    s['phone']         = info[0].css('span').first.content.strip
+    s['mail']          = info[1].css('span').first.content.strip
+    s['study_type']    = info[2].css('span').first.content.strip ##学段
+    s['attr']          = info[3].css('span').first.content.strip
+    s['district']      = info[4].css('span').first.content.strip
+    s['attach']        = info[5].css('span').first.content.strip ##隶属
+    s['teacher_count'] = info[6].css('span').first.content.strip
+    s['student_count'] = info[7].css('span').first.content.strip
+    s['email']         = info[8].css('span').first.content.strip
     data << s
   end
   puts "parse page #{num} finish"

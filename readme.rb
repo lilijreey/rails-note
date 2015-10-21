@@ -43,6 +43,10 @@
 # 
 # bundle config 
 # $ bundle config mirror.https://rubygems.org https://ruby.taobao.org
+#
+#国内镜像:
+# 山东大学 'http://ruby.sdutlinux.org/'
+#
 #  
 # 更改gemfile
 # 
@@ -327,6 +331,12 @@ end
 #  
 # 
 #EE String
+#
+#* trim 类似函数
+#  strip
+#  lstrip
+#  rstrip
+#
 #支持here doc
 #a <<EOF
 #fjefos 
@@ -528,6 +538,33 @@ gem 文件是一个tar格式文件
 
 ## delegate
 #
-### regx
+### regx 支持uncode
 # 匹配后使用 $1 ... $n 来获得匹配的结果
 # e.g. "12:434 =~ /(\d+):(\d+)/
+#
+# 删除一个字符串中指定的字符 a,b,c,d 
+# "fejksofjef" =~ /([^a,b,c,d]+)/
+# 
+
+
+## JSON
+#a = [1,2,3,4]
+#to json  b = a.to_json
+# 
+# to list
+# c = JSON.parse(b)
+#
+
+## Time Date
+a= Time.new # date + time
+Time.now #same as Time.now
+Time.local(2001,2,15,20)
+a.day
+a.year
+
+a.localtime #输出本地时间
+a.utc #输出utc时间
+a.strftime("%Y-%m-%d") #时间格式化
+
+d = Date::new(2010, 2, 23)
+#
