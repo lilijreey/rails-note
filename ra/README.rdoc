@@ -1,10 +1,22 @@
 ## Rails
  是一个全栈的MVC web 框架
 
+##vim set: ft=ruby
+
  rails 对ruby 的内置类进行了修改
  e.g. String add blank?
 
-rails -s -b 0.0.0.0
+rails -s -b 0.0.0.0 绑定ip
+
+production 模式
+rails -e production 指定启动模式
+需要 生成secret_key
+  rake secret RAILS_ENV=production
+  把生成的key export 到环境变量中,也可直接放在 config/secrets.yml中
+  production:  
+    secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>  
+
+
 
 ## Qus.
  + 如何开启temple cache
@@ -165,6 +177,34 @@ cookies.delete :key
 
 通过cookies.permanent[:xxx] 来设置的value 自动有20年的有效期
 
+## asset pipeline
+# 所有的资源都需要在清单文件中列出,只有列出的才能找到
+#
+# 查看当前的assets 搜索路径, 默认有三处app/assets lib/assets, vonder/assets
+# Rails.application.config.assets.paths
+#
+# 每个controller 都有一个对应的js 和 css 文件
+# 在这些文件里面写入以后,必须在application.js/css 中 =require 对应的文件才能使用
+#
+# 引入一个包以后要加入js文件 安装pipeline的所搜路径指定需要的js文件的名字就好
+# e.g. 引入 ace.js文件
+# //= require ace-builds/src-min-noconflict/ace
+#
+#//=require_directory [路径] 将路径下，不包含子目录的文件按照字母顺序依次载入。
+#//=require_tree [路径]  将路径下的文件，包含子文件夹中的js文件全部载入 
+#
+#EE index file 模式
+# 可以给一个大的库指定一个index.js 清单文件,里面包含需呀引用的这个库的子模块
+# 然后要引入这个库时,就可以只引入这个清单文件即可
+# e.g. vendor/assets/jquery/index.js
+#   =require jquery 即可
+#    
+
+## 预编译在生成环境中使用,放在public/assets 目录下
+# rake assets:precompile RAILS_ENV=production ## 主要需要指定production才能开启压缩代码
+# 如果出现undefine method [] nil 错误, 把app/assets/style/下面所有的文件都改为.css.scss结尾
+#
+
 ## login
 * 实现机制
   把session 作为一个resource, 上线就是create session
@@ -256,6 +296,13 @@ rails new <AppName>
    
    Time zero
    config/application.rb config.time_zone= ?
+
+运行 rake time:zones:all OFFSET=+8
+显示所有+8时区
+在db中还是存的UTC时间
+
+不要用time.now 这个时间是根据系统当前时间
+使用time.zone.now
 
 ## 18n 国际化
 #  和android 相同，给每个字符串对应不同的local定义值/ config/locales/xx.yml
@@ -428,6 +475,11 @@ API
   DELETE FROM Tab WHERE Key=(Id)
    返回删除的个数
 + xx.find_by_sql("select * from xxx") 使用SQL语句查询
++ XX.select(:fieldName1, :fieldName2) 等于是XX.all 然后只返回你指定的fieldName
+      用来过滤希望返回的信息
+       e.g. XX.where(xxxxx).select(yyyy)
++ XX.where(:title => 'RailsConf').first
++ XX.where(:title == 'RailsConf').first
 + XX.limit
 + XX.offset 必须和limit一同使用，制定跳过的返回结果的个数
 + XX.exists?
@@ -655,9 +707,9 @@ many_to_many
    
 
 2. has_many :through
+     一般用来多对多
      通关一个中间Modle 来连接两个Model
-      has_many 的多层传递 
-      比如 a has_many b, b has_may c
+      比如 a has_many b, b belongs_to c, b belongs_to a
       则 a has_many c :though b
       e.g.
   has_many :replies, :through => :books, :source => :comments
@@ -687,9 +739,15 @@ delegate: :method1, method2, to :moduleName, prefix: true
 
 find
 ---------------------------------------
-* where
+* where 条件查找
   Model.where(Field => matchValue)
   where 可以接收纯 SQL语句
+   where('created_at <= ?', Time.now) 
+   会直接使用SQL 的where 拼接参数
+   where('created_at <= ? AND name= ?', Time.now, 'fff') 
+   where('created_at between ? AND ?', start, last)
+   where 的参数格式不能混用
+
 
  
 Scope
@@ -798,6 +856,7 @@ end
 
      + 在指定的范围内
        validates_inclusion_of :sex, in: %(male, famale), message: 'bad' #sex 必须是male 或者 famale
+       inclusion: { in: 0..9 }
        #  范围在in 中制定
 
 
@@ -899,6 +958,8 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
    redirect_to :back # 掉回到上一页
    redirect_to obj, alert: "message" 在flash[alter] 中添加message
    redirect_to obj, notice: "message" 在flash[notice] 中添加message
+
+   redirect_to "https://github.com/404.html" 可以直接重定向到一个网站页面
 
 
     n秒自动跳转
@@ -1016,8 +1077,8 @@ Form set other attr
 * member
    为Restful 添加新的action
    e.g. resources aa do
-          :member do
-           :get => :bar
+	  :member do 
+	   get :bar
           end
       会生成 /aa/:id/bar
 
@@ -1242,6 +1303,12 @@ resource :xxx
    scope as: user do
    end
 
+
+## traceroute
+# 一个工具用来检测是否所有的action 与route 一一对应
+
+
+
 Flash
 ---------------------------------------------
 通常是一个acton　set, 写一个action get
@@ -1257,9 +1324,15 @@ Action 中预定义的的变量和方法
 * headers
 * params -> hash
 * request
-     request.env["xxx"]
+     request.env["HTTP_HOST"]
+
      request.original_url ,当前页面的url
      request.headers["Content-Type"] 可以获取头部信息
+     request.host 
+     request.host_with_port
+     request.subdomain
+     request.protocol # "http://"
+     request.remote_host
 * session
 * redirect_to
 
@@ -1297,6 +1370,11 @@ cb
    gem 'thin'
    rails s 会自动使用thin
 
+  thin start --servers 3 -e production
+  开启三个进程
+  thin -h  查看帮助
+ 
+
 * unicorn
     ?????
 
@@ -1332,7 +1410,14 @@ form_tag 用于没有对应obj 的form生成
         = search_field_tag 'search', nil, :placeholder=>'Search'
         = submit_tag 'Search'
 
+= form_tag course_stat_teacher_path(current_user), :method => :get
+  label_tag 请选择日期:
+  input type="text" class="datepicker" name="start"
+  label_tag to
+  input type="text" class="datepicker" name="end"
+  = submit_tag "Submit"
    
+   如何得到参数get 还是通过params
 
 
 * dom_id 用在view 中
@@ -1508,7 +1593,69 @@ f.password_field :password_confirmation
 Gems
    
 + 权限管理
-   cancan
+gem   'cancancan', '~>1.10'
+   + cancancan 不关心用的是什么认证机制，他只依赖一个current_user 的方法
+     返回user record或者是一个nil
+
+
+ + rails g cancan:ability
+ 会生产app/models/ability.rb
+   所有的权限规则都在这里声明
+ability.rb << EOF
+class Ability
+  include CanCan::Ability
+  def initialize(user) ##这里对user可以执行的操作做设定
+       user ||= User.new # guest user (not logged in)
+
+       # 别名
+        alias_action :update, :destroy, :to => :modify # 定义所有的update,destroy,等同于modify
+
+       case user.role
+       when :admin then
+         can :manage, :all #can 是个方法定义在Ability 中
+                          # :manage 意思是执行所有的action
+       when :root then
+         can :new, :Book ## can 用来给每个权限定义可以执行的操作
+	                ## can <ActionName> <ControllerClass>
+	 can :index, :Book
+	 can [:edit, :update], :Book
+	 can [:edit, :update], :[Commit, Message]
+       else
+         can :read, :all ## :read 是cancan自定义的action别名
+
+       end
+  end
+end
+EOF
+
+ + view 
+ can? 方法会判断当前user，是否能够执行一个controller 的action
+ can? <ActionName> , <ClassName>
+ cannot?
+  <% if can? :index, Project %>
+
+ + controller
+  对每个controller,的action都定义user的访问权限
+
+	def index
+	  @projects = Project.all
+	  authorize! :index, @project ## authorize用来给每个controller 的action定义
+	  在can 中对应的名字
+	end
+   + 如果不想在每个action中都写authorize! 这句话，可以在controller 的开头写上
+     load_and_authorize_resource ## 每个名字都是action的名字
+
+
+
+   +捕捉　CanCan::AccessDenied
+	class ApplicationController < ActionController::Base
+	 # 在ApplicationContorller 中添加
+	  rescue_from CanCan::AccessDenied do |exception|
+	    redirect_to root_url, :alert => exception.message
+	  end
+	end
+
+   
 + annotate
   gem 'annotate', '2.6.5'
   generate modele fields type comment in Module.rb
@@ -1782,6 +1929,25 @@ development:
   password: 12345
   host: localhost
 
+
+## PostgreSQL
+#gem 'pg'
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: myapp_development
+  pool: 5
+  username: myapp
+  password: password1
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: myapp_test
+  pool: 5
+  username: myapp
+  password: password1
+
 rake db:create
 
 ## stamp
@@ -1817,4 +1983,99 @@ rake db:create
 #  
   .actions = f.submit nil, :data => {"disable-with" => "请稍等..."}
 
+# gem default_value_for
+# 给activeRecord 声明一个默认值
+class User < ActiveRecord::Base
+  default_value_for :name, "(no name)"
+  default_value_for :last_seen do
+    Time.now
+  end
 
+default_value_for :age do
+    if today_is_sunday?
+      20
+    else
+      30
+    end
+  end
+end
+
+u = User.new ## new 出后就有默认值了,只是在AR 层面,并不是db colnum
+u.name       # => "(no name)"
+u.last_seen  # => Mon Sep 22 17:28:38 +0200 2008
+
+
+## defore_action :call [,option]
+# 注意defore_action 对返回值并不关心
+
+## Gem mini-profiler
+# 性能分析工具
+# 
+
+## Gem gullet
+# 分析所有的N+1 db 操作
+
+* Gem brakeman
+  安全分析工具
+
+* Gem rubyocop
+  一个语法style 静态分析工具
+
+##EE Gem browser
+#浏览器类型发现
+
+##EE Gem acts_as_votable
+# raddit 风格的投票系统
+
+##EE Gem gollum-lib
+#built ont git wiki system
+#安装完后,还有根据所使用的文档类型,安装文档解析gem
+# e.g. gem wikicloth
+
+## icon identicon github style 
+#  gem 'identicon'
+#  使用 
+  <%= image_tag(Identicon.data_url_for(@user.name, 128)) %>
+  会自动生成内联的img data
+
+  Identicon.file_for "User's email? Username? Telephone?", "/path/to/the/image"
+  生成图片文件
+
+还有一种是使用纯前端的cavase 来生成图片
+
+## bower-rails
+# rails的bower 集成
+# gem "bower-rails", "~> 0.10.0"
+# 1. 生成配置文件 bower.json
+#   rails g bower_rails:initialize json
+# 2. zai bower.json里面写入需要的js包名
+#
+# 3. 下载
+#   rake bower:install
+#   默认会下载到vendor/assets/bower_components
+#
+# 4. 添加asset pipeline
+#  默认会把vendor/assets/bower_components 自动添加到资源搜索路径
+#  config.assets.paths << Rails.root.join("vendor","assets","bower_components")
+# 
+# 5. 在application.js 中添加
+# //=require Name/js
+#
+# 6. 需要重启server
+#
+
+# gem gem "bower-rails", "~> 0.10.0"
+# 首先执行 rails g bower:initialize json
+# 会生产两个文件,一个配置,一个插件文件bower.json
+#  需要什么包就在bower.json中写入,然后执行 rake bower_rails:install
+#  默认安装在vendor
+
+## jquery-ui
+# gem jquery-ui-rails
+# 使用
+#  引入js/css 文件
+#  
+$(document).ready ->
+    $("#datepicker").each ->
+        $(@).datepicker
+          dateFormat: "yy/mm"

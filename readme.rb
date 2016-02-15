@@ -1,6 +1,8 @@
 #Ruby
 #一种基于完全OO 设计的语言
 
+## IRB
+load 'x.rb'
 #
 #安装rvm
 #
@@ -14,6 +16,7 @@
 # rvm  use ruby-xxx --default
 #
 ###### gem 使用 类型与npm
+# gem help commands
 # gem source
 # change gem source
 #
@@ -24,11 +27,19 @@
 # 
 # gem environment 
 #   查看环境
+#
+# gem which GemName
+#   查看指定gem的路径
+# gem open GemName
+#   直接编辑指定gem
 #   
 # 查询gems 存放的目录
 # gem enviroment gemdir
 #
 ####ruby 安装完后安装rails
+# 首先执行 rvm requirements
+#  安装库
+#
 #gem install rails
 #跟新gem 源 
 # gem sources --help
@@ -79,6 +90,28 @@ rtags
 compile
 -------------------------------------
 TODO
+
+## ruby 函数编程
+## map
+## each
+
+
+## reduce
+[3,4,5].reduce(:+)
+[3,4,5].reduce(0) {|acc, v| acc+ v} # 和上面一样 0是acc的默认值
+
+## inject 是reduce 的别名
+[3,4,5,].inject do |acc, v| 
+  acc + v
+end
+
+## select
+
+## one?
+## all?
+
+对于hash v 为list[k,v]
+a.reduce(0) {| acc, (k,v)| acc + v}
 
 #
 #
@@ -216,6 +249,11 @@ end
 #   
 #
 
+## ruby 有一个内置的变量　caller : Array
+#存放当前的调用堆帧
+# fileName:line:in FunctionName
+
+
 # 内置
 # __FILE__ -> 返回string 当前文件名
 # __LINE__ -> int 行数
@@ -343,15 +381,76 @@ end
 #fesf fejsof 
 #EOF
 
-## block
+##EE block
 #{ ..}
 # do .. end
 #所有的block 都可以跟在一个function 后面，如果function 调用的yield 就会调用一个次block
-#deof cb
+#def cb
 #  print one
 #  yield(arg1, arg2)
 #end
+#
 # cb {|arg1, arg2| xxx ;}
+
+def aa(&p) #&p 是一种声明格式,如果在调用aa的时候后面有Block,
+           #Block 会存放在p中, 如果没有Block,则也不会报错,p中什么也没有
+  3
+end
+aa #=> 3
+aa {55} #=>3
+## 如何方法后面都可以跟一个Block
+#如果方法需要使用Block 则可以调用 yield
+# 或则调用.call 方法
+#block不能独立存在，同时你也没有办法直接存储或传递它，必须把block挂在某个方法后面。
+
+def bb()
+  yield ## 在调用bb 时必须根一个block不然yield 会报错
+end
+
+def cc(&b)
+  ## 在调用cc 时必须根一个block不然b.call 会报错
+  b.call  if block_given?
+end
+
+##EE block_given? 询问当前方法是否包含block
+
+##EE & 的其他作用
+# &obj == obj.to_proc 方法
+["1", "2", "3"].map(&:to_i) 等价与
+["1", "2", "3"].map {|i| i.to_i}
+
+# 在 || 之内的变量成为块变量
+# Block 本身不是对象
+
+
+#把Block 变为对象
+#有三种方法
+#a = Proc.new <Block>
+# 创建一个Proc 对象,把Block 作为参数传递进去
+# 后可以调用a.call(args) 调用, 使用Proc.new 创建的变量在调用.call时不会检测
+# 参数个数是否匹配
+#
+#
+#b = lambda <Block>
+#  b.call
+#  
+#lambda 还有一种写法
+#b = ->(args) { }
+#
+#c = proc <Block>
+#  b.call
+# lambda 和 Proc.new/proc 的区别在于返回的时候
+# e.g.
+begin
+  lambad {return 1}.call ## 这里就是简单的从lambad中返回
+end
+begin
+  proc {return 1}.call ## 这里是从包含proc的block上线文中返回,也就是直接从begin/end返回了
+  123
+end
+# lambda 和 proc 都是Proc 对象
+
+
 
 ##EE load require 加载其他文件
 # 每次调用load 都会加载并执行加载的文件
@@ -418,8 +517,6 @@ const_missing() 当对常量调用一个不存在的方法时
 obj.undef_method 会删除所有方法，包括继承来的
 obj.remove_method 只会删除调用对象自己的
 
-EE 询问当前方法是否包含block
-Kernel#block_given?
 
 Kernel.local_variables
 Kernel.global_variables
@@ -565,6 +662,25 @@ a.year
 a.localtime #输出本地时间
 a.utc #输出utc时间
 a.strftime("%Y-%m-%d") #时间格式化
+a.between?(i, j) # 测试a是否在i,j之间
 
+## Rails
 d = Date::new(2010, 2, 23)
-#
+Date::today
+"2002-1-22".to_date
+
+## Logger
+require 'logger'
+
+  Log = Logger.new(STDOUT)
+  #设置打印格式
+  Log.formatter = proc { |severity, datetime, progname, msg|
+    "#{severity} #{caller[4]} #{msg}\n"
+  }
+
+  Log.info "test message"
+  Log.debug "test message"
+
+## signal
+## 信号处理 ruby 使用trap 方法捕获并处理一个信号
+trap("TERM") { puts "TERM"}
