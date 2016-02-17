@@ -3,7 +3,16 @@
 
 ## IRB
 load 'x.rb'
+
+##pry
+#irb 的替代品,支持debug
+
+##debugger
+#see pry.rb
 #
+#可以调试rails
+#gem 'ryp-rails'
+
 #安装rvm
 #
 # 安装玩rvm 后安装ruby

@@ -1931,7 +1931,10 @@ development:
 
 
 ## PostgreSQL
-#gem 'pg'
+#gem 'pg' 
+#安装的时候如果编译失败,
+#1. apt-get install postgresql-server-dev
+#2. ARCHFLAGS="arch x86_64" gem install pg
 development:
   adapter: postgresql
   encoding: unicode
