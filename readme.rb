@@ -227,6 +227,13 @@ end
 #
 # 以模块方式提供的方法必须使用 Module.func 来调用
 # 引入模块　require 'xxx'
+#   不需要xxx.rb 
+#   在$LOAD_PATH　中查找xxx.rb
+#
+# require_relative 'xxx
+#   是在当前目录下加载　./xxx.rb
+#   == require './xx'
+#
 # 
 # 使用include 则可以将模块中的所有定义混入到当前命名空间中
 # 将模块混入类中称为 Mix-in, 可以使得多个class 复用相同的代码
@@ -234,7 +241,7 @@ end
 # 
 # 使用extern 替换include 后，只是模块中的方法都变为的类方法，而不是实例方法
 # 
-# 导出模块方法，　模块中定义的方法都只能在本模块内部使用，如果想
+# 导出模块方法，　模块中定义的方法都只能在本模块内部使用，如果
 # 导出方法要使用　module_funciton :xxx
 # 
 # 作为　namespaces 使用

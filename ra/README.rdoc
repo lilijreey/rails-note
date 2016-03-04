@@ -1,7 +1,7 @@
 ## Rails
  是一个全栈的MVC web 框架
-
-##vim set: ft=ruby
+rails new <name>
+rails new <name> --skip-bundle ## 加快速度
 
  rails 对ruby 的内置类进行了修改
  e.g. String add blank?
@@ -16,9 +16,24 @@ rails -e production 指定启动模式
   production:  
     secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>  
 
+background 后台运行Rails
+-d 后台运行
+1. nohup <cmd> &
+   nohup rails s -e production
+   pid 在/tmp/pids/server.pid
+
+2.  rails s -d
 
 
 ## Qus.
+ + CMS　系统
+   comfortableMexicanSofa
+   gem 'comfortable_mexican_sofa'
+	Then from your Rails project's folder run these commands:
+	bundle install
+	rails generate comfy:cms
+	rake db:migrate
+
  + 如何开启temple cache
 
  +  404
@@ -181,7 +196,10 @@ cookies.delete :key
 # 所有的资源都需要在清单文件中列出,只有列出的才能找到
 #
 # 查看当前的assets 搜索路径, 默认有三处app/assets lib/assets, vonder/assets
-# Rails.application.config.assets.paths
+#  所有在这三个目录下的子目录会自动被Rails查找
+#
+# * Rails.application.config.assets.paths
+# * 添加查找目录
 #
 # 每个controller 都有一个对应的js 和 css 文件
 # 在这些文件里面写入以后,必须在application.js/css 中 =require 对应的文件才能使用
@@ -192,6 +210,7 @@ cookies.delete :key
 #
 #//=require_directory [路径] 将路径下，不包含子目录的文件按照字母顺序依次载入。
 #//=require_tree [路径]  将路径下的文件，包含子文件夹中的js文件全部载入 
+#= require_self 是引用当前文件，一般是application
 #
 #EE index file 模式
 # 可以给一个大的库指定一个index.js 清单文件,里面包含需呀引用的这个库的子模块
@@ -204,6 +223,11 @@ cookies.delete :key
 # rake assets:precompile RAILS_ENV=production ## 主要需要指定production才能开启压缩代码
 # 如果出现undefine method [] nil 错误, 把app/assets/style/下面所有的文件都改为.css.scss结尾
 #
+
+##image
+#图片可以直接放入public文件夹,
+# 然后直接在view 中img src="name.png" 就可以引用
+#可以
 
 ## login
 * 实现机制
@@ -308,6 +332,16 @@ rails new <AppName>
 #  和android 相同，给每个字符串对应不同的local定义值/ config/locales/xx.yml
 #  在其他地方使用I18n.t ('stirngKey') 
 #  在 view 中使用 t('stringKey') 来引用value
+#
+#  代码以的标签都是英文，
+#  每一个语言都有一个local文件，把这些文字翻译为对应语言
+#
+#  local文件 Rails 会自动加载config/locales/下面的所有.rb .yml文件
+#  添加加载路径　config.i18n.load_path += Dir[Rails.root.join('my','locales', '*.{rb,yml}'.to_s]
+#
+#  设置默认语言
+#    config.i18n.default_locale = :zh
+#  
 
 ## trun on cache response
  config/environments/development.rb
@@ -1142,6 +1176,41 @@ match 'path', to: 'c#a', via: :all
   get 'ookk/:id' => show, id: /\d+/  #==# 
   get 'ookk/:id' => show, constraints: {id: /\d+/}
        constraints: proc{|req| req.params[:id].to_id < 100} # 还可以是block
+       constraints: {subdomain: 'api'}
+
+
+## subdomain
+#/etc/host 首先需要添加子域名
+#e.g. 
+# 127.0.0.1 api.localhost
+# 127.0.0.1 *.localhost
+
+#  如果request.subdome 是空 develement.rb 中添加
+config.action_dispatch.tld_length = 0  ## 用来设置子域名从第几个.开始
+www.aa.bb.com =0 的情况先
+ subdomain = www.aa.bb =0
+ subdomain = www.aa =1
+ subdomain = www =2
+
+
+
+
+
+cookies 共享 需要设置：
+
+自定义
+lib/subdomain.rb << EOF
+	class Subdomain
+	  def self.matches?(request)
+
+	    request.domain.split('.').size>1 && request.subdomain != "www"
+	  end
+	end
+
+	constraints(Subdomain) do
+	  get '/',  to: "custom#home", as: 'custom_root'
+	end
+EOF
 
 
   get 'ookk/:id' => show_error, id: /\d+/
@@ -1187,8 +1256,23 @@ match 'path', to: 'c#a', via: :all
   end
 
 * Namespace routing
+  当在routes 中有namespace :api do
+
+  namespace :api, defaults: { format: :json },  ## 指定默认MIME 类型为json, 默认返回的类型为json, 也就是使用json模板渲染
+                  constraints: { subdomain: 'api' }, ## 指定子域名api.xxx.com
+		  path: '/'   ## 指定每个请求都是从/开始 ??
+		  do
+    scope module: :v1,  ## 需要建立api/v1 
+      constraints: ApiConstraints.new(version: 1, default: true) do
+      # We are going to list our resources here
+      resources :users, :only => [:show, :create, :update, :destroy] ##api.xx.com/v1/user/:id
+    end
+  end
+
+
+  的时候，Rails会自动的把这个namespace 对应到controller 同名的目录下
   Namespace controller
-    rails g controller Namespace/Name
+    rails g controller api/Name
       e.g. rails g controller admin/user
        
        不同的namespace 下可以有相同的controller
@@ -1837,6 +1921,17 @@ gem 'active_merchant'
 gem 的机制
 ---------------------------------------------------
 
+## debugger
+gem 'byebug'
+  调试功能
+  在需要断电的地方写入
+  debugge
+  e.g.
+  def index
+  debuge
+  end
+指令和gdb 类似，使用help得到帮助
+
 ## show debug info
     = debug(params) if Rails.env.development?
 
@@ -2082,3 +2177,10 @@ $(document).ready ->
     $("#datepicker").each ->
         $(@).datepicker
           dateFormat: "yy/mm"
+
+## API
+#使用 active_model_serializers 在model　层得到json格式数据
+gem 'active_model_serializers'  
+   
+
+　　
