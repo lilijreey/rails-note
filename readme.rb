@@ -25,12 +25,20 @@ load 'x.rb'
 # rvm  use ruby-xxx --default
 #
 ###### gem 使用 类型与npm
-# gem help commands
+# gem help commands 输出所有命令
+# gem help <cmd> 查询某个命令
+#
 # gem source
 # change gem source
 #
+# +config file
+#  /home/.gemrc
+#
 # gem install <GemName> --rdoc
 # gem install <GemName> --ri
+# gem install rails -v 可以指定版本
+#
+# gem uninstall rails -v
 # 
 # 使用rvm 必须以一个login shell 登陆
 # 
@@ -44,6 +52,9 @@ load 'x.rb'
 #   
 # 查询gems 存放的目录
 # gem enviroment gemdir
+#
+# 清除旧的gem 
+# gem cleanup
 #
 ####ruby 安装完后安装rails
 # 首先执行 rvm requirements
@@ -69,7 +80,9 @@ load 'x.rb'
 #
 #  
 # 更改gemfile
-# 
+#
+#~> 2.0.3 等同于 >= 2.0.3 并且 < 2.1
+#~> 2.1 等同于 >= 2.1 并且 < 3.0
 
 ## doc help  查询文档
 # RDoc 是一个嵌入式文档生成器，扫描源码生成文档，like docexy 
@@ -91,6 +104,11 @@ load 'x.rb'
 #  
 # rdoc
 rvm docs generate
+
+## ruby -y xx.rb
+# 打印语法分析信息 parse
+
+## ruby --dump parsetree x.rb
 
 rtags
 生成　tags 的工具
@@ -450,8 +468,11 @@ end
 #b = lambda <Block>
 #  b.call
 #  
-#lambda 还有一种写法
+##EE lambda 还有一种写法
 #b = ->(args) { }
+#可以使用[3] 来代替 .call(3)
+#e.g.
+# - x {x*2}[3]
 #
 #c = proc <Block>
 #  b.call
@@ -568,6 +589,17 @@ end
 inc.call(3)
 
 
+##dup clone
+#dup(3) dum(obj)
+#都返回一个浅拷贝
+#
+#如果拷贝对象类型定义了 initialize_copy (ruby 的拷贝构造,在dup时触发调用)
+#
+##EE taint 污染对象
+#obj.taint
+#obj.taint?
+#作用??
+#
 
 当前类
 当以类作为参数时
@@ -597,6 +629,11 @@ end
 #eigenclass 单件类
 
 
+### Exception
+#raise 抛出异常
+#rescue 捕获异常
+#
+#ensure 类型与finial. 有没有异常都执行这里
 
 ### Gem about
 RubyGems 是一个程序或库的标准化打包，安装框架。 类似于npm
@@ -649,6 +686,10 @@ end
 gem build <Gemname>.gemspec
 gem 文件是一个tar格式文件
 
+## 有用的gmes
+#EE gem install awesome_print 
+#   like pp
+
 ## delegate
 #
 ### regx 支持uncode
@@ -658,6 +699,19 @@ gem 文件是一个tar格式文件
 # 删除一个字符串中指定的字符 a,b,c,d 
 # "fejksofjef" =~ /([^a,b,c,d]+)/
 # 
+
+##EE Lex/Yacc
+#Treetop ruby 的lex + Yacc
+
+## 语法分析工具
+#Ripper
+#require 'ripper' 显示Ruby token
+#code = <<EOF 
+# 10 + 3
+#EOF
+#Ripper.lex(code)
+#
+#Ripper.sexp(code) 显示AST
 
 
 ## JSON
@@ -697,6 +751,11 @@ require 'logger'
   Log.info "test message"
   Log.debug "test message"
 
+
 ## signal
 ## 信号处理 ruby 使用trap 方法捕获并处理一个信号
 trap("TERM") { puts "TERM"}
+
+## Web
+#开启一个服务器 指定root/Dir
+#ruby -run -e httpd . -p 3000

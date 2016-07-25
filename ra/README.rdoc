@@ -6,7 +6,8 @@ rails new <name> --skip-bundle ## 加快速度
  rails 对ruby 的内置类进行了修改
  e.g. String add blank?
 
-rails -s -b 0.0.0.0 绑定ip
+rails s -b 0.0.0.0 绑定ip
+        -p 7777 
 
 production 模式
 rails -e production 指定启动模式
@@ -33,6 +34,77 @@ background 后台运行Rails
 	bundle install
 	rails generate comfy:cms
 	rake db:migrate
+
+1.   可以创建不同的站点
+2. 可以自定义布局
+   布局就是一个html 格局
+   　可以在布局中引用　编辑的内容
+   格式为: cms:<TagsType>:<Name>:<Tyep>
+   每个{{}} 作为一个block 结构存在
+e.g.
+    {{ cms:page:header:string }}
+    {{ cms:page:content:text }}
+    {{ cms:page:another_block:rich_text }}
+    {{ cms:page:content:rich_text }}
+
+
+
+TagsType:
+  + page: 会render 到页面中
+  + field: 不会render 到页面中，可以被helpers 通过cms_block_content("xx") 来访问
+      可以用来传递参数，比如需要查找的所有页面的tag
+  + snippet
+  + helper:method_name 用来调用helper 方法
+  + file 用来上传文件
+
+  
+
+  自定义布局，布局的内容通过自定义　{{cms:page:<field><type>}} 来添加
+　　当你写cms:page:<FieldName><Type> 的时候
+    只要页面中引用这个这个样式，就会被每一个Field一个编辑区域
+
+   内容的引用使用namespace 开始都是cms:<
+
+
+
+3. 可以使用片段
+   {cms:snippet:<Name>}
+
+5. 类别的使用
+    页面和片段都可以使用类别
+  在view 中访问指定类别
+    - Comfy::Cms::Snippet.for_category('xx').each do |slide |
+      
+6. 在layout中调用插入app中的模板（render)
+    {{ cms:partial:path/to/partial }}     # same as <%= render :partial => 'path/to/partial' %>
+    {{ cms:partial:/enum_xx}}   # 渲染的文件为app/views/_enum_xx.html.erb
+
+    
+
+7. 在app中访问CMS的内容
+      Comfy::Cms::File
+      Comfy::Cms::Layout
+      Comfy::Cms::Page
+      这些都是ActiveRecord 的类型
+      obj.block 得到对应的block ActiveRecord
+      obj.block.tag 得到对应的Tag
+
+
+      Comfy::Cms::Page.first 第一个文件
+      Comfy::Cms::Page.first.blocks_attributes -> 得到本页的所有page:填充字段 Array()
+      page.lable 得到页面标签
+      page.blocks.find_by_identifier(:name).content
+      helper: cms_block_content(:desc, pageObj) 访问指定的block
+
+      得到所有同类型页面
+      Comfy::Cms::Page.for_category
+
+
+       访问file_image
+       c.content.first.file.url
+
+4. 可以上传文件
+
 
  + 如何开启temple cache
 
@@ -388,8 +460,34 @@ Migration 搭配的 Rake 任務
 * 如果执行失败可以是使用　
   rails destroy scaffold <Name> 撤销操作
 
-## model ActiveRecord
+##EE model ActiveRecord
 #使用不同的DB， 兼容性不是很好，所以在测试的时候就使用和生产环境一样的DB
+*ActiveRecord 类是对一个表中一个row的表示，并不是对DB table 的表示
+*ActiveRecord 并不定义对应的表中的属性（字段)是因为，运行是，对自动的分析
+   DB表的每个字段
+* 一个ActiveRecord 对应的表，是根据这个类的名字来查找的，可以使用
+   self.table_name "tableName" 来指定对应的表
+
+
+EE 单表继承
+ 一个或多个Model继承于另一个Model,并且最终它们用的是同一张表
+class Company < ActiveRecord::Base; 
+end
+class Firm < Company; end
+class Client < Company; end
+ActiveRecord 可以继承，但是所有相关类的实例都会写在一个表中
+
+通过在表中添加名字来区别不同的类型.
+* 必须在表中添加type : string,来触发单表继承,没有则不会
+* 使用继承的类型create的时候会自动填写 type
+* 不同的module 不一定要对应到不同的DB表
+
+EE 多态关联
+  Polymorphic = true
+  意思是，belongs_to 多个不同的类型，这些类型在逻辑上是一个东西,
+  每个对象只能关联到这些类型中的一个类型
+
+
 rails 会自动添加id 字段作为primary-key
 run 'rails g model' 查看选项 
 
@@ -493,6 +591,7 @@ e.g.
   进入db 控制台
 
 API
++ XX.column_names
 + XX.new -> object()
 + XX.create == XX.new + obj.save
 + XX.first 具体是哪个要看排序的顺序
@@ -1100,6 +1199,10 @@ Form set other attr
 * rake routes 显示所有的路由路径
 * 在view 中得到当前的route
 
+* mount
+    路由到自己的应用中
+   mount AdminApp, at: '/admin'
+
 * 设定一个root, root 'store#index', as: 'store'
     as 是定义对应的helper
 
@@ -1673,6 +1776,8 @@ f.password_field :password_confirmation
 # gem 'bcrypt-ruby', '~> 3.0.0' # provied bcrypt hash func
    ~> 的意思是安装版本号>3.0.0 但小于3.1.0 的版本
   一般建议使用精确版本号，不容易发生错误
+#~> 2.0.3 等同于 >= 2.0.3 并且 < 2.1
+#~> 2.1 等同于 >= 2.1 并且 < 3.0
 
 Gems
    
@@ -1917,6 +2022,8 @@ gem 'searchkick'
 gem 'active_merchant'
    在线支付
 
+gem 'enumerize'
+ ActiveRecord 的枚举
  
 gem 的机制
 ---------------------------------------------------
@@ -2181,6 +2288,54 @@ $(document).ready ->
 ## API
 #使用 active_model_serializers 在model　层得到json格式数据
 gem 'active_model_serializers'  
+
+
+##API URL
+#两个gem 
+* Rails-api
+* Grape
+
+
+## 部署 deploy
+#gem mina
+#1. 首先 mina init
+# 会生成config/deploy.rb 配置
+#
+#2. 修改配置 
+#3. mina setup --verbose
+#    初始化远程主机环境
+#执行完后，需要手动编辑shared 中的配置，因为每回都会用这个重写当前项目对应的文件
+#
+#
+#每次部署
+#4. 提交代码到git 仓库
+#5. mina deploy
+#   
+#注意环境的配置，
+#需要使用rvm, 要不然找不到bundel
+#需要安装nodejs 不然报错
+#发布的时候自动就是produce 环境
+#注意如果在配置文件中写错指令， 则不会报错，直接忽略
+#
+#
+#使用 --trace 查看详细信息
+#配置命令 
+#set :name,  'xxxx'
+#task :taskName do # 定义task
+#  end
+#invoke :taskName 调用task
+#
    
+## XML
+#Rails 4 中不支持直接对XML 格式body进行处理
+#params[:xml][:elemName]
+# 可以使用gem 来处理
+# 1. gem 'actionpack-xml_parser'
+# 2. 在　config/application.rb << EOF
+#  require 'action_dispatch/xml_params_parser'
+#
+#   config.middleware.insert_after ActionDispatch::ParamsParser, ActionDispatch::XmlParamsParser
+#  EOF
+
 
 　　
