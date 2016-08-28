@@ -268,7 +268,9 @@ end
 # 使用　Module.fn 调用方法
 # 使用　Module::xxx 访问常量
 # 
-
+# autoload :Symbol, "file"
+#   延迟加载, 第一个参数必须是一个模块名或者是Class名，在file中定义的
+#   只要是触发加载就会加载整个文件，而不是只是指定的符号
 
 ## 变量 variab
 # 1. 局部
@@ -634,6 +636,15 @@ end
 #rescue 捕获异常
 #
 #ensure 类型与finial. 有没有异常都执行这里
+
+## raise 形式
+
+raise # 抛出一个RuntimeError
+raise "msg" # 抛出一个RuntimeError 和指定的消息
+raise Type, "msg"
+
+raise 抛出的类型只能是,Exceptin 的子类
+obj.message 得到消息
 
 ### Gem about
 RubyGems 是一个程序或库的标准化打包，安装框架。 类似于npm

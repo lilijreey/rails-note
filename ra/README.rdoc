@@ -26,6 +26,13 @@ background 后台运行Rails
 2.  rails s -d
 
 
+## Rails 组件
+#* DB->ROM ActiveRecord
+#* 前端资源打包 AssetPipeline sprockets gem
+#* Controller
+#* 模板引擎
+#* heapler 
+
 ## Qus.
  + CMS　系统
    comfortableMexicanSofa
@@ -165,13 +172,6 @@ TagsType:
  + logout 
     new,delete session resource
 
- + cookies 
-    由Rails 提供的，可以看成为Hash，每个element 的格式为
-    {value: xxx, expires: xxx}
-    value 是文本值
-    expires 是失效时间
-
-    cookies.permanent[:xxxx] = test_value 会自动把expires 设为20年以后
     
  
  + Unpermitted 看看是不是controller的parmar 私有方法没有改变
@@ -229,8 +229,27 @@ rake state  # 代码统计
 ## Ruby 使用module 来打包一系列函数
 
 
+## cookies
+由Rails 提供的，可以看成为Hash，每个element 的格式为
+{value: xxx, expires: xxx}
+value 是文本值
+expires 是失效时间
+#在view 和helper中访问cookies
+  class MyController < ActionController::Base
+     helper_method :cookies
+
+cookies[:list_mode] = "xxxx"
+cookies[:list_mode] = {value:'xxx', :expires => 5.minutes.from_new}
+cookies.delete :key
+
+通过cookies.permanent[:xxx] 来设置的value 自动有20年的有效期
+    cookies.permanet.sigend[:key] 会加密对应的value,但是名字还是能被看见
+
+
 ## session
 一个hash 数据结构，Rails内建了session变量
+rails为每一个页面创建一个session变量
+session被存放在cookies中
 使用一个32-len string作为id
 档一个session创建后，server端会自动在发往client的cookie中填入这个session的id
 session中只应该存放简单的string或这数字
@@ -253,19 +272,12 @@ session_options[:digest] = 默认是SHA1, 也可以是OpenSSL支持的其他算�
 清除session
     reset_session
 
-## cookies
-#在view 和helper中访问cookies
-  class MyController < ActionController::Base
-     helper_method :cookies
-
-cookies[:list_mode] = "xxxx"
-cookies[:list_mode] = {value:'xxx', :expires => 5.minutes.from_new}
-cookies.delete :key
-
-通过cookies.permanent[:xxx] 来设置的value 自动有20年的有效期
 
 ## asset pipeline
-# 所有的资源都需要在清单文件中列出,只有列出的才能找到
+# 所有的资源都需要在清单文件中列出,才能进入Pipeline的处理流程
+# 作用预编译,把不同资源文件压缩成一个文件,加快网页的加载速度
+#
+#* 清单文件
 #
 # 查看当前的assets 搜索路径, 默认有三处app/assets lib/assets, vonder/assets
 #  所有在这三个目录下的子目录会自动被Rails查找
@@ -280,21 +292,23 @@ cookies.delete :key
 # e.g. 引入 ace.js文件
 # //= require ace-builds/src-min-noconflict/ace
 #
+#* 指令
 #//=require_directory [路径] 将路径下，不包含子目录的文件按照字母顺序依次载入。
 #//=require_tree [路径]  将路径下的文件，包含子文件夹中的js文件全部载入 
-#= require_self 是引用当前文件，一般是application
-#
-#EE index file 模式
-# 可以给一个大的库指定一个index.js 清单文件,里面包含需呀引用的这个库的子模块
-# 然后要引入这个库时,就可以只引入这个清单文件即可
-# e.g. vendor/assets/jquery/index.js
-#   =require jquery 即可
-#    
+#//= require_self 是引用当前文件，一般是application
 
+#* 编译指令
+# rails assets:precompile
+#
 ## 预编译在生成环境中使用,放在public/assets 目录下
 # rake assets:precompile RAILS_ENV=production ## 主要需要指定production才能开启压缩代码
 # 如果出现undefine method [] nil 错误, 把app/assets/style/下面所有的文件都改为.css.scss结尾
-#
+# 预编译的结果会放到 public/asset/下
+
+#* 在view中引用pipeline资源
+# 使用hepler image_tag "只要名字就可以不需要路径
+# javascript_include_tag 
+# stylesheet_link_tag
 
 ##image
 #图片可以直接放入public文件夹,
@@ -544,6 +558,9 @@ e.g.
 
 ## Database db
 #
+* console 连不上DB
+ActiveRecord::Base.connection
+
 # database 都在 config/databse.yml 中配置
 #  Rails 在不同环境中使用不同的 DB, 如 development, test, produce
 #  使用ORM 模型
@@ -630,6 +647,7 @@ API
   ActiveRecord::Base.conection
 
 + obj.valid? 验证有效性，使用model定义的验证函数
+    重写valid相关方法
 + obj.new_record?
 + obj.persisted?
 + obj.attributes
@@ -679,6 +697,10 @@ has_one XX 会自动导出
     self.signed_student = list
   end
 
+## 单表继承 inh
+默认一个表可以集成另一个表, colument的参数是type
+self.inheritance_column = nil #屏蔽单表继承,默认名字为type
+
 
 Megirate
   
@@ -700,7 +722,7 @@ t.<type>(:name, option={})
    null: false
 
 t.index(:column, unique: true)
-t.belongs_to
+t.belongs_to 等价与 t.references
 
 rails给通用的类型定义了type,有对每个特殊db，定义了自己的type
 可以查看 NATIVE_DATABASE_TYPES, 来查找类型映射
@@ -742,7 +764,8 @@ rake db:structure:dump
 
       save file && rake db:migrate
 
-references :xxx 等效于 integer :xxx_id
+references :xxx 等效于 integer :xxx_id 
+ 使用references并不会设定外键关系,如果要要显式设置
   注意是单数形式
    如果在脚手架设定 references 则会生成，对应的外键关系
      e.g.
@@ -750,12 +773,16 @@ references :xxx 等效于 integer :xxx_id
    定义references table, 而不是 table_id , _id rails 会自动添加
 
 
-  add_references/ add_belogs_to 和add_foregin_key 是一样的，最后都调用
-  add_foregin_key
-* add_foregin_key
-    e.g. add_foregin_key :books, :users
+  add_references/ add_belogs_to 和add_foreign_key 是一样的，最后都调用
+  add_foreign_key
+* add_foreign_key
+    e.g. add_foreign_key :books, :users
      will add a'user_id' to books
-    e.g. add_foregin_key :books, :users, name: :my_user
+    e.g. add_foreign_key :books, :users, name: :my_user
+         add_foreign_key "courses", "users", column: "creator_id"
+
+* 自定义名字
+  add_reference(:courses, :creator, foreign_key: {to_table: :users}, index:true, null:false)
 
 
 associations
@@ -1026,12 +1053,20 @@ Rails 使用laouts 来控制显示的布局.
       e.g. Class XX < ApplicationContorller
                 layout 'LaoutName'
     + 在render 时也可以expilcit without layout   e.g. render :layout => false;
+    + 如果有一个和ControllName一样的layout文件,则默认的application Layout就不会在加载了
 
 * Rails 根据controller class 的继承关系来寻找match 的 layout
 
 如果局部视图要在多个controller 中公用则需要放在
 app/view/shared/  以_ 开头 ,render 中则去掉_
    e.g. _error_messages <%= render error_message %>
+
+render 渲染
+--------------------------------
+每个action 有默认的render
+  如果不要render, 可以指定跳转到另一个页面(使用redirect)
+
+render partial: 'room', locals: {nick: @nick}
 
    render :type , options
    所有的 render 的模板都是在view 根目录下的
@@ -1145,7 +1180,15 @@ app/view/shared/  以_ 开头 ,render 中则去掉_
     * 打印render text: params.inspect
 
 
-## helper
+## view helper
+#内置
+form_tag 没有model实例
+= form_tag '/rooms'  do
+  = text_field_tag :nick
+  = submit_tag "Enter Room"
+form_for 有model实例
+
+
  让在 controller 中定义的方法 view 中调用
 * helper_method [:current_user, :logged_in?]
   任何一个controller 的helper_method都可以在任何的view中调用
@@ -1195,6 +1238,10 @@ Form set other attr
 		      :name 设置显示的信息
 
 ## rounter
+* 显示当前所有路由
+#访问 http://localhost:3000/rails/info/routes 
+
+
 #作用 把http的请求映射到controller active 上， 自动生产help方法
 * rake routes 显示所有的路由路径
 * 在view 中得到当前的route
@@ -1295,7 +1342,8 @@ www.aa.bb.com =0 的情况先
  subdomain = www.aa =1
  subdomain = www =2
 
-
+error
+* uninitialized constant 错误都是controll的文件名和resources的不匹配, 单复数问题
 
 
 
@@ -1523,12 +1571,6 @@ Action 中预定义的的变量和方法
 * session
 * redirect_to
 
-render 渲染
---------------------------------
-每个action 有默认的render
-  如果不要render, 可以指定跳转到另一个页面(使用redirect)
-
-render 的格式，还控制这HTTP response 的content-type 字段
 
 
 cb
@@ -1654,19 +1696,13 @@ layout application.html.erb
   <%= csrf_meta_tags %>
   <%= yield %>
 
+## 一个layout中可以有多个yield 但是只能有一个无名yield,剩下的必须是有名 yield
 
-  『 stylesheet_link_tag 』 這段程式碼意思是 Rails 會把 app/assets/stylesheets 資料夾裡的
-.css、.scss檔合併、並壓縮成一個名叫application.css的css檔給網站用
- 在develop的情况下不会合并， 并且引用的是application.css中的引入文件
+head
+ = yield :head ##命名yield, 配合content_for 用
 
-『 javascript_include_tag 』這段程式碼意思是 Rails 會把 app/assets/javascripts 資料夾裡的
-.js、.coffee檔合併、並壓縮成一個名叫application.js的js檔給網站用
 
-『 <%= csrf_meta_tags %> 』加入csrf安全機制(詳見這裡)
-
-『 <%= yield %> 』
-  没有任何参数的yield会默认rander当前controller#action 的模板
-
+## content_for
  有参数的 yield :xx ##相当于占了个位置, 把后门在content_for :xx
                     ## 中的内容添加到这里,即时没有:xx 也不会抱错
  需要配合 content_for :xx do
@@ -1691,6 +1727,9 @@ layout 是会被继承的
   如果是在layout 下面需要指明
   可以使用 render "layouts/filename"
     render :partial "layouts/filename" 形式的简写
+
+## nested layout 嵌套layout
+content_for?
 
 ## 内置可访问变量
 #* assigns
@@ -1753,9 +1792,11 @@ button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
 # Use ActiveModel has_secure_password
 #  1. model加入 has_secure_password, 
 #  2. model 中必须有password_digest 字段
-#  3. 提交时必须有: password & password_confirmation. 这两个字段, model中不需要有
+#  3  modle 中 validates_confirmation_of :password 
+#  4. 提交时必须有: password & password_confirmation. 这两个字段, model中不需要有
 #      new 的时候可以只有password, 
 #      但是如果有password_confirmation 就要和password 的相同，否则save 会失败，返回false
+#
 #      
 #   加上后 model 的instance 就会导出一个 authenticate 函数用于验证
 #    e.g.
@@ -1781,122 +1822,8 @@ f.password_field :password_confirmation
 
 Gems
    
-+ 权限管理
-gem   'cancancan', '~>1.10'
-   + cancancan 不关心用的是什么认证机制，他只依赖一个current_user 的方法
-     返回user record或者是一个nil
-
-
- + rails g cancan:ability
- 会生产app/models/ability.rb
-   所有的权限规则都在这里声明
-ability.rb << EOF
-class Ability
-  include CanCan::Ability
-  def initialize(user) ##这里对user可以执行的操作做设定
-       user ||= User.new # guest user (not logged in)
-
-       # 别名
-        alias_action :update, :destroy, :to => :modify # 定义所有的update,destroy,等同于modify
-
-       case user.role
-       when :admin then
-         can :manage, :all #can 是个方法定义在Ability 中
-                          # :manage 意思是执行所有的action
-       when :root then
-         can :new, :Book ## can 用来给每个权限定义可以执行的操作
-	                ## can <ActionName> <ControllerClass>
-	 can :index, :Book
-	 can [:edit, :update], :Book
-	 can [:edit, :update], :[Commit, Message]
-       else
-         can :read, :all ## :read 是cancan自定义的action别名
-
-       end
-  end
-end
-EOF
-
- + view 
- can? 方法会判断当前user，是否能够执行一个controller 的action
- can? <ActionName> , <ClassName>
- cannot?
-  <% if can? :index, Project %>
-
- + controller
-  对每个controller,的action都定义user的访问权限
-
-	def index
-	  @projects = Project.all
-	  authorize! :index, @project ## authorize用来给每个controller 的action定义
-	  在can 中对应的名字
-	end
-   + 如果不想在每个action中都写authorize! 这句话，可以在controller 的开头写上
-     load_and_authorize_resource ## 每个名字都是action的名字
-
-
-
-   +捕捉　CanCan::AccessDenied
-	class ApplicationController < ActionController::Base
-	 # 在ApplicationContorller 中添加
-	  rescue_from CanCan::AccessDenied do |exception|
-	    redirect_to root_url, :alert => exception.message
-	  end
-	end
 
    
-+ annotate
-  gem 'annotate', '2.6.5'
-  generate modele fields type comment in Module.rb
-  annotate -p before
-
-+ 前端form 字段检查
-    gem 'html5_validators'
-   根据ActiveModel 和form_for 自动为每个field生成前端检查
-
-+ bootstrap
-   这个有好几个rails的版本
- gem 'bootstrap-sass'
-    EOF >> <  application.css.scss 
-        @import "bootstrap-sprockets";
-        @import "bootstrap";
-　　EOF 
-
-    EOF >> application.js
-      //= require bootstrap-sprockets 注意在jquery后门
-    EOF
-
-    重写bootstrap 参数
-    可以在@import bootstrap 之前，对bootstrap 的变量进行赋值
-     e.g. $xxx = yyyddd
-
-
- gem 'font-awesome-sass', '~> 4.4.0'
-    EOF >> <  application.css.scss 
-      ## 添加这两行，导入字体
-	@import "font-awesome-sprockets";
-	@import "font-awesome";
-　　EOF 
-
-   <i class="fa fa-NAME"></i>
-
-  Rails helper 
-  icon('flag')
-
-  
-+ haml
-    gem 'haml-rails'
-
-+ autoprefixer
-   gem "autoprefixer-rails"
-    用于给css 自动添加兼容前缀
-  
-
-+ slim
-   gem 'slim-rails'
-
-+ 分页
-   gem 'will_paginate'
 
 
 + Cucumber
@@ -1980,20 +1907,6 @@ upload
    表单的每个field使用一个boundary参数制定的分隔符分割
 
 
-gem 'acts_as_votable', '~> 0.10.0'
-  评分系统
-  使用
-   在model 中添加 acts_as_votable
-   然后这个model 就会添加vote 的函数
-   在rount, controller 中添加 upvote, downvote 的action
-   然会调用model 对应的action
-   在view 中显示 vote 值;
-
-    @pin.upvote_by(current_user)
-    = link_to like_pin_path(@pin)
-    @pin.votes_for.size
-
-    会导出多组函数, like/dislike, up/down 名字不同意义相同
 
 
 gem coccon 
@@ -2022,39 +1935,10 @@ gem 'searchkick'
 gem 'active_merchant'
    在线支付
 
-gem 'enumerize'
- ActiveRecord 的枚举
  
 gem 的机制
 ---------------------------------------------------
 
-## debugger
-gem 'byebug'
-  调试功能
-  在需要断电的地方写入
-  debugge
-  e.g.
-  def index
-  debuge
-  end
-指令和gdb 类似，使用help得到帮助
-
-## show debug info
-    = debug(params) if Rails.env.development?
-
-
-## logger on console
-  Rails.logger.debug "sth."
-
-## counter_cache
- 用处: 如果一个model A 中有个has_many, xxxs 有需要统计多多少个xxx
-       则可以给这个A 添加一个xxxs_count field
-       这样Rails 在create 和 destroy 是就会自动更改xxxs_count 这个字段
-
-       在xxx Module 上
-       belongs_to :A, :counter_cache => true
-        如果要指定名字
-       belongs_to :A, :counter_cache => <Name>
 
 ## Redis
 + install 
@@ -2064,6 +1948,16 @@ gem 'byebug'
   create an initializer in config/initializers/redis.rb and add the following:
   $redis = Redis.new(:host => 'localhost', :port => 6379)
 
+## controller asset
+1. 移除require_tree .
+2.
+<%= stylesheet_link_tag "application", params[:controller], :media => "all" %>
+<%= javascript_include_tag "application", params[:controller] %>
+
+3. 加入pipeline
+%w( controller_one controller_two controller_three ).each do |controller|
+  Rails.application.config.assets.precompile += ["#{controller}.js.coffee", "#{controller}.css"]
+end
 
 ## Rack
 #类似与Make
@@ -2115,50 +2009,6 @@ E 开头的用于创建
 #gem 'mogoid', '~> 5.0.0'
 #
 
-## Myslq
-#mysql 驱动 
-#gem 'mysql2'
-#
-#使用mysql 需要先创建DB
-#config/database.myl >>
-development:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: xxx
-  pool: 5
-  username: root
-  password: 12345
-  host: localhost
-
-
-## PostgreSQL
-#gem 'pg' 
-#安装的时候如果编译失败,
-#1. apt-get install postgresql-server-dev
-#2. ARCHFLAGS="arch x86_64" gem install pg
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: myapp_development
-  pool: 5
-  username: myapp
-  password: password1
-
-test:
-  adapter: postgresql
-  encoding: unicode
-  database: myapp_test
-  pool: 5
-  username: myapp
-  password: password1
-
-rake db:create
-
-## stamp
-# date 格式化
-# gem stamp
-# ruby 原声data和times类型会导出一个 satmp方法
 
 
 ## 生成环境部署
@@ -2188,30 +2038,6 @@ rake db:create
 #  
   .actions = f.submit nil, :data => {"disable-with" => "请稍等..."}
 
-# gem default_value_for
-# 给activeRecord 声明一个默认值
-class User < ActiveRecord::Base
-  default_value_for :name, "(no name)"
-  default_value_for :last_seen do
-    Time.now
-  end
-
-default_value_for :age do
-    if today_is_sunday?
-      20
-    else
-      30
-    end
-  end
-end
-
-u = User.new ## new 出后就有默认值了,只是在AR 层面,并不是db colnum
-u.name       # => "(no name)"
-u.last_seen  # => Mon Sep 22 17:28:38 +0200 2008
-
-
-## defore_action :call [,option]
-# 注意defore_action 对返回值并不关心
 
 ## Gem mini-profiler
 # 性能分析工具
@@ -2229,8 +2055,6 @@ u.last_seen  # => Mon Sep 22 17:28:38 +0200 2008
 ##EE Gem browser
 #浏览器类型发现
 
-##EE Gem acts_as_votable
-# raddit 风格的投票系统
 
 ##EE Gem gollum-lib
 #built ont git wiki system
@@ -2247,43 +2071,6 @@ u.last_seen  # => Mon Sep 22 17:28:38 +0200 2008
   生成图片文件
 
 还有一种是使用纯前端的cavase 来生成图片
-
-## bower-rails
-# rails的bower 集成
-# gem "bower-rails", "~> 0.10.0"
-# 1. 生成配置文件 bower.json
-#   rails g bower_rails:initialize json
-# 2. zai bower.json里面写入需要的js包名
-#
-# 3. 下载
-#   rake bower:install
-#   默认会下载到vendor/assets/bower_components
-#
-# 4. 添加asset pipeline
-#  默认会把vendor/assets/bower_components 自动添加到资源搜索路径
-#  config.assets.paths << Rails.root.join("vendor","assets","bower_components")
-# 
-# 5. 在application.js 中添加
-# //=require Name/js
-#
-# 6. 需要重启server
-#
-
-# gem gem "bower-rails", "~> 0.10.0"
-# 首先执行 rails g bower:initialize json
-# 会生产两个文件,一个配置,一个插件文件bower.json
-#  需要什么包就在bower.json中写入,然后执行 rake bower_rails:install
-#  默认安装在vendor
-
-## jquery-ui
-# gem jquery-ui-rails
-# 使用
-#  引入js/css 文件
-#  
-$(document).ready ->
-    $("#datepicker").each ->
-        $(@).datepicker
-          dateFormat: "yy/mm"
 
 ## API
 #使用 active_model_serializers 在model　层得到json格式数据

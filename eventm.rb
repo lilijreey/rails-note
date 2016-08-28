@@ -1,6 +1,7 @@
 ##不是标准库中的 
 #事件驱动的ractor模型,单线程网络通信库
 #整个书写模式都是传入一个block异步回调模式,类似与nodejs
+#Qus.如何写出Node.js风格的IO
 
 
 # 
@@ -39,3 +40,5 @@ EventMachine.run do
   ## 开启一个TCP server
   #EM.start_sever "localhost", 5000
 end
+
+## Ruby File 都是阻塞的, 没有.on 机制 ???
