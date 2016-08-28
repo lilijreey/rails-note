@@ -1,0 +1,54 @@
+
+## 保留字
+## key, struct 
+## 各种类型
+##
+
+## 内置函数
+##
+
+struct cost
+{
+    key int <name> , opt1, opt2, opt3;
+    key text <name> , opt1, opt2, opt3;
+    ref(fefef) item_id
+    atom <name> [, opt ...];
+    ref_value(fesfef.fesf) field<fef>
+    enum(fef)  fesf
+    bool 
+    term
+}
+
+
+table xxx 
+{
+    struct :cost;
+    file: "fjeosfjefi";
+
+    ##可以不谢，默认都输出，除了comment 
+    output_client <filedName [, ...]>;, output_client_exclude
+    output_server <filedName [, ...]>;
+
+    ## 验证
+    varify_field <fieldName>(Term) {
+        ## 使用内置函数
+        ##EE [number]
+        Term.is_list();
+        Term.list_length() > 3;
+
+        ##EE[{1,2}, {2,3}]
+        for X in Term {
+            X.is_tuple(2)
+            for X in X {
+                X.is_number()
+            }
+        } 
+    }
+}
+
+table yyy
+{
+    struct {
+        ... 
+    }
+}

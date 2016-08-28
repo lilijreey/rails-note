@@ -1,0 +1,65 @@
+## Puma
+一个Web Server, 占用内存很少
+
+
+## install
+gem "puma"
+
+
+## help
+puma -h
+
+## config
+config/puma.rb
+
+puma -C config/puma.rb
+
+>> EOF
+threads 8,32 ## 最小最大线程数
+bind 'unix:///tmp/puma.sock' ## 绑定到unix socket 上, 也可以是tcp, 
+bind 'unix:///tmp/puma.sock?umask=0111' ## 指定权限
+pidfile '/tmp/puma.pid' ## pid
+state_path '/tmp/puma.state' ## 生成state 文件
+
+on_restart do
+   puts 'On restart...'
+end
+
+end
+
+
+## nginx 设置
+upstream limlog {
+  server   unix:///tmp/limlog.sock; ## 这里应该是puma 绑定的地址
+}
+  
+server {
+  listen 80;
+  server_name     limlog.sloger.info;
+  
+  root        /srv/http/limlog.sloger.info/public; ## app/public 
+  
+  access_log     /var/log/nginx/limlog-access.log;
+  error_log      /var/log/nginx/limlog-error.log info;
+  
+  location / {
+    expires      max;
+    add_header     Cache-Control public;
+  
+    proxy_redirect   off;
+    proxy_set_header  Host        $http_host;
+    proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+  
+    proxy_pass     http://limlog;
+  }
+  
+  location ~ ^/assets/ { ## 静态文件nginx 处理
+    expires   1y;
+    gzip_static on;
+    add_header ETag "";
+    add_header Cache-Control public;
+    break;
+  }
+}
+
+
