@@ -229,8 +229,9 @@ rake state  # 代码统计
 ## Ruby 使用module 来打包一系列函数
 
 
-## cookies
-由Rails 提供的，可以看成为Hash，每个element 的格式为
+## cookies 一个rake中间件
+由Rails 内置的一个对象，可以看成为Hash，每个element 的格式为
+每次requiset 都会生成一个新的cookies对象
 {value: xxx, expires: xxx}
 value 是文本值
 expires 是失效时间
@@ -242,9 +243,14 @@ cookies[:list_mode] = "xxxx"
 cookies[:list_mode] = {value:'xxx', :expires => 5.minutes.from_new}
 cookies.delete :key
 
+存放一个签名数据
+cookies.signed[:xxx] =value
+
 通过cookies.permanent[:xxx] 来设置的value 自动有20年的有效期
     cookies.permanet.sigend[:key] 会加密对应的value,但是名字还是能被看见
 
+在cookies中存放一个加密数据
+cookies.encrypted[:xxx] =45
 
 ## session
 一个hash 数据结构，Rails内建了session变量
@@ -272,6 +278,10 @@ session_options[:digest] = 默认是SHA1, 也可以是OpenSSL支持的其他算�
 清除session
     reset_session
 
+### cookies 和 seesion的异同
+cookies 是HTTP提供的机制,在每次请求头中传递信息. 都是明文.用户可以修改,有大小限制,不能存储敏感信息
+seesion seesion 用来实现应用层的回话机制,Rails默认把session中的数据加密后,存放在客户端 
+   一般只把id存放发送给client,这样就能够记录谁是谁, 每次都检测客户端发了的seesion_id
 
 ## asset pipeline
 # 所有的资源都需要在清单文件中列出,才能进入Pipeline的处理流程
@@ -316,6 +326,8 @@ session_options[:digest] = 默认是SHA1, 也可以是OpenSSL支持的其他算�
 #可以
 
 ## login
+# 就是在cookies中添加一个id, 每次前端都传递这个id给后端,后端通过查找id,来确定
+# 当然这个id应该签名,或加密才对
 * 实现机制
   把session 作为一个resource, 上线就是create session
      线下就是destory session
@@ -547,7 +559,7 @@ e.g.
  才会生成db table
 
   有一个可选的hash 
-      t.integer :bar_code, null:false, unique: true
+      #add_reference(:products, :supplier, index: { unique: true })
 
 
 
@@ -652,11 +664,12 @@ API
 + obj.persisted?
 + obj.attributes
 + obj.save -> bool()
-+ obj.update_attributes(Hash) 编辑和save 一起完成
++ obj.save! 抛出异常 和save相同
++ obj.update(Hash) -> bool 编辑和save 一起完成
++ obj.update_attributes(Key,Value) -> bool 编辑和save 一起完成
 + obj.destroy 
 + obj.find(Id) return ???
 + obj.reload.FieldName overcover new value use db value
-+ obj.update_attributes(Hash) -> bool()
   
 has_many XXX 会自动导出
    obj.xxxs
@@ -706,10 +719,13 @@ Megirate
   
 不想要id
 create_table :name, id: false do |t|
+
+该类型
+create_table :name, id: :string do |t|
 end
 
 改变id名字
-create_table :name, id: :xx_id do |t|
+create_table(:objects, primary_key: 'guid') do |t|
 end
 
 t.column(:name, type, options={})
@@ -723,6 +739,8 @@ t.<type>(:name, option={})
 
 t.index(:column, unique: true)
 t.belongs_to 等价与 t.references
+这里的belongs_to 和modle中的不同, 这里知识添加一个xxx_id 的东西
+modle 中的belongs_to 会导出helper
 
 rails给通用的类型定义了type,有对每个特殊db，定义了自己的type
 可以查看 NATIVE_DATABASE_TYPES, 来查找类型映射
@@ -791,6 +809,9 @@ associations
 Ｒａｉｌｓ会自动生成合适的ＳＱＬ语言来查询对应的ｔａｂｌｅ
 
 * belongs_to : <tableName>单数形式
+
+  belongs_to :course, foreign_type: :temp_id # 使用指定的字段来查,默认为course_id
+
 * has_many : 
    加这定义的作用?
      自动生成相关联系操作
@@ -801,9 +822,10 @@ associations
 
    * xxx Model 本身需要有aaa_id 这个属性用来标记自己属于的aaa
   可选参数
-  :class_name
-  :conditions
-  :foregin_key
+  :class_name  默认关联的类型为XX, 如果类型不是使用class_name 指定
+  :conditions 
+  :primary_key 默认是另一张表的id 字段信息关联,如果不是使用primary_key 重写
+  :foregin_key 默认是xxx_id 进行关联,如果字段名字不是,可以使用foregin_key
   :order  用了指定以xxxs 中的哪个字段来排序返回 e.g. -> {order('fieldName DESC')}
        也可以在指定一个二次排序field e.g. -> {order('fieldName DESC, xxxName ASC')}
        中的参数会附加在SQL 语句中，所以可以写任何DB支持的语句
@@ -873,6 +895,9 @@ many_to_many
       则 a has_many c :though b
       e.g.
   has_many :replies, :through => :books, :source => :comments
+
+  has_many :students, :foreign_key => :ban_id, :primary_key => :ban_id
+ 在students.ban_id 中选择和本表:ban_id 字段一样的row，
        
 
 delegate: :method1, method2, to :moduleName
@@ -892,6 +917,10 @@ delegate: :method1, method2, to :moduleName, prefix: true
 
 * before_save
   e.g. before_save {|user| user.email = email.downcase}
+
+markdown:
+"<h3>xxx</h3>.html_safe"
+html_safe 把一个字符串作为模板的本身
 
 ## JSON
 # 使用ruby 的JSON.prase 可能会保存
@@ -1232,6 +1261,9 @@ Form set other attr
 
 * check_box_tag(Name, Value, Checked=bool(), options={})
   
+
+## 有多种形式的select
+* f.select :person_id, Person.all.collect { |p| [ p.name, p.id ] }, include_blank: true %>
 * f.collection_select :college_id, College.all, :id, :name
                       这里college_id 必须设置了belongs_to college
 		      :id 是设置存储的信息, 也是select 的value
@@ -1459,13 +1491,28 @@ GET
  link_to("Show", user_path(Id))
  link_to("New", new_user_path)
  link_to("Edit", edit_user_path(Id))
+
   
  link_to 的path 参数可以是一个hash obj, path helper会根据key,
          来取得hash-obj 对应key的值
 
+ link_to 'new lesson', lessons_path(:ban_course_id => @bc.id), :method => :post
+
+helper path 是可以传参的
+e.g. new_user_path(:id => 32)
+   user?id=32
+
 
 POST
   form_for @user, :url => users_path, :html => {:method => :post}
+
+给 form_for 添加params
+form_for @user :url => {:type=>3}
+ 生成 users/?type=3
+
+ 也可以使用 hidden fields 传递参数
+ f.hidden_field
+ hidden_field_tag
     
 PUT
  form_for @user, :url => post_path(@user), :html => {:method => :put}
@@ -1544,13 +1591,37 @@ resource :xxx
 
 
 
-Flash
+Flash 是一个中间件用于在两个acton直接传递消息
 ---------------------------------------------
 通常是一个acton　set, 写一个action get
 当以在本action render 时就要使用可以使用 flash.now[:notice] ="feff"
 
 flash 是 session 的应用，通常在 controller 的 action 间传递信息，读取成功后自动清空。
 如果一个 flash 没有在合适得地方读出来，那么它将被保存到读出为止
+flash 是一个hash, 通常使用flash[:notice] , flash[:alert]
+
+在redirect_to 中可以默认设置 notice, alert
+redirect_to :xx,  notice:'xxxxx'
+
+flash的访问 hash形式,函数形式
+flash/ flash.notice/flash.alert
+flash 中的数据在下一会action显示后就会被清空
+
+flash.now.notice
+   如果不使用redirect_to 而是在当前请求中显示 使用.now
+
+如果要添加新的key
+
+flash.keep(key =nil) 保持当前flash或指定的key在下一个action时有效
+flash.discard(k = nil) 指定flash在当前action结束后删除
+
+  #     <% if flash[:notice] %>
+  #       <div class="notice"><%= flash[:notice] %></div>
+  #     <% end %>
+
+### error_message 机制
+#
+
 
 action
 --------------------------------------
@@ -1706,7 +1777,8 @@ head
  有参数的 yield :xx ##相当于占了个位置, 把后门在content_for :xx
                     ## 中的内容添加到这里,即时没有:xx 也不会抱错
  需要配合 content_for :xx do
-               实际内容
+              <%= xxx 实际内容 %>
+	  end
    来使用;
 这里的:xx 只是标签,并不是模板文件
   
@@ -2125,4 +2197,30 @@ gem 'active_model_serializers'
 #  EOF
 
 
+josnb
+pg 支持
 　　
+1. t.jsonb :info,  null:false, default:{} # 注意默认值不能为'{}'
+2. 若是想在obj中直接访问json中的数据, 可以使用
+   store_accessor :info, :name, :oo
+3. jsonb 默认都是字符串,symbol无法访问, 可以使用
+  serialize :info, HashSerializer 这个会影响new操作!!! pg josnb 不需要这样
+  何时调用???
+def HashSerializer
+  def self.dump(info)
+    info.to_json
+  end
+
+  def self.load(info)
+  (info || {}).with_indifferent_access ## ActiveSupport 的,key支持,string, symbol 两种不同类型,访问相同,都会转换为string
+  end
+end
+
+single-table inheritance
+单表继承
+多个不同类型的modle公用一个db table
+table中默认使用type 字段来存放每个row的类型
+如果不小心使用了type字段可以使用,来避免冲突
+self.inheritance_column = nil
+
+

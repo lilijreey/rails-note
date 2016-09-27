@@ -77,7 +77,7 @@ load 'x.rb'
 #
 #国内镜像:
 # 山东大学 'http://ruby.sdutlinux.org/'
-#
+# see bundle.md
 #  
 # 更改gemfile
 #
@@ -251,6 +251,7 @@ end
 # require_relative 'xxx
 #   是在当前目录下加载　./xxx.rb
 #   == require './xx'
+#   只会加载指定文件中的代码,并不会加载其他文件中相同module下的代码
 #
 # 
 # 使用include 则可以将模块中的所有定义混入到当前命名空间中
@@ -258,6 +259,7 @@ end
 #  本质上是在class的祖先链中加入模块
 # 
 # 使用extern 替换include 后，只是模块中的方法都变为的类方法，而不是实例方法
+#
 # 
 # 导出模块方法，　模块中定义的方法都只能在本模块内部使用，如果
 # 导出方法要使用　module_funciton :xxx
@@ -271,6 +273,7 @@ end
 # autoload :Symbol, "file"
 #   延迟加载, 第一个参数必须是一个模块名或者是Class名，在file中定义的
 #   只要是触发加载就会加载整个文件，而不是只是指定的符号
+#   使用Object.const_missing机制实现的
 
 ## 变量 variab
 # 1. 局部
@@ -515,8 +518,52 @@ end
 
 
 ## EE 常量
-#所有以大写字母开头的名字都是常量, Class, 模块名都是常量
-#常量是可以别改变的，不过会有警告出现
+所有以大写字母开头的名字都是常量, Class, 模块名都是常量
+常量是可以别改变的，不过会有警告出现
+常量和变量有不同的scope规则.
+
+
+## Kernel 模块
+* Kernel 模块mix-in 在Objec
+* 每一个对象都继承了Kernel的所有方法，因为都简介继承Object
+* Kernel模块中的方法都可以直接使用,而不需要指定接受者，接受者为self(当前上下文)
+* 所有在Kenrel 中的函数都可以作为'全局函数'
+
+
+
+
+## Method 模块提供了针对一个方法的自省功能
+  method(:puts).receiver 方法的接受者
+  method(:puts).owner 定义的地方
+  
+  
+
+## Ruby 对象模型
+#Ruby世界的１为对象．只有对象
+
+### 内置类型对象(类型)
+NilClass -> nil -> 函数
+Class
+
+
+### Ruby 类继承关系
+BasicObject
+  Object
+    Module
+       Class
+    NilClass
+    CustemClass 所有没有显式父类的Class 对象都隐士继承Object
+
+子类会继承父类的所有实例方法
+
+### 每一个对象都有一个构造对象也就是.class
+    这种关系并不是继承关系,继承使用.superclass看
+    所有自定义模块都是Module 的实例
+
+
+## ancestros 祖先连
+    调用函数的查找方式，首先得到.class 查找实例方法，然后在父类上招
+
 
 ## meta programming 
 #动态元编程 在运行期间执行
@@ -534,7 +581,15 @@ obj.send(:method, args) 调用方法
 obj.public_send 只能调用共有方法
 
 动态定义方法
-obj.define_method()
+obj.define_method() 参数是方法名
+
+a= 123
+MyClass = Class.new do
+  #a 是可见的
+  define_method :show do
+    puts a
+  end
+end
 
 obj.method_missing
   当找不到调用方法时调用，usage like erlang _ match
@@ -550,7 +605,13 @@ end
 重写 method_missing 时要重写 obj.respond_to? 方法
 保持一直
 
-const_missing() 当对常量调用一个不存在的方法时
+## const常量的自省方法有
+Object.const_get("ClassName") -> Object 通过名字返回对应的对象
+Object.const_set("Name", obj) 绑定对象与常量 
+Object.constants() 返回当前模块定义的所有常量
+Object.const_define?("cc")
+Object.const_missing('Name')  回调函数在访问不存在常量时被触发, const_get的不到时也会触发
+   返回值会被作为const_get的返回值
 
 删除方法，通常用来确保某些方法不存在，调用method_missing
 obj.undef_method 会删除所有方法，包括继承来的
@@ -564,13 +625,10 @@ Kernel.global_variables
 scope def, class, module 进入这些作用域后，外边的*非常量*都是不可见的了
 使用block来得到嵌套的作用域
 
-a= 123
-MyClass = Class.new do
-  #a 是可见的
-  define_method :show do
-    puts a
-  end
-end
+
+Class 的对象都有
+class_eval 一般用来给一个class添加方法
+class_exec(arg) 和class_eval 相同只不过可以穿参
 
 Object#instance_eval
 在一个对象上下文中执行一个block
@@ -630,21 +688,6 @@ end
 
 #eigenclass 单件类
 
-
-### Exception
-#raise 抛出异常
-#rescue 捕获异常
-#
-#ensure 类型与finial. 有没有异常都执行这里
-
-## raise 形式
-
-raise # 抛出一个RuntimeError
-raise "msg" # 抛出一个RuntimeError 和指定的消息
-raise Type, "msg"
-
-raise 抛出的类型只能是,Exceptin 的子类
-obj.message 得到消息
 
 ### Gem about
 RubyGems 是一个程序或库的标准化打包，安装框架。 类似于npm
@@ -712,7 +755,9 @@ gem 文件是一个tar格式文件
 # 
 
 ##EE Lex/Yacc
-#Treetop ruby 的lex + Yacc
+*Treetop ruby 的lex + Yacc
+
+* Racc 一个ruby的Yacc 标准库中包含的
 
 ## 语法分析工具
 #Ripper
@@ -736,6 +781,8 @@ gem 文件是一个tar格式文件
 ## Time Date
 a= Time.new # date + time
 Time.now #same as Time.now
+
+# string -> obj
 Time.local(2001,2,15,20)
 a.day
 a.year
@@ -745,10 +792,13 @@ a.utc #输出utc时间
 a.strftime("%Y-%m-%d") #时间格式化
 a.between?(i, j) # 测试a是否在i,j之间
 
+
 ## Rails
 d = Date::new(2010, 2, 23)
 Date::today
+## string -> obj
 "2002-1-22".to_date
+"2002-1-22".to_datetime
 
 ## Logger
 require 'logger'
@@ -770,3 +820,13 @@ trap("TERM") { puts "TERM"}
 ## Web
 #开启一个服务器 指定root/Dir
 #ruby -run -e httpd . -p 3000
+
+## Enumerable 模块
+提供了大量的接口，如果一个class需要枚举能力．
+则只需要include Enumerable
+实现each方法 在each方法中调用 yield <elem>
+Enumerable 所有的函数都依赖与each方法
+如果在调用Enumerable的方法的时候不提供block则返回一个枚举器（迭代器) Enumerator
+
+
+

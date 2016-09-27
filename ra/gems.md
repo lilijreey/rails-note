@@ -3,6 +3,11 @@
 gem "bower-rails"
  1. 生成配置文件 bower.json
    rails g bower_rails:initialize json
+ 2.
+   rails g bower_rails:initialize 
+    会生成一个Bowerfile 的文件，类似与json, 不过是Ruby 的DSL
+    也是用来声明使用项目的
+
   + 其实就是用bower来管理所有前端第三方资源
   + rake -T bower 显示所有命令
      rake bower:insert
@@ -283,16 +288,28 @@ rake db:create
   generate modele fields type comment in Module.rb
   annotate -p before
 
+
+* view file liveload 
+  gem 'guard-livereload', '~> 2.5', require: false
+  guard init
+  guard
+  rails s
+  浏览器还要又liveload插件
+
 ## debugger
 gem 'byebug'
   调试功能
   在需要断电的地方写入
-  debugge
+    byebug
   e.g.
   def index
-  debuge
+    byebug
   end
 指令和gdb 类似，使用help得到帮助
+
+gem 'debug_view_helper'
+查看内部信息
+
 
 ## show debug info
     = debug(params) if Rails.env.development?
