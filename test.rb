@@ -31,6 +31,10 @@ load 'x.rb'
 # gem source
 # change gem source
 #
+# 升级rvm自己
+# rvm get stable
+# 
+# 
 # +config file
 #  /home/.gemrc
 #
@@ -69,6 +73,9 @@ load 'x.rb'
 #  清除cache gem sources gem sources -c
 #  跟新　gem sources -u
 #  
+# gem fetcch xxx
+#   只下载
+#   
 # bundle 有自己的源
 # 也需要更新为阿里的 
 # 
@@ -255,10 +262,24 @@ end
 #
 # 
 # 使用include 则可以将模块中的所有定义混入到当前命名空间中
+# 注意模块中所有的非self 方法
+#e.g. 
+moudel M
+  def m1 ## include 会被继承
+  end
+  def self.m2 ## 属于M 不会被继承
+  end
+end
+class A 
+  incldue M # 只继承　m1,作为实例方法
+  extern M # 只继承　m1, 作为类方法
+end
+#
 # 将模块混入类中称为 Mix-in, 可以使得多个class 复用相同的代码
 #  本质上是在class的祖先链中加入模块
 # 
-# 使用extern 替换include 后，只是模块中的方法都变为的类方法，而不是实例方法
+# 使用extend替换include 后，只是模块中的方法都变为的类方法，而不是实例方法
+#
 #
 # 
 # 导出模块方法，　模块中定义的方法都只能在本模块内部使用，如果
@@ -420,6 +441,49 @@ end
 #fesf fejsof 
 #EOF
 
+## EE function
+def unFn(a)
+  ##...
+end
+
+def find_if(fn, aa)
+  fn.call(fn.call(aa))
+end
+传递函数时不能直接写名字，这样默认是调用
+find_if(unFn) # error
+find_if(:unFn, xx) # ok
+
+如果要对一个变量赋值函数
+fn = method(:fnName)
+
+
+## curry
+def add(a,b)
+  a + b
+end
+
+add_five = method(:add).curry[5]
+add_five.call(4) = add(5,4)
+
+
+list = (1..10)
+greater_than = ->(x,y) { y > x }.curry
+list.select(&greater_than.(5))
+# [6, 7, 8, 9, 10]
+list.select(&greater_than.(8))
+
+def gg(e)
+  e > 5
+end
+
+list.select(&lamdba{|e| e>5})
+list.select(&->(e) {e > 5})
+list.select(&method(:gg)) ## 把普通方法转成block 传递
+## 不能少了& 符号
+
+
+
+
 ##EE block
 #{ ..}
 # do .. end
@@ -493,6 +557,15 @@ end
 # lambda 和 proc 都是Proc 对象
 
 
+## 在ruby中高阶函数基本使用block，作为参数，
+#而不是函数, 因为函数很难传递,调用方法也不统一
+#
+ #把普通方法，lamdb,proc转换为block, 就在前面添加&
+如果是非block的高阶函数则，调用为.call,而不是括号
+
+ def(method, x, y)
+  method.call(x,y) * 2
+  endfn
 
 ##EE load require 加载其他文件
 # 每次调用load 都会加载并执行加载的文件
@@ -604,6 +677,10 @@ end
 
 重写 method_missing 时要重写 obj.respond_to? 方法
 保持一直
+
+* ObjectSpace
+ObjectSpace.each_oject(<className>).count
+
 
 ## const常量的自省方法有
 Object.const_get("ClassName") -> Object 通过名字返回对应的对象
@@ -828,5 +905,12 @@ trap("TERM") { puts "TERM"}
 Enumerable 所有的函数都依赖与each方法
 如果在调用Enumerable的方法的时候不提供block则返回一个枚举器（迭代器) Enumerator
 
-
+## Nil try 在一个可能是nil的对象上调用方法
+# obj && obj.m1 && obj.m1.m2
+# Rails 中可以使用try
+#  obj.try(:m1)
+# ruby 2.3.0以后增加了
+# Safe Vavigation Operator  "&." 
+# obj&.m1&.m2
+# 
 

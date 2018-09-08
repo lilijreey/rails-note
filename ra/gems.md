@@ -27,6 +27,16 @@ gem "bower-rails"
 
     6. 需要重启server
 
+生成环境预编译:
+
+
+## ES6 
+使用es6 babel代替coffee 在Asset Pipeline中
+gem "sprockets"
+gem "sprockets-es6"
+
+require "sprockets/es6"
+ js 文件的后缀为.es6 e.g. xx.js.es6
 
 
 # jquery-ui
@@ -142,6 +152,9 @@ gem 'acts_as_votable', '~> 0.10.0'
 gem   'cancancan', '~>1.10'
    + cancancan 不关心用的是什么认证机制，他只依赖一个current_user 的方法
      返回user record或者是一个nil
+
++ gem the_role
+  一个动态可设置的角色权限gem
 
 
  + rails g cancan:ability
@@ -295,6 +308,35 @@ rake db:create
   guard
   rails s
   浏览器还要又liveload插件
+  
+
+
+* markdown md
+~~~ruby
+ Kramdown::Document.new(md, {auto_ids:false, syntax_highlighter_opts:{line_numbers:false}}).to_html.html_safe
+~~~
+
+* N+1 检测
+gem 'bullet'
+有大量配置可以设定
+
+* 优化Recode显示,表格化
+gem hirb
+需要　调用 Hirb.enable
+可以加到.irbrc中
+
+* Chrome Rails开发插件
+  rails_panel
+  需要安装
+  　gem 'meta_request'
+
+* 友好显示Ruby对象
+gem 'awesome_print'
+
+* 检测SQL漏洞
+gem 'brakeman'
+
+* 
 
 ## debugger
 gem 'byebug'

@@ -10,12 +10,7 @@ rails s -b 0.0.0.0 绑定ip
         -p 7777 
 
 production 模式
-rails -e production 指定启动模式
-需要 生成secret_key
-  rake secret RAILS_ENV=production
-  把生成的key export 到环境变量中,也可直接放在 config/secrets.yml中
-  production:  
-    secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>  
+ see deployProduction.md 
 
 background 后台运行Rails
 -d 后台运行
@@ -24,6 +19,7 @@ background 后台运行Rails
    pid 在/tmp/pids/server.pid
 
 2.  rails s -d
+
 
 
 ## Rails 组件
@@ -55,6 +51,10 @@ e.g.
     {{ cms:page:content:rich_text }}
 
 
+3 send_data
+	data = "Hello World!"
+	send_data( data, :filename => "my_file.txt" )
+    把数据作为文件发送
 
 TagsType:
   + page: 会render 到页面中
@@ -184,6 +184,12 @@ TagsType:
     - csrf_meta_tags
      改为
     = csrf_meta_tags
+
+
+Rails 工具类
+----------------------------
+* str.underscore 驼峰转下划线
+* HashWithIndifferentAccess 一个Hash容器,key, 不区分string 和symbol
 
 Tools
 ----------------------------
@@ -414,10 +420,18 @@ end
 rails new <AppName>
 
 ## config
+
+## Time
+Time Rails 默认的时间格式为UTC 时区是00
+DB中存储的也是UTC时间
+显示的也是
+如何想默认按当前时区显示，则可以设置　config.time_zone='Beijing'
+如果想在DB中以当前时区存储则　config.active_record.default_timezone = :local
+
   config/databse.yml 来配置DB的
-   
-   Time zero
-   config/application.rb config.time_zone= ?
+  Time zero
+  config/application.rb config.time_zone= ?
+
 
 运行 rake time:zones:all OFFSET=+8
 显示所有+8时区
@@ -425,6 +439,35 @@ rails new <AppName>
 
 不要用time.now 这个时间是根据系统当前时间
 使用time.zone.now
+一个tiemobj.localtime 显示当前时区时间
+
+## 格式化
+
+puts time.to_s
+puts time.ctime
+puts time.localtime
+puts time.strftime("%Y-%m-%d %H:%M:%S")
+
+to_s 默认是to_s(:default)
+还可以指定　　to_s(:db)
+如何想全局自定义　则可以设置　Time::DATE_FORMATS 中的key 来设置
+在　init 文件中
+
+my_datetime_formats = { :default => "%Y-%m-%d %H:%M:%S" } 
+my_date_formats = { :default => '%Y-%m-%d' } 
+Time::DATE_FORMATS.merge!(my_datetime_formats)
+Date::DATE_FORMATS.merge!(my_date_formats)
+
+当然也可以定义其他key 然后在to_s中指定参数
+
+Time/Date的DATE_FORMATS 有很多内置格式
+Time::DATE_FORMATS.keys
+
+输出UNIX时间戳
+to_s :number
+to_s 
+
+
 
 ## 18n 国际化
 #  和android 相同，给每个字符串对应不同的local定义值/ config/locales/xx.yml
@@ -517,8 +560,21 @@ EE 多态关联
 rails 会自动添加id 字段作为primary-key
 run 'rails g model' 查看选项 
 
-N+1 使用includes
+#### DB预加载
+三种方法, includes, preload, eager_load
+
+
+config.eager_load  时候开启lazey 加载
+
+* N+1 使用includes
 users = User.includes(:address).limit(10)
+筛选includes的select, 不可以,但是可以通过scope来简介完成
+e.g.
+~~~ruby
+  belongs_to :teacher,-> {select(:id, :name)},  foreign_key: :owner_id
+~~~
+  
+
 
 继承后， className 和db tableName 之间对应为单数-> 多数. Book -> books
 可以显示设置
@@ -616,84 +672,6 @@ ActiveRecord::Base.connection
 #  scope :recent, lambad {order('updated_at DESC')}
 #  e.g. xx.recent eq xx.order('updated_at  DESC')}
 
-## rails dbconsole
-  进入db 控制台
-
-API
-+ XX.column_names
-+ XX.new -> object()
-+ XX.create == XX.new + obj.save
-+ XX.first 具体是哪个要看排序的顺序
-+ XX.last  反方向排序的first
-+ XX.all
-    如果先让返回按某个字段排序
-    default_scope lambda { order('categories.name')}
-      相当于编程　all.order('xxxx')
-+ XX.find_by_FieldName
-+ XX.count
-+ XX.count_by_sql
-+ XX.delete(Id) 也是删除,只不过不需要先find 在调用 destroy
-   不会加载data
-  DELETE FROM Tab WHERE Key=(Id)
-   返回删除的个数
-+ xx.find_by_sql("select * from xxx") 使用SQL语句查询
-+ XX.select(:fieldName1, :fieldName2) 等于是XX.all 然后只返回你指定的fieldName
-      用来过滤希望返回的信息
-       e.g. XX.where(xxxxx).select(yyyy)
-+ XX.where(:title => 'RailsConf').first
-+ XX.where(:title == 'RailsConf').first
-+ XX.limit
-+ XX.offset 必须和limit一同使用，制定跳过的返回结果的个数
-+ XX.exists?
-+ XX.uniq
-+ XX.arel_table 得到一段查询语句生成的SQL
-   e.g.
-     u = User.arel_table
-     u.where(u[:login].eq("mack")).to_sql
-
-+ XX.destroy  先find在delete
-    find(id).destroy
-     返回[obj,..] 如果找不到就会产生异常
-
-+ connection
-  ActiveRecord::Base.conection
-
-+ obj.valid? 验证有效性，使用model定义的验证函数
-    重写valid相关方法
-+ obj.new_record?
-+ obj.persisted?
-+ obj.attributes
-+ obj.save -> bool()
-+ obj.save! 抛出异常 和save相同
-+ obj.update(Hash) -> bool 编辑和save 一起完成
-+ obj.update_attributes(Key,Value) -> bool 编辑和save 一起完成
-+ obj.destroy 
-+ obj.find(Id) return ???
-+ obj.reload.FieldName overcover new value use db value
-  
-has_many XXX 会自动导出
-   obj.xxxs
-   obj.xxxs=
-   obj.xxxs << 
-   obj.xxxs.delete
-   obj.xxxs.empty?
-   obj.xxxs.size
-   obj.xxxs.ids -> list(id)
-   obj.xxxs.clear 设置对应的xxx 的foreign_key null
-   obj.xxxs.find
-   obj.xxxs.build
-   obj.xxxs.create
-
-
-belong_to YY 会导出
-obj.yy
-
-has_one XX 会自动导出
- obj.XX
- obj.XX=
- obj.XX.nil?
- obj.build_XX(Hash)
- obj.create_XX(Hash)
 
 # 多态关联
 #  polymorphic: true
@@ -789,6 +767,7 @@ references :xxx 等效于 integer :xxx_id
      e.g.
       t.references :ware, index: true, foreign_key: true
    定义references table, 而不是 table_id , _id rails 会自动添加
+   在创建这个对象时,必须给出references的值,否则会报错
 
 
   add_references/ add_belogs_to 和add_foreign_key 是一样的，最后都调用
@@ -811,6 +790,9 @@ associations
 * belongs_to : <tableName>单数形式
 
   belongs_to :course, foreign_type: :temp_id # 使用指定的字段来查,默认为course_id
+  belongs_to 会给row的创建添加约束,在创建row时,必须有belongs_to的对象存在
+  如果是可选的使用 :optional :true
+
 
 * has_many : 
    加这定义的作用?
@@ -896,7 +878,7 @@ many_to_many
       e.g.
   has_many :replies, :through => :books, :source => :comments
 
-  has_many :students, :foreign_key => :ban_id, :primary_key => :ban_id
+  has_many :students, :foreign_key => :ban_id, :primary_key => :id #另一个表的查询自动
  在students.ban_id 中选择和本表:ban_id 字段一样的row，
        
 
@@ -1245,6 +1227,12 @@ e.g.
 * before_action 
  在执行action 之前调用一些函数, 会内联到每个action 里面
   e.g. before_action  :set_member, only: [:show, :edit, :update, :destroy]
+       before_action  :xxx        ,except :[:create]
+
+       如果想要给调用的方法穿参，择可以
+       before_action only:[:show, :edit] do
+         xxx(3)
+       end
 
      
 Form set other attr
@@ -1268,6 +1256,10 @@ Form set other attr
                       这里college_id 必须设置了belongs_to college
 		      :id 是设置存储的信息, 也是select 的value
 		      :name 设置显示的信息
+  select 有两个可选参数，第一个是这是选项信息的，第二个是这是html的
+  添加class: 
+      = f.select :ban_id, Ban.ids, {}, class: 'form-control'
+
 
 ## rounter
 * 显示当前所有路由
@@ -1708,7 +1700,9 @@ simple_format是一個內建的View Helper，
 form_tag 用于没有对应obj 的form生成
       = form_tag search_path do
         = search_field_tag 'search', nil, :placeholder=>'Search'
-        = submit_tag 'Search'
+        = submit_tag 'Search'  data=>{:confirm => 'Are you sure', :disable_with=>"正在发送", type=>"json"}
+   disable_with 用来避免重复发送
+  type => json 指定发送的数据为json格式
 
 = form_tag course_stat_teacher_path(current_user), :method => :get
   label_tag 请选择日期:
@@ -1758,6 +1752,9 @@ layout application.html.erb
     内嵌标签
 
      Rails 使用路由的名字来指定连接
+
+可以指定HTTP 动词,通过 method:
+参数可以在healer 中指定e.g student_path(max:333, min:111)
 
 ## layout
 提供统一的布局默认在 views/layouts/application.html.erb
@@ -1822,43 +1819,6 @@ content_for?
 * session
 
 
-## Ajax
-所有的send 都可以使用ajax 的方式
-添加 remote: true
-这是发声的HTTP请求 Accept 会变为 
-   */*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript
-server 端受到后会匹配到js 中
-# send a Ajax req
-#   add remote: true
-#   e.g.  <%= button_to 'Add to Cart', line_items_path(product_id: product), 
-#           remote: true %>
-#
-
-#server  需要formts.js {xxxxx}
-# 因为Ajax 默认的dataType 是script
-
-Rails 的Ajax 一般分为json 和js
-js , 是后台返回一个js code, 就是在成功后操作的code, 
-    这种叫做服务端Ajax
-
-e.g.
-#= link_to 'new comment', new_book_comment_path(@book, :format => :js),
-#  :remote => true, :id => 'new_comment_link'
-#     这个请求会导致调用 view/comments/new.js.xxx template
-#     
-#  new.js.erb << 
-#    $("<%= escape_javascript render(file: 'comments/new.html.haml') %>").insertAfter('#comments');
-#    $('#new_comment_link').hide();
-#  EOF
-
-
-halper 
-j() == escape_javascript()
-
-json,后台只会返回一个json 数据, 
-    只用json 时要加上　"data-type" => :json
-
-button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
 
 ## passwed  验证 4.1 以后有内置支持
 # Use ActiveModel has_secure_password
@@ -1881,6 +1841,13 @@ button_to , link_to, form_to 如果加上 remote => true 都会变为Ajax 提交
     else
       redirect_to login_path
     end
+  end
+
+  def update
+  user = User.first
+  user.password = 'new data'
+  user.password_confirmation = 'new data'
+  user.save!
   end
 
 f.password_field :password
@@ -2083,16 +2050,9 @@ E 开头的用于创建
 
 
 
-## 生成环境部署
-首先 ror 是单线程的server， 一次只能处理一个请求。 
- 这意味着，如果一个请求卡住，后门的请求只等等待
-
-所以在部署的时候，会把ror放在 Apache/Neginx 的后门，只有需要ror处理的时候
-这些web-server 才发给ror.
-* 通过Passenger 代理, ror 可以一次开启多个实例
 
 ## exception
-# 使用rescue_from 来在controller scope 中handle制定的异常
+* rescue_from 来在controller scope 中handle制定的异常
 # 
   def log_exception(exception)
     application_trace = ActionDispatch::ExceptionWrapper.new(env, exception).application_trace
@@ -2108,15 +2068,14 @@ E 开头的用于创建
 ## UJS
 #  rails 使用 unobtrusive js 技术
 #  
-  .actions = f.submit nil, :data => {"disable-with" => "请稍等..."}
+  f.submit nil, :data => {"disable-with" => "请稍等..."}
+  f.submit'Search'  data=>{:confirm => 'Are you sure', :disable_with=>"正在发送", type=>"json"}
 
 
 ## Gem mini-profiler
 # 性能分析工具
 # 
 
-## Gem gullet
-# 分析所有的N+1 db 操作
 
 * Gem brakeman
   安全分析工具
@@ -2139,8 +2098,11 @@ E 开头的用于创建
   <%= image_tag(Identicon.data_url_for(@user.name, 128)) %>
   会自动生成内联的img data
 
+
   Identicon.file_for "User's email? Username? Telephone?", "/path/to/the/image"
-  生成图片文件
+  生成图片文件	
+
+  background-image: url(edit_bk.png);
 
 还有一种是使用纯前端的cavase 来生成图片
 
@@ -2155,27 +2117,6 @@ gem 'active_model_serializers'
 * Grape
 
 
-## 部署 deploy
-#gem mina
-#1. 首先 mina init
-# 会生成config/deploy.rb 配置
-#
-#2. 修改配置 
-#3. mina setup --verbose
-#    初始化远程主机环境
-#执行完后，需要手动编辑shared 中的配置，因为每回都会用这个重写当前项目对应的文件
-#
-#
-#每次部署
-#4. 提交代码到git 仓库
-#5. mina deploy
-#   
-#注意环境的配置，
-#需要使用rvm, 要不然找不到bundel
-#需要安装nodejs 不然报错
-#发布的时候自动就是produce 环境
-#注意如果在配置文件中写错指令， 则不会报错，直接忽略
-#
 #
 #使用 --trace 查看详细信息
 #配置命令 
@@ -2222,5 +2163,31 @@ single-table inheritance
 table中默认使用type 字段来存放每个row的类型
 如果不小心使用了type字段可以使用,来避免冲突
 self.inheritance_column = nil
+
+
+## Rails appliaction 对象
+#每个应用是一个Rails App 定义在config/initializer 中
+#访问Rails.application 就是当前应用的obj 全局
+
+### Mime
+#通过文件扩展名查询对应 mime
+Mime::EXTENSION_LOOKUP['.pdf']
+Mime::Type.lookup_by_extension('c')
+
+
+* 注册一个mime 把文件扩展名和mime关联起来, 可以在send_data的时候,自动填写所关联的Mime
+
+respond_to do |fmt|
+	fmt.html #执行默认动作渲染模板文件
+	fmt.csv  { ... }
+end
+这里的类型使用
+Mime::Type.register "text/csv", :csv 进行注册后才能识别
+
+config/initializers/mime_types.rb << EOF
+ Mime::Type.register "application/pdf", :pdf
+EOF
+
+ send_data(data, 'filename.pdf')
 
 

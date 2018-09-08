@@ -40,3 +40,18 @@
 Rails提供了多种方式,存储缓存
 1. config.cache_store = :memory_store{size:64.megabytes}
 
+
+### SQL Caching
+在同一action中如果执行同一查询多次，则只会实际执行一次
+e.g.
+User.all
+User.all
+User.all
+
+但是有的时候不行
+User.all.last
+User.all
+会执行两次
+
+
+

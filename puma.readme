@@ -12,7 +12,9 @@ puma -h
 ## config
 config/puma.rb
 
-puma -C config/puma.rb
+
+#run rails
+puma -C config/puma.rb -e production
 
 >> EOF
 threads 8,32 ## 最小最大线程数
@@ -25,7 +27,7 @@ on_restart do
    puts 'On restart...'
 end
 
-end
+preload_app!
 
 
 ## nginx 设置
