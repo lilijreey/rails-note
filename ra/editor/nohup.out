@@ -1,0 +1,380 @@
+=> Booting Thin
+=> Rails 4.2.5.1 application starting in production on http://0.0.0.0:3000
+=> Run `rails server -h` for more startup options
+=> Ctrl-C to shutdown server
+Thin web server (v1.6.4 codename Gob Bluth)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3000, CTRL+C to stop
+Exiting
+=> Booting Thin
+=> Rails 4.2.5.1 application starting in production on http://localhost:3000
+=> Run `rails server -h` for more startup options
+=> Ctrl-C to shutdown server
+Thin web server (v1.6.4 codename Gob Bluth)
+Maximum connections set to 1024
+Listening on localhost:3000, CTRL+C to stop
+Unexpected error while processing request: Missing `secret_token` and `secret_key_base` for 'production' environment, set these values in `config/secrets.yml`
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/application.rb:534:in `validate_secret_key_config!'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/application.rb:246:in `env_config'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/engine.rb:514:in `call'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/application.rb:165:in `call'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/rack-1.6.4/lib/rack/content_length.rb:15:in `call'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/connection.rb:86:in `block in pre_process'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/connection.rb:84:in `catch'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/connection.rb:84:in `pre_process'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/connection.rb:53:in `process'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/connection.rb:39:in `receive_data'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.0.9.1/lib/eventmachine.rb:193:in `run_machine'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.0.9.1/lib/eventmachine.rb:193:in `run'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/backends/base.rb:73:in `start'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/thin-1.6.4/lib/thin/server.rb:162:in `start'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/rack-1.6.4/lib/rack/handler/thin.rb:19:in `run'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/rack-1.6.4/lib/rack/server.rb:286:in `start'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands/server.rb:80:in `start'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands/commands_tasks.rb:80:in `block in server'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands/commands_tasks.rb:75:in `tap'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands/commands_tasks.rb:75:in `server'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/railties-4.2.5.1/lib/rails/commands.rb:17:in `<top (required)>'
+	/home/god/src/ruby-note/ra/editor/bin/rails:8:in `require'
+	/home/god/src/ruby-note/ra/editor/bin/rails:8:in `<top (required)>'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/client/rails.rb:28:in `load'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/client/rails.rb:28:in `call'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/client/command.rb:7:in `call'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/client.rb:28:in `run'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/bin/spring:49:in `<top (required)>'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/binstub.rb:11:in `load'
+	/home/god/.rvm/gems/ruby-2.2.3/gems/spring-1.4.0/lib/spring/binstub.rb:11:in `<top (required)>'
+	/home/god/src/ruby-note/ra/editor/bin/spring:13:in `require'
+	/home/god/src/ruby-note/ra/editor/bin/spring:13:in `<top (required)>'
+	bin/rails:3:in `load'
+	bin/rails:3:in `<main>'
+
+Waiting for 1 connection(s) to finish, can take up to 30 sec, CTRL+C to stop now
+Exiting
+=> Booting Thin
+=> Rails 4.2.5.1 application starting in production on http://0.0.0.0:3000
+=> Run `rails server -h` for more startup options
+=> Ctrl-C to shutdown server
+Thin web server (v1.6.4 codename Gob Bluth)
+Maximum connections set to 1024
+Listening on 0.0.0.0:3000, CTRL+C to stop
+Exiting
+new Channel
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+Terminating WebSocket Server
+new Channel
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+new connect
+Terminating WebSocket Server
+/home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.2.0.1/lib/eventmachine.rb:530:in `start_tcp_server': no acceptor (port is in use or requires root privileges) (RuntimeError)
+	from /home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.2.0.1/lib/eventmachine.rb:530:in `start_server'
+	from /home/god/.rvm/gems/ruby-2.2.3/gems/em-websocket-0.5.1/lib/em-websocket/websocket.rb:48:in `run'
+	from websocket_server.rb:26:in `block in <module:WSServer>'
+	from /home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.2.0.1/lib/eventmachine.rb:194:in `call'
+	from /home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.2.0.1/lib/eventmachine.rb:194:in `run_machine'
+	from /home/god/.rvm/gems/ruby-2.2.3/gems/eventmachine-1.2.0.1/lib/eventmachine.rb:194:in `run'
+	from websocket_server.rb:19:in `<module:WSServer>'
+	from websocket_server.rb:5:in `<module:Editor>'
+	from websocket_server.rb:4:in `<main>'
+new Channel
+websocket_server.rb:2:in `require': cannot load such file -- em-websocket (LoadError)
+	from websocket_server.rb:2:in `<main>'
+new Channel
+Terminating WebSocket Server
